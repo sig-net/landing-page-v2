@@ -1,394 +1,290 @@
-// Image assets from Figma
-const arrowIcon = 'http://localhost:3845/assets/e9d121b1a235e50685cb6d4042e9ec0b43ce4377.svg'
-const logoSvg = 'http://localhost:3845/assets/6ffc0199380384fbe10302c13937d395f917dd67.svg'
-const footerLogoSvg = 'http://localhost:3845/assets/7b3e148f8d52ff047f454a6015696ea00b865438.svg'
+import type { CSSProperties } from 'react'
 
-// Technical illustrations
-const techIllustration1 = 'http://localhost:3845/assets/f7458158f16514e8aaaa99bac2cd2d1750d7e98c.png'
+import linesTop from './assets/lines-top.svg'
+import linesBottom from './assets/lines-bottom.svg'
+import signetworkLogo from './assets/signetwork-logo.svg'
+import techIllustration1 from './assets/technical-illustration-1.svg'
+import techIllustration2 from './assets/technical-illustration-2.svg'
+import techIllustration3 from './assets/technical-illustration-3.svg'
+import techIllustration4 from './assets/technical-illustration-4.svg'
+import techIllustration5 from './assets/technical-illustration-5.svg'
 
-// Decorative line patterns
-const heroLinesSvg = 'http://localhost:3845/assets/9fed433daa0a6ae3edaf6235b885481ecc115069.svg'
-const footerLinesSvg = 'http://localhost:3845/assets/f65310ad09de06dd5fda56bd6d8dd9f2b8a0904e.svg'
+const softSurfaceStyle: CSSProperties = {
+  background: 'linear-gradient(180deg, #f5f0ee 0%, #edf5d6 100%)',
+}
 
-// Technical illustration overlays
-const blueOverlay = 'http://localhost:3845/assets/fd8b2608bb44e5c321b01723d3a8bded9000767f.svg'
-const greenOverlay = 'http://localhost:3845/assets/88a8cde02d078569e1875a0fc82f168ae81731e1.svg'
-const redOverlay = 'http://localhost:3845/assets/45bb9550d8a24564e70ceee126fae11a0bb7375b.svg'
+const navItems = ['What?', 'Roadmap', 'Blog']
+
+const narrativeSlices = [
+  {
+    image: techIllustration1,
+    alt: 'Technical diagram showing cross-chain DEX connectivity',
+    title: 'Sig.Network is a universal layer that makes apps native across chains.',
+    description:
+      'We enable smart contracts on different chains to interact directly, quickly, and securely by signing native messages with decentralized private keys.',
+  },
+  {
+    image: techIllustration2,
+    alt: 'Technical diagram showing synchronized execution',
+    title: 'Sig.Network synchronizes state and execution across ecosystems.',
+    description:
+      'Cross-chain communication happens through native signed transactions, not wrapped tokens or brittle bridge contracts. Your contracts keep sovereign execution while gaining reach everywhere.',
+  },
+]
+
+const stackSteps = [
+  {
+    title: 'Your Application',
+    text: 'Deploy contracts and infrastructure normally. Integrate with the Sig.Network SDK to gain cross-chain reach.',
+    tone: '#f2ddc4',
+  },
+  {
+    title: 'Sig.Network SDK',
+    text: 'Chain-specific libraries convert your cross-contract calls into unsigned native transactions for any target chain.',
+    tone: '#f1e4c6',
+  },
+  {
+    title: 'MPC Signer Network',
+    text: 'A decentralized MPC validator set collects those transactions and produces secure threshold signatures.',
+    tone: '#f0ebc7',
+  },
+  {
+    title: 'Cross-chain Message Router',
+    text: "Native signed transactions are sent to the destination chain's mempool or execution layer.",
+    tone: '#efefc8',
+  },
+  {
+    title: 'Native Chain Execution',
+    text: 'The target chain runs them as standard transactions from an external account owned by your contract, with results returned to your application.',
+    tone: '#eaeec9',
+  },
+]
+
+const principles = [
+  {
+    number: '1.',
+    title: 'Build where you are.',
+    text: 'Deploy on the chain you already use. Keep your contracts, tooling, and addresses. No regressions on anything your app already does.',
+  },
+  {
+    number: '2.',
+    title: 'Use proven tech.',
+    text: 'Native transaction formats and transparent cryptography. No magic contracts, no exotic trust assumptions.',
+  },
+  {
+    number: '3.',
+    title: 'Keep your flow.',
+    text: 'Add one function call, the rest remains your contract. No migrations and no new dependencies.',
+  },
+]
+
+const releases = [
+  { badge: 'MARCH', date: 'March 2025', title: 'Ethereum → Any Network', description: 'Execute transactions on any blockchain from Ethereum contracts.' },
+  { badge: 'AUGUST', date: 'August 2025', title: 'Solana → Any Network', description: 'Execute transactions on any blockchain from Solana contracts.' },
+  { badge: 'OCTOBER', date: 'October 2025', title: 'Ethereum ↔ Solana', description: 'Full bidirectional communication with response handling.' },
+  { badge: 'NOVEMBER', date: 'November 2025', title: '+Bitcoin', description: 'Use native Bitcoin liquidity anywhere.' },
+  { badge: 'JANUARY', date: 'January 2026', title: '+Hyperliquid', description: 'Additional blockchain integrations and protocol enhancements.' },
+]
+
+const footerColumns = [
+  { heading: 'Learn', links: ['About', 'Blog'] },
+  { heading: 'Build', links: ['Docs', 'Demo'] },
+  { heading: 'Connect', links: ['Careers', 'Twitter'] },
+]
+
+const ArrowIcon = () => (
+  <svg
+    aria-hidden="true"
+    viewBox="0 0 20 20"
+    className="h-5 w-5 stroke-current"
+    fill="none"
+    strokeWidth={1.5}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 10h10" />
+    <path d="M11 6l4 4-4 4" />
+  </svg>
+)
+
+const StackDivider = ({ label, direction = 'right' }: { label: string; direction?: 'left' | 'right' }) => (
+  <div className="flex flex-col items-center gap-4 sm:flex-row">
+    <p className="font-mono-custom text-[16px] uppercase tracking-[0.6em] text-[#786767]">{label}</p>
+    <span className="stack-divider" data-direction={direction} />
+  </div>
+)
+
+const TechnicalPanel = ({ src, alt }: { src: string; alt: string }) => (
+  <div className="relative left-1/2 w-[min(1440px,_100vw)] -translate-x-1/2 overflow-hidden rounded-[32px] border border-[#2a1f1f]/50 bg-[#1b1515] shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+    <img src={src} alt={alt} className="block w-full min-h-[320px] object-cover" loading="lazy" />
+  </div>
+)
 
 const App = () => (
-  <div className="min-h-screen bg-[#111111]">
-    {/* Live Banner */}
+  <div className="min-h-screen bg-[#111111] text-white">
     <div className="relative h-[30px] bg-[#111111]">
-      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 mix-blend-screen">
-        <div className="h-2 w-2 rounded bg-[#27ed02] mix-blend-screen" />
-        <p className="font-bold text-[14px] uppercase tracking-[1.4px] text-[#27ed02] mix-blend-screen">
-          MAINNET IS LIVE!
-        </p>
+      <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2">
+        <span className="h-2 w-2 rounded-full bg-[#27ed02]" />
+        <p className="font-bold text-[14px] uppercase tracking-[1.4px] text-[#27ed02]">Mainnet is live!</p>
       </div>
     </div>
 
-    {/* Menu */}
-    <nav className="flex h-[180px] border-b border-[#cbb7ad] bg-[#f5f0ee]">
-      <div className="flex h-full flex-1 items-center justify-center border-r border-[#cbb7ad] px-[60px]">
-        <img
-          src={logoSvg}
-          alt="Sig.Network"
-          className="h-[34px] w-[200px]"
-        />
-      </div>
-      <div className="flex h-full w-[180px] items-center justify-center border-r border-[#cbb7ad]">
-        <p className="font-medium text-[14px] leading-[20px] text-[#625757]">What?</p>
-      </div>
-      <div className="flex h-full w-[180px] items-center justify-center border-r border-[#cbb7ad]">
-        <p className="font-medium text-[14px] leading-[20px] text-[#625757]">Roadmap</p>
-      </div>
-      <div className="flex h-full w-[180px] items-center justify-center border-r border-[#cbb7ad]">
-        <p className="font-medium text-[14px] leading-[20px] text-[#625757]">Blog</p>
-      </div>
-      <div className="flex h-full w-[180px] items-center justify-center border-[#cbb7ad]">
-        <button className="flex items-center gap-[6px] rounded-[2px] border border-[#786767] bg-[#f2fcfb] px-[18px] py-[12px] font-semibold text-[16px] leading-[24px] text-[#786767] transition hover:opacity-90">
+    <nav className="border-b border-[#cbb7ad] bg-[#f5f0ee] px-4 text-[#625757] sm:px-8">
+      <div className="mx-auto flex max-w-[1320px] flex-wrap items-center justify-between gap-4 py-6 md:flex-nowrap md:gap-8">
+        <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
+        <div className="flex flex-1 items-center justify-around gap-6 text-[14px] font-medium uppercase tracking-[0.2em]">
+          {navItems.map((item) => (
+            <span key={item} className="text-[#625757]">
+              {item}
+            </span>
+          ))}
+        </div>
+        <button className="flex items-center gap-2 rounded border border-[#786767] bg-[#f2fcfb] px-5 py-3 text-[15px] font-semibold text-[#786767] transition hover:opacity-90">
           Start building
-          <img src={arrowIcon} alt="" className="h-5 w-5" />
+          <ArrowIcon />
         </button>
       </div>
     </nav>
 
-    {/* Hero Section with gradient and lines */}
-    <section className="relative h-[509px] overflow-hidden bg-gradient-to-b from-[#020617] via-[#1e293b] to-[#334155]">
-      {/* Background gradient with noise effect */}
-      <div
-        className="absolute inset-0 opacity-10"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5' /%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Decorative lines */}
-      <div className="absolute left-0 top-0 h-[220.82px] w-full">
-        <img src={heroLinesSvg} alt="" className="h-full w-full object-cover opacity-30" />
-      </div>
-
-      <h1 className="relative px-16 pt-[156px] font-bold text-[139px] leading-[90px] tracking-[-2.78px] text-[#4c4646]">
-        DeFi without borders.
-      </h1>
-
-      <div className="relative px-16 pt-8">
-        <p className="font-['Söhne_Mono'] text-[16px] leading-[24px] text-[#4c4646]">
-          DeFi is siloed today, but it doesn't need to be.
-        </p>
-        <p className="mt-4 max-w-[632px] font-['Söhne_Mono'] text-[16px] leading-[24px] text-[#4c4646]">
-          For the first time, deploy on the chain you use and execute natively
-          on every chain without restriction.
-        </p>
-        <div className="mt-[15px] flex gap-[18px]">
-          <button className="flex items-center gap-[6px] rounded-[2px] border border-[#786767] bg-[#f2ddc4] px-[18px] py-[12px] font-semibold text-[16px] leading-[24px] text-[#786767] transition hover:opacity-90">
+    <section className="relative overflow-hidden border-b border-[#cbb7ad] bg-[#f5f0ee] px-4 py-16 text-[#4c4646] sm:px-8 lg:px-16">
+      <img src={linesTop} alt="" className="pointer-events-none absolute left-0 top-0 w-full opacity-60" />
+      <div className="relative mx-auto flex max-w-[1320px] flex-col gap-8">
+        <p className="text-[13px] font-semibold uppercase tracking-[0.35em] text-[#8e7b7b]">Sig.Network</p>
+        <h1 className="max-w-[1100px] text-[clamp(48px,10vw,139px)] font-bold leading-[0.7] tracking-[-2.5px] text-[#4c4646]">
+          DeFi without borders.
+        </h1>
+        <div className="space-y-4 font-mono-custom text-[16px] leading-[26px] text-[#7a6b6b] md:max-w-[640px]">
+          <p>DeFi is siloed today, but it doesn&apos;t need to be.</p>
+          <p>Deploy on the chain you use and execute natively on every chain without restriction.</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <button className="flex items-center gap-2 rounded border border-[#786767] bg-[#f2ddc4] px-5 py-3 text-[16px] font-semibold text-[#786767] transition hover:opacity-90">
             Launch demo
-            <img src={arrowIcon} alt="" className="h-5 w-5" />
+            <ArrowIcon />
           </button>
-          <button className="flex items-center gap-[6px] rounded-[2px] border border-[#786767] bg-[#eaeec9] px-[18px] py-[12px] font-semibold text-[16px] leading-[24px] text-[#786767] transition hover:opacity-90">
+          <button className="flex items-center gap-2 rounded border border-[#786767] bg-[#eaeec9] px-5 py-3 text-[16px] font-semibold text-[#786767] transition hover:opacity-90">
             Start building
-            <img src={arrowIcon} alt="" className="h-5 w-5" />
+            <ArrowIcon />
           </button>
         </div>
       </div>
     </section>
 
-    {/* Content Section 1 - Technical illustration with text */}
-    <section className="bg-[#111111] px-16 py-[60px]">
-      <div className="relative mx-auto h-[482px] w-full">
-        <div className="absolute inset-0 bg-[#4c4646]">
-          <img
-            src={techIllustration1}
-            alt="Technical illustration"
-            className="h-full w-full object-cover opacity-75"
-          />
-          {/* Overlays for mix-blend effects */}
-          <div className="absolute inset-0 mix-blend-screen">
-            <img src={blueOverlay} alt="" className="absolute h-full w-full object-contain opacity-50" />
-          </div>
+    {narrativeSlices.map((slice) => (
+      <section key={slice.title} className="bg-[#111111] px-4 py-16 sm:px-8">
+        <TechnicalPanel src={slice.image} alt={slice.alt} />
+        <div
+          className="soft-surface mx-auto mt-10 max-w-[1100px] px-8 py-12 text-center"
+          style={softSurfaceStyle}
+        >
+          <h2 className="font-bold text-[clamp(48px,8vw,110px)] leading-[1] tracking-[-2.2px] text-[#cbb7ad]">{slice.title}</h2>
+          <p className="mx-auto mt-8 max-w-[620px] font-mono-custom text-[18px] leading-[28px] text-[#625757]">{slice.description}</p>
         </div>
-        {/* Figure caption */}
-        <p className="absolute bottom-[24px] left-[576px] font-['Söhne_Mono'] font-medium text-[20px] leading-[30px] text-white">
-          Figure 1. DEX
-        </p>
-        <p className="absolute left-[115px] top-[232px] font-['Söhne_Mono'] text-[16px] leading-[24px] text-white">
-          Deposit native BTC directly
-        </p>
-        <p className="absolute bottom-[112px] right-[116px] max-w-[328px] font-['Söhne_Mono'] text-[16px] leading-[24px] text-white">
-          Tap Uniswap and Curve liquidity on Ethereum
-        </p>
-      </div>
-      <div className="mx-auto mt-[60px] max-w-full text-center">
-        <h2 className="font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#d5c4bb]">
-          Sig.Network is a universal layer that makes apps native across chains.
-        </h2>
-        <p className="mx-auto mt-10 max-w-[520px] font-['Söhne_Mono'] text-[18px] leading-[28px] text-[#a28b8a]">
-          We enable smart contracts on different chains to interact directly,
-          quickly, and securely by signing native messages with decentralized
-          private keys.
-        </p>
-      </div>
-    </section>
+      </section>
+    ))}
 
-    {/* Content Section 2 */}
-    <section className="bg-[#111111] px-16 py-[60px]">
-      <div className="relative mx-auto h-[482px] w-full">
-        <div className="absolute inset-0 bg-[#4c4646]">
-          <img
-            src={techIllustration1}
-            alt="Technical illustration"
-            className="h-full w-full object-cover opacity-75"
-          />
-          <div className="absolute inset-0 mix-blend-screen">
-            <img src={greenOverlay} alt="" className="absolute h-full w-full object-contain opacity-50" />
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto mt-[60px] max-w-full text-center">
-        <h2 className="font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#d5c4bb]">
-          Sig.Network synchronizes state and execution across ecosystems.
-        </h2>
-        <p className="mx-auto mt-10 max-w-[520px] font-['Söhne_Mono'] text-[18px] leading-[28px] text-[#a28b8a]">
-          Cross-chain communication happens through native signed transactions,
-          not wrapped tokens or bridge contracts. Your contracts maintain full
-          sovereignty while gaining cross-chain reach.
-        </p>
-      </div>
-    </section>
-
-    {/* Built on a proven stack */}
-    <section className="bg-[#111111] px-16 py-[60px]">
-      <div className="relative mx-auto h-[482px] w-full">
-        <div className="absolute inset-0 bg-[#4c4646]">
-          <img
-            src={techIllustration1}
-            alt="Technical illustration"
-            className="h-full w-full object-cover opacity-75"
-          />
-          <div className="absolute inset-0 mix-blend-screen">
-            <img src={redOverlay} alt="" className="absolute h-full w-full object-contain opacity-50" />
-          </div>
-        </div>
-      </div>
-      <div className="mx-auto mt-[60px] max-w-[1320px]">
-        <h2 className="font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#d5c4bb]">
+    <section className="bg-[#111111] px-4 py-16 sm:px-8">
+      <TechnicalPanel src={techIllustration3} alt="Sig.Network data flow" />
+      <div
+        className="soft-surface mx-auto mt-10 max-w-[1320px] px-8 py-12 text-[#4c4646]"
+        style={softSurfaceStyle}
+      >
+        <h2 className="text-center font-bold text-[clamp(48px,8vw,110px)] leading-[1] tracking-[-2.2px] text-[#cbb7ad]">
           Built on a proven stack:
         </h2>
-        <div className="mt-[40px] space-y-[56px]">
-          <div className="flex items-center">
-            <p className="font-['Söhne_Mono'] text-[16px] leading-[16.5px] text-[#d5c4bb]">Request</p>
-            <div className="ml-6 h-px flex-1 bg-[#d5c4bb]/20" />
-          </div>
-          <div className="grid grid-cols-5 gap-0 border-t border-[#d5c4bb]/10">
-            {[
-              {
-                title: 'Your Application',
-                text: 'Deploy contracts and infrastructure normally. Integrate with the Sig.Network SDK to gain cross-chain reach.',
-              },
-              {
-                title: 'Sig.Network SDK',
-                text: 'Chain-specific libraries convert your cross-contract calls into unsigned native transactions for any target chain.',
-              },
-              {
-                title: 'MPC Signer Network',
-                text: 'A decentralized MPC validator set collects those transactions and produces secure threshold signatures.',
-              },
-              {
-                title: 'Cross-chain Message Router',
-                text: "Native signed transactions are sent to the destination chain's mempool or execution layer.",
-              },
-              {
-                title: 'Native Chain Execution',
-                text: 'The target chain runs them as standard transactions from an external account owned by your contract, with results returned to your application.',
-              },
-            ].map((item) => (
-              <div key={item.title} className="h-[200px] border-l border-[#d5c4bb]/10 p-5">
-                <h3 className="mb-3 font-semibold text-[16px] leading-[24px] text-[#d5c4bb]">
-                  {item.title}
-                </h3>
-                <p className="font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#a28b8a]">
-                  {item.text}
-                </p>
+        <div className="mt-10 space-y-8">
+          <StackDivider label="Request" />
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+            {stackSteps.map((step) => (
+              <div
+                key={step.title}
+                className="rounded-3xl border border-white/20 px-5 py-6 text-[#4c4646] shadow-sm"
+                style={{ backgroundColor: step.tone }}
+              >
+                <h3 className="font-semibold text-[16px] leading-[24px]">{step.title}</h3>
+                <p className="mt-3 font-mono-custom text-[14px] leading-[20px] text-[#625757]">{step.text}</p>
               </div>
             ))}
           </div>
-          <div className="flex items-center">
-            <p className="font-['Söhne_Mono'] text-[16px] leading-[16.5px] text-[#d5c4bb]">Response</p>
-            <div className="ml-6 h-px flex-1 bg-[#d5c4bb]/20" />
-          </div>
+          <StackDivider label="Response" direction="left" />
         </div>
       </div>
     </section>
 
-    {/* Principles */}
-    <section className="bg-[#111111] px-16 py-[60px]">
-      <div className="relative mx-auto h-[482px] w-full">
-        <div className="absolute inset-0 bg-[#4c4646]">
-          <img
-            src={techIllustration1}
-            alt="Technical illustration"
-            className="h-full w-full object-cover opacity-75"
-          />
-        </div>
-      </div>
-      <div className="mx-auto mt-[60px] max-w-[1320px]">
-        <h2 className="mb-[40px] font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#d5c4bb]">
+    <section className="bg-[#111111] px-4 py-16 sm:px-8">
+      <TechnicalPanel src={techIllustration4} alt="Sig.Network architectural principle" />
+      <div
+        className="soft-surface mx-auto mt-10 max-w-[1320px] px-8 py-12 text-[#4c4646]"
+        style={softSurfaceStyle}
+      >
+        <h2 className="text-center font-bold text-[clamp(48px,8vw,110px)] leading-[1] tracking-[-2.2px] text-[#cbb7ad]">
           We built Sig.Network around three principles:
         </h2>
-        <div className="grid grid-cols-3 gap-16">
-          {[
-            {
-              number: '1.',
-              title: 'Build where you are.',
-              text: 'Deploy on the chain you already use. Keep your contracts, tooling, and addresses. No regressions on anything your app already does.',
-            },
-            {
-              number: '2.',
-              title: 'Build where you are.',
-              text: 'Proven cryptographic primitives and native transaction formats. No magic contracts and no exotic cryptography.',
-            },
-            {
-              number: '3.',
-              title: 'Build where you are.',
-              text: 'Add one function call, the rest is your contract. No migrations and no new dependencies.',
-            },
-          ].map((principle) => (
+        <div className="mt-12 grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {principles.map((principle) => (
             <div key={principle.number}>
-              <p className="font-bold text-[28px] leading-[28px] text-[#d5c4bb]">
-                {principle.number}
-              </p>
-              <h3 className="mt-5 font-bold text-[30px] leading-[38px] text-[#d5c4bb]">
-                {principle.title}
-              </h3>
-              <p className="mt-5 font-['Söhne_Mono'] text-[16px] leading-[24px] text-[#a28b8a]">
-                {principle.text}
-              </p>
+              <p className="font-bold text-[32px] text-[#786767]">{principle.number}</p>
+              <h3 className="mt-4 font-bold text-[30px] leading-[36px] text-[#4c4646]">{principle.title}</h3>
+              <p className="mt-4 font-mono-custom text-[16px] leading-[24px] text-[#625757]">{principle.text}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    {/* Releases */}
-    <section className="bg-[#111111] px-16 py-[60px]">
-      <div className="relative mx-auto h-[482px] w-full">
-        <div className="absolute inset-0 bg-[#4c4646]">
-          <img
-            src={techIllustration1}
-            alt="Technical illustration"
-            className="h-full w-full object-cover opacity-75"
-          />
-        </div>
-      </div>
-      <div className="mx-auto mt-[60px] max-w-[1320px]">
-        <h2 className="mb-[50px] font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#d5c4bb]">
-          Releases
-        </h2>
-        <div className="space-y-0">
-          {[
-            {
-              badge: 'MARCH',
-              date: 'March 2025',
-              title: 'Ethereum → Any Network',
-              description:
-                'Execute transactions on any blockchain from Ethereum contracts.',
-            },
-            {
-              badge: 'AUGUST',
-              date: 'August 2025',
-              title: 'Solana → Any Network',
-              description:
-                'Execute transactions on any blockchain from Solana contracts.',
-            },
-            {
-              badge: 'OCTOBER',
-              date: 'October 2025',
-              title: 'Ethereum ↔ Solana',
-              description:
-                'Full bidirectional communication with response handling.',
-            },
-            {
-              badge: 'NOVEMBER',
-              date: 'November 2025',
-              title: '+Bitcoin',
-              description: 'Use native Bitcoin liquidity anywhere',
-            },
-            {
-              badge: 'JANUARY',
-              date: 'January 2026',
-              title: '+Hyperliquid',
-              description:
-                'Additional blockchain integrations and protocol enhancements.',
-            },
-          ].map((release, index) => (
+    <section className="bg-[#111111] px-4 py-16 sm:px-8">
+      <TechnicalPanel src={techIllustration5} alt="Sig.Network future roadmap" />
+      <div
+        className="soft-surface mx-auto mt-10 max-w-[1320px] px-8 py-12 text-[#4c4646]"
+        style={softSurfaceStyle}
+      >
+        <h2 className="text-center font-bold text-[clamp(48px,8vw,110px)] leading-[1] tracking-[-2.2px] text-[#cbb7ad]">Releases</h2>
+        <div className="mt-10 space-y-8">
+          {releases.map((release, index) => (
             <div
               key={release.date}
-              className={`grid grid-cols-[200px_400px_1fr] gap-10 py-6 ${
-                index === 0 ? '' : 'border-t border-[#d5c4bb]/10'
-              }`}
+              className={`grid gap-8 border-[#cbb7ad]/30 pb-8 lg:grid-cols-[200px_420px_1fr] ${index === releases.length - 1 ? '' : 'border-b'}`}
             >
               <div>
-                <div className="inline-block rounded-[2px] bg-[#d5c4bb]/10 px-2 py-1">
-                  <p className="font-['Söhne_Mono'] text-[12px] leading-[14px] text-[#d5c4bb]">
-                    {release.badge}
-                  </p>
-                </div>
-                <p className="mt-2 font-semibold text-[20px] leading-[24px] text-[#d5c4bb]">
-                  {release.date}
-                </p>
+                <span className="inline-flex rounded-[4px] bg-[#d5c4bb]/15 px-3 py-1 font-mono-custom text-[12px] tracking-[0.3em] text-[#786767]">
+                  {release.badge}
+                </span>
+                <p className="mt-2 text-[20px] font-semibold text-[#4c4646]">{release.date}</p>
               </div>
-              <h3 className="font-bold text-[30px] leading-[38px] text-[#d5c4bb]">
-                {release.title}
-              </h3>
-              <p className="font-['Söhne_Mono'] text-[16px] leading-[24px] text-[#a28b8a]">
-                {release.description}
-              </p>
+              <h3 className="text-[28px] font-bold leading-[36px] text-[#4c4646]">{release.title}</h3>
+              <p className="font-mono-custom text-[16px] leading-[24px] text-[#625757]">{release.description}</p>
             </div>
           ))}
         </div>
       </div>
     </section>
 
-    {/* Footer */}
-    <footer className="relative bg-[#f5f0ee] px-16 pb-16 pt-12">
-      <h2 className="mb-[18px] font-bold text-[110px] leading-[98px] tracking-[-2.2px] text-[#625757]">
-        Ready to make your Dapp cross-chain?
-      </h2>
-
-      <div className="mb-10 flex justify-center">
-        <button className="flex h-[38px] items-center justify-center gap-[6px] rounded-[2px] border border-[#786767] bg-[#f2fcfb] px-5 font-['Arial'] text-[13.3px] leading-normal text-[#625757] transition hover:opacity-90">
-          Start Building
-          <img src={arrowIcon} alt="" className="h-5 w-5" />
-        </button>
-      </div>
-
-      <div className="grid grid-cols-4 gap-[60px] border-t border-[#cbb7ad] pt-10">
-        <div>
-          <h3 className="font-bold text-[30px] leading-[38px] text-[#4c4646]">Learn</h3>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">About</p>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">Blog</p>
+    <footer className="relative overflow-hidden border-t border-[#cbb7ad] bg-[#f5f0ee] px-4 pb-16 pt-14 text-[#4c4646] sm:px-10 lg:px-16">
+      <img src={linesBottom} alt="" className="pointer-events-none absolute bottom-0 left-0 w-full opacity-40" />
+      <div className="relative mx-auto max-w-[1320px]">
+        <h2 className="text-[clamp(48px,8vw,110px)] font-bold leading-[1] tracking-[-2.2px]">Ready to make your Dapp cross-chain?</h2>
+        <div className="mt-8 flex flex-wrap gap-4">
+          <button className="flex h-[42px] items-center gap-2 rounded border border-[#786767] bg-[#f2fcfb] px-6 font-semibold text-[#625757] transition hover:opacity-90">
+            Start building
+            <ArrowIcon />
+          </button>
         </div>
-        <div>
-          <h3 className="font-bold text-[30px] leading-[38px] text-[#4c4646]">Build</h3>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">Docs</p>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">Demo</p>
+        <div className="mt-12 grid gap-8 border-t border-[#cbb7ad] pt-10 md:grid-cols-4">
+          {footerColumns.map((column) => (
+            <div key={column.heading}>
+              <h3 className="text-[26px] font-bold">{column.heading}</h3>
+              <ul className="mt-4 space-y-3 font-mono-custom text-[15px] text-[#4c4646]">
+                {column.links.map((link) => (
+                  <li key={link}>{link}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div>
+            <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
+            <p className="mt-3 text-[15px] font-semibold text-[#4c4646]/80">2025 Sig.Network</p>
+          </div>
         </div>
-        <div>
-          <h3 className="font-bold text-[30px] leading-[38px] text-[#4c4646]">Connect</h3>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">Careers</p>
-          <p className="mt-3 font-['Söhne_Mono'] text-[14px] leading-[20px] text-[#4c4646]">Twitter</p>
-        </div>
-        <div className="space-y-2 pt-2">
-          <img src={footerLogoSvg} alt="Sig.Network" className="h-[34px] w-[200px]" />
-          <p className="font-semibold text-[14px] leading-[20px] text-[#4c4646] opacity-80">
-            2025 Sig.Network
-          </p>
-        </div>
-      </div>
-
-      {/* Footer decorative lines */}
-      <div className="absolute bottom-0 left-0 h-[220.82px] w-full">
-        <img src={footerLinesSvg} alt="" className="h-full w-full object-cover opacity-20" />
       </div>
     </footer>
   </div>
