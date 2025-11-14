@@ -496,20 +496,17 @@ const App = () => {
           alt=""
           className="pointer-events-none absolute bottom-0 left-0 w-full opacity-40"
         />
-        <div className="relative mx-auto flex max-w-[1440px] flex-col items-start gap-[18px] px-[60px] pt-0 pb-[270px] max-md:px-4 max-md:pt-0 max-md:pb-16">
-          <h2 className="w-full text-left text-[110px] leading-[98px] font-bold tracking-[-2.2px] text-[#625757] max-md:text-center max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.891]">
+        <div className="relative flex flex-col items-start py-[133px] pr-[60px] pl-0 pb-[270px] max-md:px-4 max-md:pt-12 max-md:pb-16">
+          <h2 className="text-left text-[110px] leading-[98px] font-bold tracking-[-2.2px] text-[#625757] max-md:text-center max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.891]">
             Ready to make your Dapp cross-chain?
           </h2>
-          <div className="flex w-full items-center justify-center gap-[20px]">
-            <button
-              className="border-dark-neutral-400 bg-pastels-polar-200 flex h-[38px] w-[145.29px] items-center justify-center gap-[6px] rounded-[2px] border text-[13.3px] font-normal text-[#625757] transition hover:opacity-90"
-              style={{ fontFamily: 'Arial, sans-serif' }}
-            >
-              Start Building
+          <div className="mt-[40px] ml-[60px] flex w-full items-center justify-center max-md:mt-10 max-md:ml-0">
+            <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] leading-[24px] font-semibold transition hover:opacity-90">
+              Start building
               <ArrowIcon />
             </button>
           </div>
-          <div className="border-clam-shell-500 grid w-full grid-cols-4 gap-[60px] border-t pt-[40px] max-md:grid-cols-1 max-md:gap-8 max-md:pt-10">
+          <div className="border-clam-shell-500 mt-[40px] ml-[60px] grid w-full grid-cols-4 gap-[60px] border-t pt-[40px] max-md:mt-10 max-md:ml-0 max-md:grid-cols-1 max-md:gap-8 max-md:pt-10">
             {footerColumns.map((column) => (
               <div key={column.heading}>
                 <h3 className="text-dark-neutral-600 text-[30px] leading-[38px] font-bold max-md:text-[26px]">
