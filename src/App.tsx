@@ -205,7 +205,7 @@ const App = () => {
     {/* Navigation Menu - Desktop: 180px height, Mobile: 74px height */}
     <nav className="border-clam-shell-500 bg-clam-shell-50 border-b">
       {/* Mobile: Logo + Hamburger */}
-      <div className="flex h-[74px] items-center justify-between border-clam-shell-500 border-b md:hidden">
+      <div className="flex h-[74px] items-center justify-between border-clam-shell-500 border-b xl:hidden">
         <div className="flex items-center px-[20px]">
           <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
         </div>
@@ -223,11 +223,11 @@ const App = () => {
         <>
           {/* Backdrop - only covers content below header (30px banner + 74px header = 104px) */}
           <div
-            className="fixed top-[104px] left-0 right-0 bottom-0 bg-black/50 z-40 md:hidden"
+            className="fixed top-[104px] left-0 right-0 bottom-0 bg-black/50 z-40 xl:hidden"
             onClick={() => setIsMobileMenuOpen(false)}
           />
           {/* Menu Drawer */}
-          <div className="border-clam-shell-500 bg-clam-shell-50 fixed top-[104px] left-0 right-0 z-50 shadow-lg md:hidden">
+          <div className="border-clam-shell-500 bg-clam-shell-50 fixed top-[104px] left-0 right-0 z-50 shadow-lg xl:hidden">
             {navItems.map((item) => (
               <div
                 key={item}
@@ -239,7 +239,7 @@ const App = () => {
               </div>
             ))}
             <div className="flex h-[74px] items-center px-[20px] border-b border-clam-shell-500">
-              <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
+              <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] leading-[24px] font-semibold transition hover:opacity-90">
                 Start building
                 <ArrowIcon />
               </button>
@@ -249,7 +249,7 @@ const App = () => {
       )}
 
       {/* Desktop: Full Navigation */}
-      <div className="hidden h-[180px] items-center md:flex">
+      <div className="hidden h-[180px] items-center xl:flex">
         {/* Logo */}
         <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-l border-t px-[60px]">
           <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
@@ -259,7 +259,7 @@ const App = () => {
           {navItems.map((item) => (
             <div
               key={item}
-              className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-r px-[60px]"
+              className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-t border-l border-r px-[60px]"
             >
               <span className="text-dark-neutral-500 text-[14px] leading-[20px] font-medium">
                 {item}
@@ -267,8 +267,8 @@ const App = () => {
             </div>
           ))}
           {/* CTA Button */}
-          <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-r px-[60px]">
-            <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
+          <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-l border-r px-[60px]">
+            <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] leading-[24px] font-semibold transition hover:opacity-90">
               Start building
               <ArrowIcon />
             </button>
@@ -284,23 +284,23 @@ const App = () => {
         alt=""
         className="pointer-events-none absolute top-0 left-0 w-full opacity-60"
       />
-      <div className="relative mx-auto max-w-[1440px] px-[60px] pt-[203px] pb-[359px] md:px-4 md:pt-16 md:pb-24">
+      <div className="relative mx-auto max-w-[1440px] px-[60px] pt-[156px] pb-[82px] max-md:px-[20px] max-md:pt-[34px] max-md:pb-[27px]">
         <h1 className="text-dark-neutral-600 text-[clamp(60px,9.65vw,139px)] leading-[0.647] font-bold tracking-[-2.78px]">
           DeFi without borders.
         </h1>
-        <div className="font-mono-custom text-dark-neutral-600 mt-[21px] max-w-[632px] space-y-[15px] text-[16px] leading-[24px]">
+        <div className="font-mono-custom text-dark-neutral-600 mt-[21px] max-w-[632px] space-y-[15px] text-[16px] leading-[24px] max-md:mt-[33px] max-md:text-[12px] max-md:leading-[14px] max-md:space-y-[9px]">
           <p>DeFi is siloed today, but it doesn&apos;t need to be.</p>
           <p>
             For the first time, deploy on the chain you use and execute natively on every
             chain without restriction.
           </p>
         </div>
-        <div className="mt-[39px] flex flex-wrap items-center gap-[18px]">
-          <button className="border-dark-neutral-400 bg-brand-50 text-dark-neutral-400 flex h-[48px] items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
+        <div className="mt-[15px] flex flex-wrap items-center gap-[18px] max-md:mt-[9px] max-md:gap-[11px]">
+          <button className="border-dark-neutral-400 bg-brand-50 text-dark-neutral-400 flex h-[48px] items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90 max-md:h-[31px] max-md:px-[11px] max-md:py-[8px] max-md:text-[10px]">
             Launch demo
             <ArrowIcon />
           </button>
-          <button className="border-dark-neutral-400 bg-brand-950 text-dark-neutral-400 flex h-[48px] items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
+          <button className="border-dark-neutral-400 bg-brand-950 text-dark-neutral-400 flex h-[48px] items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90 max-md:h-[31px] max-md:px-[11px] max-md:py-[8px] max-md:text-[10px]">
             Start building
             <ArrowIcon />
           </button>
