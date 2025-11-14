@@ -1,16 +1,61 @@
 @import 'tailwindcss';
 
 :root {
-  --font-sans: 'Söhne', 'Space Grotesk', 'Inter', 'Segoe UI', system-ui,
-    -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Söhne Mono', 'Space Mono', 'IBM Plex Mono', 'SFMono-Regular',
-    ui-monospace, monospace;
+  --font-sans:
+    'Elza Text', 'Söhne', 'Space Grotesk', 'Inter', 'Segoe UI', system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif;
+  --font-mono:
+    'Söhne Mono', 'Space Mono', 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
   font-family: var(--font-sans);
   color-scheme: dark;
   background-color: #111111;
   color: #d5c4bb;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+
+  /* Figma Color Variables */
+  /* Clam Shell */
+  --colors-clam-shell-50: #f5f0ee;
+  --colors-clam-shell-400: #d5c4bb;
+  --colors-clam-shell-500: #cbb7ad;
+
+  /* Dark Neutral */
+  --colors-dark-neutral-200: #a28b8a;
+  --colors-dark-neutral-400: #786767;
+  --colors-dark-neutral-500: #625757;
+  --colors-dark-neutral-600: #4c4646;
+  --colors-dark-neutral-950: #111111;
+
+  /* Brand */
+  --colors-brand-50: #f2ddc4;
+  --colors-brand-950: #eaeec9;
+
+  /* Pastels */
+  --colors-pastels-polar-200: #f2fcfb;
+
+  /* CRT Colors */
+  --colors-crt-green-500: #27ed02;
+  --colors-crt-blue-400: #2d2fff;
+
+  /* Error */
+  --colors-error-600: #d92d20;
+}
+
+@theme {
+  --color-clam-shell-50: var(--colors-clam-shell-50);
+  --color-clam-shell-400: var(--colors-clam-shell-400);
+  --color-clam-shell-500: var(--colors-clam-shell-500);
+  --color-dark-neutral-200: var(--colors-dark-neutral-200);
+  --color-dark-neutral-400: var(--colors-dark-neutral-400);
+  --color-dark-neutral-500: var(--colors-dark-neutral-500);
+  --color-dark-neutral-600: var(--colors-dark-neutral-600);
+  --color-dark-neutral-950: var(--colors-dark-neutral-950);
+  --color-brand-50: var(--colors-brand-50);
+  --color-brand-950: var(--colors-brand-950);
+  --color-pastels-polar-200: var(--colors-pastels-polar-200);
+  --color-crt-green-500: var(--colors-crt-green-500);
+  --color-crt-blue-400: var(--colors-crt-blue-400);
+  --color-error-600: var(--colors-error-600);
 }
 
 body {
@@ -31,7 +76,6 @@ body {
 }
 
 .soft-surface {
-  border-radius: 32px;
   border: 1px solid rgba(197, 183, 173, 0.35);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
 }
@@ -39,9 +83,28 @@ body {
 .stack-divider {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(197, 183, 173, 0.15) 0%, rgba(197, 183, 173, 0.6) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(197, 183, 173, 0.15) 0%,
+    rgba(197, 183, 173, 0.6) 100%
+  );
 }
 
 .stack-divider[data-direction='left'] {
-  background: linear-gradient(90deg, rgba(197, 183, 173, 0.6) 0%, rgba(197, 183, 173, 0.15) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(197, 183, 173, 0.6) 0%,
+    rgba(197, 183, 173, 0.15) 100%
+  );
+}
+
+.stack-divider.vertical {
+  width: 1px;
+  height: 100%;
+  flex: none;
+  background: linear-gradient(
+    180deg,
+    rgba(197, 183, 173, 0.15) 0%,
+    rgba(197, 183, 173, 0.6) 100%
+  );
 }
