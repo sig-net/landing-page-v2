@@ -1,10 +1,11 @@
-import type { CSSProperties } from 'react'
+import { useState, type CSSProperties } from 'react'
 
 import linesTop from './assets/lines-top.svg'
 import linesBottom from './assets/lines-bottom.svg'
 import signetworkLogo from './assets/signetwork-logo.svg'
 import arrowUpRight from './assets/arrow-up-right.svg'
 import liveMainnet from './assets/live-mainnet.svg'
+import burgerMenu from './assets/burger-menu.svg'
 import techIllustration1 from './assets/technical-illustration-1.svg'
 import techIllustration2 from './assets/technical-illustration-2.svg'
 import techIllustration3 from './assets/technical-illustration-3.svg'
@@ -193,24 +194,72 @@ const TechnicalPanel = ({ src, alt }: { src: string; alt: string }) => (
   </div>
 )
 
-const App = () => (
-  <div className="bg-dark-neutral-950 min-h-screen text-white">
-    {/* Live Banner with RGB Effect */}
-    <img src={liveMainnet} alt="Mainnet is live" className="h-[30px] w-full" />
+const App = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-    {/* Navigation Menu - 180px height matching Figma desktop, responsive for mobile */}
+  return (
+    <div className="bg-dark-neutral-950 min-h-screen text-white">
+      {/* Live Banner with RGB Effect */}
+      <img src={liveMainnet} alt="Mainnet is live" className="h-[30px] w-full object-cover" />
+
+    {/* Navigation Menu - Desktop: 180px height, Mobile: 74px height */}
     <nav className="border-clam-shell-500 bg-clam-shell-50 border-b">
-      <div className="flex flex-col items-stretch md:h-[180px] md:flex-row md:items-center">
+      {/* Mobile: Logo + Hamburger */}
+      <div className="flex h-[74px] items-center justify-between border-clam-shell-500 border-b md:hidden">
+        <div className="flex items-center px-[20px]">
+          <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
+        </div>
+        <button
+          className="flex items-center px-[20px]"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <img src={burgerMenu} alt="Menu" className="h-[32px] w-[32px]" />
+        </button>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <>
+          {/* Backdrop - only covers content below header (30px banner + 74px header = 104px) */}
+          <div
+            className="fixed top-[104px] left-0 right-0 bottom-0 bg-black/50 z-40 md:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          {/* Menu Drawer */}
+          <div className="border-clam-shell-500 bg-clam-shell-50 fixed top-[104px] left-0 right-0 z-50 shadow-lg md:hidden">
+            {navItems.map((item) => (
+              <div
+                key={item}
+                className="border-clam-shell-500 flex h-[74px] items-center border-b px-[20px]"
+              >
+                <span className="text-dark-neutral-500 text-[14px] leading-[20px] font-medium">
+                  {item}
+                </span>
+              </div>
+            ))}
+            <div className="flex h-[74px] items-center px-[20px] border-b border-clam-shell-500">
+              <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
+                Start building
+                <ArrowIcon />
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+
+      {/* Desktop: Full Navigation */}
+      <div className="hidden h-[180px] items-center md:flex">
         {/* Logo */}
-        <div className="border-clam-shell-500 flex h-[74px] shrink-0 items-center border-b border-l px-4 md:h-[180px] md:border-t md:border-b-0 md:px-[60px]">
+        <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-l border-t px-[60px]">
           <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
         </div>
         {/* Menu Items and CTA - pushed to the right */}
-        <div className="flex flex-col md:ml-auto md:flex-row md:items-stretch">
+        <div className="ml-auto flex h-[180px] items-stretch">
           {navItems.map((item) => (
             <div
               key={item}
-              className="border-clam-shell-500 flex h-[74px] shrink-0 items-center border-b px-4 md:h-[180px] md:w-[180px] md:border-r md:border-b-0 md:px-[60px]"
+              className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-r px-[60px]"
             >
               <span className="text-dark-neutral-500 text-[14px] leading-[20px] font-medium">
                 {item}
@@ -218,7 +267,7 @@ const App = () => (
             </div>
           ))}
           {/* CTA Button */}
-          <div className="border-clam-shell-500 flex h-[74px] shrink-0 items-center px-4 md:h-[180px] md:border-r md:px-[60px]">
+          <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-r px-[60px]">
             <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-400 flex items-center gap-[6px] rounded-[2px] border px-[18px] py-[12px] text-[16px] font-semibold transition hover:opacity-90">
               Start building
               <ArrowIcon />
@@ -418,17 +467,17 @@ const App = () => (
         alt=""
         className="pointer-events-none absolute bottom-0 left-0 w-full opacity-40"
       />
-      <div className="relative mx-auto flex max-w-[1440px] flex-col gap-[18px] items-start pt-0 pb-[270px] max-md:pt-0 max-md:pb-16">
-        <h2 className="px-[60px] text-left text-[#625757] text-[110px] leading-[98px] font-bold tracking-[-2.2px] w-full max-md:px-4 max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.71] max-md:text-center">
+      <div className="relative mx-auto flex max-w-[1440px] flex-col gap-[18px] items-start px-[60px] pt-0 pb-[270px] max-md:px-4 max-md:pt-0 max-md:pb-16">
+        <h2 className="text-left text-[#625757] text-[110px] leading-[98px] font-bold tracking-[-2.2px] w-full max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.891] max-md:text-center">
           Ready to make your Dapp cross-chain?
         </h2>
-        <div className="px-[60px] w-full flex items-center justify-center max-md:px-4">
-          <button className="border-dark-neutral-400 bg-pastels-polar-200 text-[#625757] flex h-[38px] items-center gap-[6px] rounded-[2px] border px-[19px] py-[11px] text-[16px] font-semibold transition hover:opacity-90">
+        <div className="w-full flex items-center justify-center gap-[20px]">
+          <button className="border-dark-neutral-400 bg-pastels-polar-200 text-[#625757] flex h-[38px] w-[145.29px] items-center justify-center gap-[6px] rounded-[2px] border text-[13.3px] font-normal transition hover:opacity-90" style={{ fontFamily: 'Arial, sans-serif' }}>
             Start Building
             <ArrowIcon />
           </button>
         </div>
-        <div className="border-clam-shell-500 px-[60px] w-full grid grid-cols-4 gap-[60px] border-t pt-[40px] max-md:px-4 max-md:grid-cols-1 max-md:gap-8 max-md:pt-10">
+        <div className="border-clam-shell-500 w-full grid grid-cols-4 gap-[60px] border-t pt-[40px] max-md:grid-cols-1 max-md:gap-8 max-md:pt-10">
           {footerColumns.map((column) => (
             <div key={column.heading}>
               <h3 className="text-dark-neutral-600 text-[30px] leading-[38px] font-bold max-md:text-[26px]">
@@ -455,6 +504,7 @@ const App = () => (
       </div>
     </footer>
   </div>
-)
+  )
+}
 
 export default App
