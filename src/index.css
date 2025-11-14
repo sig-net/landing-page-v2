@@ -12,6 +12,9 @@
   color: #d5c4bb;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  --banner-height: 30px;
+  --navigation-height: 74px;
+  --header-offset: calc(var(--banner-height) + var(--navigation-height));
 
   /* Figma Color Variables */
   /* Clam Shell */
@@ -35,13 +38,6 @@
 
   /* Pastels */
   --colors-pastels-polar-200: #f2fcfb;
-
-  /* CRT Colors */
-  --colors-crt-green-500: #27ed02;
-  --colors-crt-blue-400: #2d2fff;
-
-  /* Error */
-  --colors-error-600: #d92d20;
 }
 
 @theme {
@@ -59,7 +55,6 @@
   --color-brand-800: var(--colors-brand-800);
   --color-brand-950: var(--colors-brand-950);
   --color-pastels-polar-200: var(--colors-pastels-polar-200);
-  --color-crt-green-500: var(--colors-crt-green-500);
   --color-crt-blue-400: var(--colors-crt-blue-400);
   --color-error-600: var(--colors-error-600);
 }
@@ -84,4 +79,9 @@ body {
 .soft-surface {
   border: 1px solid rgba(197, 183, 173, 0.35);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+}
+
+.soft-surface-panel {
+  background: linear-gradient(180deg, #f5f0ee 0%, #edf5d6 100%);
+  border-left: none;
 }
