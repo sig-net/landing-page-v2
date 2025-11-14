@@ -4,6 +4,7 @@ import linesTop from './assets/lines-top.svg'
 import linesBottom from './assets/lines-bottom.svg'
 import signetworkLogo from './assets/signetwork-logo.svg'
 import arrowUpRight from './assets/arrow-up-right.svg'
+import liveMainnet from './assets/live-mainnet.svg'
 import techIllustration1 from './assets/technical-illustration-1.svg'
 import techIllustration2 from './assets/technical-illustration-2.svg'
 import techIllustration3 from './assets/technical-illustration-3.svg'
@@ -195,26 +196,7 @@ const TechnicalPanel = ({ src, alt }: { src: string; alt: string }) => (
 const App = () => (
   <div className="bg-dark-neutral-950 min-h-screen text-white">
     {/* Live Banner with RGB Effect */}
-    <div className="bg-dark-neutral-950 relative h-[30px] overflow-hidden">
-      {/* Red dot */}
-      <span className="bg-error-600 absolute top-1/2 left-[calc(50%+8.92px-66.58px)] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-[4px] mix-blend-screen" />
-      {/* Red text */}
-      <p className="text-error-600 absolute top-[15.5px] left-[calc(50%+16.92px)] w-[143px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[18px] font-bold tracking-[1.4px] whitespace-nowrap uppercase mix-blend-screen">
-        MAINNET IS LIVE!
-      </p>
-      {/* Green dot */}
-      <span className="bg-crt-green-500 absolute top-1/2 left-[calc(50%+9.92px-65.58px)] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-[4px] mix-blend-screen" />
-      {/* Green text */}
-      <p className="text-crt-green-500 absolute top-[15.5px] left-[calc(50%+17.92px)] w-[143px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[18px] font-bold tracking-[1.4px] whitespace-nowrap uppercase mix-blend-screen">
-        MAINNET IS LIVE!
-      </p>
-      {/* Blue dot */}
-      <span className="bg-crt-blue-400 absolute top-1/2 left-[calc(50%+10.92px-64.58px)] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-[4px] mix-blend-screen" />
-      {/* Blue text */}
-      <p className="text-crt-blue-400 absolute top-[15.5px] left-[calc(50%+18.92px)] w-[143px] -translate-x-1/2 -translate-y-1/2 text-center text-[14px] leading-[18px] font-bold tracking-[1.4px] whitespace-nowrap uppercase mix-blend-screen">
-        MAINNET IS LIVE!
-      </p>
-    </div>
+    <img src={liveMainnet} alt="Mainnet is live" className="h-[30px] w-full" />
 
     {/* Navigation Menu - 180px height matching Figma desktop, responsive for mobile */}
     <nav className="border-clam-shell-500 bg-clam-shell-50 border-b">
@@ -370,7 +352,10 @@ const App = () => (
         </h2>
         <div className="mt-[40px] ml-[60px] grid grid-cols-3 gap-[62px] max-md:mt-12 max-md:ml-0 max-md:grid-cols-1 max-md:gap-[38px]">
           {principles.map((principle) => (
-            <div key={principle.number} className="border-t border-dark-neutral-200 pt-0 flex flex-col gap-[20px]">
+            <div
+              key={principle.number}
+              className="border-t border-dark-neutral-200 pt-0 flex flex-col gap-[20px]"
+            >
               <p className="font-mono-custom text-dark-neutral-200 text-[18px] leading-[28px]">
                 {principle.number}
               </p>
@@ -406,7 +391,9 @@ const App = () => (
               className={`flex gap-[40px] pt-[24px] pb-[40px] max-md:flex-col max-md:gap-4 max-md:pb-8 ${index === 0 ? 'border-t-[4px] border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
             >
               <div className="flex flex-col gap-[10px] shrink-0 items-start">
-                <span className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-[14px] leading-[18px] font-bold tracking-[1.4px] uppercase ${getBadgeStyles(release.badgeType)}`}>
+                <span
+                  className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-[14px] leading-[18px] font-bold tracking-[1.4px] uppercase ${getBadgeStyles(release.badgeType)}`}
+                >
                   {release.badge}
                 </span>
                 <p className="font-mono-custom text-dark-neutral-500 text-[16px] leading-[24px] opacity-80 w-[200px]">
@@ -431,32 +418,36 @@ const App = () => (
         alt=""
         className="pointer-events-none absolute bottom-0 left-0 w-full opacity-40"
       />
-      <div className="relative mx-auto max-w-[1440px] px-[60px] pt-[214px] pb-[270px] md:px-4 md:pt-14 md:pb-16">
-        <h2 className="text-dark-neutral-600 text-[clamp(48px,8vw,110px)] leading-[0.71] font-bold tracking-[-2.2px]">
+      <div className="relative mx-auto flex max-w-[1440px] flex-col gap-[18px] items-start pt-0 pb-[270px] max-md:pt-0 max-md:pb-16">
+        <h2 className="px-[60px] text-left text-[#625757] text-[110px] leading-[98px] font-bold tracking-[-2.2px] w-full max-md:px-4 max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.71] max-md:text-center">
           Ready to make your Dapp cross-chain?
         </h2>
-        <div className="mt-[38px] flex flex-wrap gap-4 md:mt-8">
-          <button className="border-dark-neutral-400 bg-pastels-polar-200 text-dark-neutral-500 flex h-[38px] items-center gap-[6px] rounded-[2px] border px-[19px] py-[11px] text-[16px] font-semibold transition hover:opacity-90">
+        <div className="px-[60px] w-full flex items-center justify-center max-md:px-4">
+          <button className="border-dark-neutral-400 bg-pastels-polar-200 text-[#625757] flex h-[38px] items-center gap-[6px] rounded-[2px] border px-[19px] py-[11px] text-[16px] font-semibold transition hover:opacity-90">
             Start Building
             <ArrowIcon />
           </button>
         </div>
-        <div className="border-clam-shell-500 mt-[182px] grid grid-cols-4 gap-[60px] border-t pt-[40px] md:mt-12 md:grid-cols-1 md:gap-8 md:pt-10">
+        <div className="border-clam-shell-500 px-[60px] w-full grid grid-cols-4 gap-[60px] border-t pt-[40px] max-md:px-4 max-md:grid-cols-1 max-md:gap-8 max-md:pt-10">
           {footerColumns.map((column) => (
             <div key={column.heading}>
-              <h3 className="text-dark-neutral-600 text-[38px] leading-[38px] font-bold md:text-[26px]">
+              <h3 className="text-dark-neutral-600 text-[30px] leading-[38px] font-bold max-md:text-[26px]">
                 {column.heading}
               </h3>
-              <ul className="font-mono-custom text-dark-neutral-600 mt-[12px] space-y-[12px] text-[20px] md:mt-4 md:space-y-3 md:text-[15px]">
+              <ul className="font-mono-custom text-dark-neutral-600 mt-[12px] space-y-[12px] text-[14px] leading-[20px] max-md:mt-4 max-md:space-y-3 max-md:text-[15px]">
                 {column.links.map((link) => (
                   <li key={link}>{link}</li>
                 ))}
               </ul>
             </div>
           ))}
-          <div>
-            <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
-            <p className="text-dark-neutral-600/80 mt-[18px] text-[20px] font-semibold md:mt-3 md:text-[15px]">
+          <div className="max-md:flex max-md:flex-col max-md:items-center">
+            <img
+              src={signetworkLogo}
+              alt="Sig.Network"
+              className="h-[34px] w-[200px] max-md:h-[40px] max-md:w-[237px]"
+            />
+            <p className="text-dark-neutral-600/80 mt-[18px] text-[14px] leading-[20px] font-semibold max-md:mt-3 max-md:text-[15px]">
               2025 Sig.Network
             </p>
           </div>
