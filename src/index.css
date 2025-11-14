@@ -28,6 +28,9 @@
 
   /* Brand */
   --colors-brand-50: #f2ddc4;
+  --colors-brand-300: #f1e4c6;
+  --colors-brand-600: #f0ebc7;
+  --colors-brand-800: #efefc8;
   --colors-brand-950: #eaeec9;
 
   /* Pastels */
@@ -51,6 +54,9 @@
   --color-dark-neutral-600: var(--colors-dark-neutral-600);
   --color-dark-neutral-950: var(--colors-dark-neutral-950);
   --color-brand-50: var(--colors-brand-50);
+  --color-brand-300: var(--colors-brand-300);
+  --color-brand-600: var(--colors-brand-600);
+  --color-brand-800: var(--colors-brand-800);
   --color-brand-950: var(--colors-brand-950);
   --color-pastels-polar-200: var(--colors-pastels-polar-200);
   --color-crt-green-500: var(--colors-crt-green-500);
@@ -78,33 +84,4 @@ body {
 .soft-surface {
   border: 1px solid rgba(197, 183, 173, 0.35);
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-}
-
-.stack-divider {
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(197, 183, 173, 0.15) 0%,
-    rgba(197, 183, 173, 0.6) 100%
-  );
-}
-
-.stack-divider[data-direction='left'] {
-  background: linear-gradient(
-    90deg,
-    rgba(197, 183, 173, 0.6) 0%,
-    rgba(197, 183, 173, 0.15) 100%
-  );
-}
-
-.stack-divider.vertical {
-  width: 1px;
-  height: 100%;
-  flex: none;
-  background: linear-gradient(
-    180deg,
-    rgba(197, 183, 173, 0.15) 0%,
-    rgba(197, 183, 173, 0.6) 100%
-  );
 }

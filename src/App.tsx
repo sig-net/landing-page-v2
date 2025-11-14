@@ -3,12 +3,14 @@ import type { CSSProperties } from 'react'
 import linesTop from './assets/lines-top.svg'
 import linesBottom from './assets/lines-bottom.svg'
 import signetworkLogo from './assets/signetwork-logo.svg'
-import arrowIcon from './assets/arrow-up-right.svg'
+import arrowUpRight from './assets/arrow-up-right.svg'
 import techIllustration1 from './assets/technical-illustration-1.svg'
 import techIllustration2 from './assets/technical-illustration-2.svg'
 import techIllustration3 from './assets/technical-illustration-3.svg'
 import techIllustration4 from './assets/technical-illustration-4.svg'
 import techIllustration5 from './assets/technical-illustration-5.svg'
+import stackDividerArrowRight from './assets/stack-divider-arrow-right.svg'
+import stackDividerArrowLeft from './assets/stack-divider-arrow-left.svg'
 
 const softSurfaceStyle: CSSProperties = {
   background: 'linear-gradient(180deg, #f5f0ee 0%, #edf5d6 100%)',
@@ -36,27 +38,27 @@ const stackSteps = [
   {
     title: 'Your Application',
     text: 'Deploy contracts and infrastructure normally. Integrate with the Sig.Network SDK to gain cross-chain reach.',
-    tone: '#f2ddc4',
+    tone: 'bg-brand-50',
   },
   {
     title: 'Sig.Network SDK',
     text: 'Chain-specific libraries convert your cross-contract calls into unsigned native transactions for any target chain.',
-    tone: '#f1e4c6',
+    tone: 'bg-brand-300',
   },
   {
     title: 'MPC Signer Network',
     text: 'A decentralized MPC validator set collects those transactions and produces secure threshold signatures.',
-    tone: '#f0ebc7',
+    tone: 'bg-brand-600',
   },
   {
     title: 'Cross-chain Message Router',
     text: "Native signed transactions are sent to the destination chain's mempool or execution layer.",
-    tone: '#efefc8',
+    tone: 'bg-brand-800',
   },
   {
     title: 'Native Chain Execution',
     text: 'The target chain runs them as standard transactions from an external account owned by your contract, with results returned to your application.',
-    tone: '#eaeec9',
+    tone: 'bg-brand-950',
   },
 ]
 
@@ -64,52 +66,77 @@ const principles = [
   {
     number: '1.',
     title: 'Build where you are.',
-    text: 'Deploy on the chain you already use. Keep your contracts, tooling, and addresses. No regressions on anything your app already does.',
+    paragraphs: [
+      'Deploy on the chain you already use. Keep your contracts, tooling, and addresses.',
+      'No regressions on anything your app already does.',
+    ],
   },
   {
     number: '2.',
-    title: 'Build where you are.',
-    text: 'Proven cryptographic primitives and native transaction formats. No magic contracts and no exotic cryptography.',
+    title: 'Standard technologies.',
+    paragraphs: [
+      'Proven cryptographic primitives and native transaction formats.',
+      'No magic contracts and no exotic cryptography.',
+    ],
   },
   {
     number: '3.',
-    title: 'Build where you are.',
-    text: 'Add one function call, the rest is your contract. No migrations and no new dependencies.',
+    title: 'Minimal footprint.',
+    paragraphs: [
+      'Add one function call, the rest is your contract.',
+      'No migrations and no new dependencies.',
+    ],
   },
 ]
 
 const releases = [
   {
-    badge: 'MARCH',
+    badge: 'Mainnet',
+    badgeType: 'mainnet' as const,
     date: 'March 2025',
     title: 'Ethereum → Any Network',
     description: 'Execute transactions on any blockchain from Ethereum contracts.',
   },
   {
-    badge: 'AUGUST',
+    badge: 'Mainnet',
+    badgeType: 'mainnet' as const,
     date: 'August 2025',
     title: 'Solana → Any Network',
     description: 'Execute transactions on any blockchain from Solana contracts.',
   },
   {
-    badge: 'OCTOBER',
+    badge: 'Testnet',
+    badgeType: 'testnet' as const,
     date: 'October 2025',
     title: 'Ethereum ↔ Solana',
     description: 'Full bidirectional communication with response handling.',
   },
   {
-    badge: 'NOVEMBER',
+    badge: 'Development',
+    badgeType: 'development' as const,
     date: 'November 2025',
     title: '+Bitcoin',
-    description: 'Use native Bitcoin liquidity anywhere.',
+    description: 'Use native Bitcoin liquidity anywhere',
   },
   {
-    badge: 'JANUARY',
+    badge: 'Development',
+    badgeType: 'development' as const,
     date: 'January 2026',
     title: '+Hyperliquid',
     description: 'Additional blockchain integrations and protocol enhancements.',
   },
 ]
+
+const getBadgeStyles = (type: 'mainnet' | 'testnet' | 'development') => {
+  switch (type) {
+    case 'mainnet':
+      return 'bg-[#deffd6] border-[#27ed02] text-[#1a8d07]'
+    case 'testnet':
+      return 'bg-[#ffe8d9] border-[#f48a38] text-[#d16310]'
+    case 'development':
+      return 'bg-[#e9e8f0] border-[#d7d5e2] text-[#6c657d]'
+  }
+}
 
 const footerColumns = [
   { heading: 'Learn', links: ['About', 'Blog'] },
@@ -118,7 +145,7 @@ const footerColumns = [
 ]
 
 const ArrowIcon = () => (
-  <img src={arrowIcon} alt="" className="h-5 w-5" aria-hidden="true" />
+  <img src={arrowUpRight} alt="" className="h-5 w-5" aria-hidden="true" />
 )
 
 const StackDivider = ({
@@ -131,15 +158,26 @@ const StackDivider = ({
   vertical?: boolean
 }) => (
   <div
-    className={`flex ${vertical ? 'flex-row items-start gap-[12px]' : 'flex-col items-center gap-4 sm:flex-row'}`}
+    className={`flex ${vertical ? 'flex-row items-start gap-[12px]' : 'flex-row items-center gap-[25px]'}`}
   >
-    <p className="font-mono-custom text-dark-neutral-400 text-[16px] tracking-[0.6em] whitespace-nowrap uppercase">
+    <p className="font-mono-custom text-dark-neutral-400 text-[14px] leading-[20px] tracking-[0.6em] whitespace-nowrap uppercase">
       {label}
     </p>
-    <span
-      className={`stack-divider ${vertical ? 'vertical' : ''}`}
-      data-direction={direction}
-    />
+    {!vertical && (
+      <div className="relative h-[1px] flex-1">
+        <img
+          src={direction === 'left' ? stackDividerArrowLeft : stackDividerArrowRight}
+          alt=""
+          className="absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        />
+      </div>
+    )}
+    {vertical && (
+      <div className="relative w-[1px] flex-1">
+        <div className="h-full w-full bg-gradient-to-b from-[rgba(197,183,173,0.15)] to-[rgba(197,183,173,0.6)]" />
+      </div>
+    )}
   </div>
 )
 
@@ -270,10 +308,10 @@ const App = () => (
         className="soft-surface text-dark-neutral-600 mt-0 py-[133px] pr-[60px] pl-0 max-md:px-4 max-md:py-12"
         style={{ ...softSurfaceStyle, borderLeft: 'none' }}
       >
-        <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[clamp(43px,7.13vw,98px)] font-bold tracking-[-2.2px]">
+        <h2 className="text-clam-shell-400 text-[110px] leading-[98px] font-bold tracking-[-2.2px] max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[clamp(43px,7.13vw,98px)]">
           Built on a proven stack:
         </h2>
-        <div className="mt-[40px] ml-[60px] space-y-[40px] md:mt-10 md:ml-0 md:space-y-8">
+        <div className="mt-[35px] ml-[60px] flex flex-col gap-[40px] max-md:mt-10 max-md:ml-0 max-md:gap-8">
           {/* Desktop: Horizontal dividers */}
           <div className="hidden md:block">
             <StackDivider label="Request" />
@@ -286,8 +324,7 @@ const App = () => (
               {stackSteps.map((step) => (
                 <div
                   key={step.title}
-                  className="text-dark-neutral-400 flex flex-col gap-3 border border-white/20 p-5"
-                  style={{ backgroundColor: step.tone }}
+                  className={`text-dark-neutral-400 flex flex-col gap-3 border border-white/20 p-5 ${step.tone}`}
                 >
                   <h3 className="text-[16px] leading-[24px] font-bold">{step.title}</h3>
                   <p className="font-mono-custom text-dark-neutral-400 text-[14px] leading-[20px] opacity-85">
@@ -304,8 +341,7 @@ const App = () => (
             {stackSteps.map((step) => (
               <div
                 key={step.title}
-                className="text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0"
-                style={{ backgroundColor: step.tone }}
+                className={`text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
               >
                 <h3 className="text-[16px] leading-[24px] font-bold">{step.title}</h3>
                 <p className="font-mono-custom text-dark-neutral-400 text-[14px] leading-[20px] opacity-85">
@@ -326,24 +362,28 @@ const App = () => (
     <section className="bg-dark-neutral-950">
       <TechnicalPanel src={techIllustration4} alt="Sig.Network architectural principle" />
       <div
-        className="soft-surface text-dark-neutral-600 mt-0 py-[236px] pr-[60px] pl-0 max-md:px-4 max-md:py-12"
+        className="soft-surface text-dark-neutral-600 mt-0 py-[133px] pr-[60px] pl-0 max-md:px-4 max-md:py-12"
         style={{ ...softSurfaceStyle, borderLeft: 'none' }}
       >
-        <h2 className="text-clam-shell-500 text-[clamp(48px,8vw,110px)] leading-[0.71] font-bold tracking-[-2.2px]">
+        <h2 className="text-clam-shell-400 text-[110px] leading-[98px] font-bold tracking-[-2.2px] max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.71]">
           We built Sig.Network around three principles:
         </h2>
-        <div className="mt-[236px] ml-[61px] grid grid-cols-3 gap-[62px] md:mt-12 md:ml-0 md:grid-cols-1 md:gap-[38px]">
+        <div className="mt-[40px] ml-[60px] grid grid-cols-3 gap-[62px] max-md:mt-12 max-md:ml-0 max-md:grid-cols-1 max-md:gap-[38px]">
           {principles.map((principle) => (
-            <div key={principle.number}>
-              <p className="text-dark-neutral-400 text-[28px] font-bold">
+            <div key={principle.number} className="border-t border-dark-neutral-200 pt-0 flex flex-col gap-[20px]">
+              <p className="font-mono-custom text-dark-neutral-200 text-[18px] leading-[28px]">
                 {principle.number}
               </p>
-              <h3 className="text-dark-neutral-600 mt-[20px] text-[38px] leading-[38px] font-bold">
+              <h3 className="text-dark-neutral-200 text-[30px] leading-[38px] font-bold">
                 {principle.title}
               </h3>
-              <p className="font-mono-custom text-dark-neutral-500 mt-[24px] text-[16px] leading-[24px]">
-                {principle.text}
-              </p>
+              <div className="font-mono-custom text-dark-neutral-500 text-[16px] leading-[24px]">
+                {principle.paragraphs.map((paragraph, index) => (
+                  <p key={index} className={index > 0 ? 'mt-[16px]' : ''}>
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -353,30 +393,30 @@ const App = () => (
     <section className="bg-dark-neutral-950">
       <TechnicalPanel src={techIllustration5} alt="Sig.Network future roadmap" />
       <div
-        className="soft-surface text-dark-neutral-600 mt-0 py-[148px] pr-[60px] pl-0 max-md:px-4 max-md:py-12"
+        className="soft-surface text-dark-neutral-600 mt-0 py-[133px] pr-[60px] pl-0 max-md:px-4 max-md:py-12"
         style={{ ...softSurfaceStyle, borderLeft: 'none' }}
       >
-        <h2 className="text-clam-shell-500 text-[clamp(48px,8vw,110px)] leading-[0.89] font-bold tracking-[-2.2px]">
+        <h2 className="text-clam-shell-400 text-[110px] leading-[98px] font-bold tracking-[-2.2px] max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.89]">
           Releases
         </h2>
-        <div className="mt-[148px] ml-[60px] space-y-0 md:mt-10 md:ml-0 md:space-y-8">
+        <div className="mt-[50px] ml-[60px] flex flex-col gap-[4px] max-md:mt-10 max-md:ml-0 max-md:gap-8">
           {releases.map((release, index) => (
             <div
               key={release.date}
-              className={`border-clam-shell-500/30 grid grid-cols-[200px_400px_1fr] gap-[40px] pb-[24px] md:grid-cols-1 md:gap-4 md:pb-8 ${index === releases.length - 1 ? '' : 'border-b'}`}
+              className={`flex gap-[40px] pt-[24px] pb-[40px] max-md:flex-col max-md:gap-4 max-md:pb-8 ${index === 0 ? 'border-t-[4px] border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
             >
-              <div className="flex flex-col gap-[8px]">
-                <span className="font-mono-custom text-dark-neutral-400 inline-flex h-[22px] w-fit items-center rounded-[4px] bg-[#d5c4bb]/15 px-[12px] text-[12px] tracking-[0.3em]">
+              <div className="flex flex-col gap-[10px] shrink-0 items-start">
+                <span className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-[14px] leading-[18px] font-bold tracking-[1.4px] uppercase ${getBadgeStyles(release.badgeType)}`}>
                   {release.badge}
                 </span>
-                <p className="text-dark-neutral-600 text-[24px] font-semibold">
+                <p className="font-mono-custom text-dark-neutral-500 text-[16px] leading-[24px] opacity-80 w-[200px]">
                   {release.date}
                 </p>
               </div>
-              <h3 className="text-dark-neutral-600 text-[38px] leading-[38px] font-bold md:text-[28px] md:leading-[36px]">
+              <h3 className="text-dark-neutral-200 text-[30px] leading-[38px] font-semibold w-[400px] shrink-0 max-md:w-full max-md:text-[28px]">
                 {release.title}
               </h3>
-              <p className="font-mono-custom text-dark-neutral-500 text-[16px] leading-[24px]">
+              <p className="font-mono-custom text-dark-neutral-500 text-[16px] leading-[24px] opacity-85 flex-1">
                 {release.description}
               </p>
             </div>
