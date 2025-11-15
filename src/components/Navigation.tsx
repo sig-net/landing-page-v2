@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import burgerMenu from '../assets/burger-menu.svg'
 import signetworkLogo from '../assets/signetwork-logo.svg'
@@ -14,6 +14,18 @@ const Navigation = ({ navItems }: NavigationProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const toggleMenu = () => setIsMobileMenuOpen((open) => !open)
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [isMobileMenuOpen])
 
   return (
     <nav className="border-clam-shell-500 bg-clam-shell-50 border-b">
@@ -49,13 +61,14 @@ const Navigation = ({ navItems }: NavigationProps) => {
                 <a
                   href={item.href}
                   className="text-dark-neutral-500 text-sm leading-5 font-medium"
+                  onClick={toggleMenu}
                   {...(item.external && { target: '_blank', rel: 'noopener noreferrer' })}
                 >
                   {item.label}
                 </a>
               </div>
             ))}
-            <div className="border-clam-shell-500 flex h-[74px] items-center border-b px-5">
+            <div className="border-clam-shell-500 flex h-[74px] items-center border-b px-5" onClick={toggleMenu}>
               <ArrowButton variant="pastel" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
                 {ctaButtons.docs.label}
               </ArrowButton>
