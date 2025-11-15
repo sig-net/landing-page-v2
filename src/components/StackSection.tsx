@@ -99,18 +99,18 @@ const StackSection = ({ steps }: StackSectionProps) => (
       src={techIllustration3}
       srcMobile={techIllustrationMobile3}
     />
-    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 px-4 py-12 md:px-0 md:py-[60px]">
+    <SoftSurfacePanel className="text-dark-neutral-600 py-[30px] md:py-15">
       <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[clamp(43px,7.13vw,98px)] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
         Built on a proven stack:
       </h2>
-      <div className="mt-10 ml-0 flex flex-col gap-8 md:mx-[60px] md:mt-[35px] md:gap-10">
+      <div className="mx-auto mt-10 flex flex-col gap-8 px-5 md:mt-[35px] md:gap-10 md:px-15">
         <div className="hidden md:block">
           <StackDivider label="Request" />
         </div>
 
         <div className="flex gap-5 md:hidden">
           <StackDivider label="Request" vertical />
-          <div className="grid flex-1 grid-cols-1 gap-5">
+          <div className="grid flex-1 grid-cols-1">
             {steps.map((step) => (
               <div
                 key={step.title}
@@ -126,7 +126,7 @@ const StackSection = ({ steps }: StackSectionProps) => (
           <StackDivider direction="left" label="Response" vertical />
         </div>
 
-        <div className="hidden md:grid md:grid-cols-5 md:gap-0">
+        <div className="hidden md:grid md:grid-cols-5">
           {steps.map((step) => (
             <div
               key={step.title}

@@ -40,8 +40,13 @@ const Navigation = ({ navItems }: NavigationProps) => {
             style={{ top: 'var(--header-offset)' }}
           >
             {navItems.map((item) => (
-              <div key={item} className="border-clam-shell-500 flex h-[74px] items-center border-b px-5">
-                <span className="text-dark-neutral-500 text-sm leading-5 font-medium">{item}</span>
+              <div
+                key={item}
+                className="border-clam-shell-500 flex h-[74px] items-center border-b px-5"
+              >
+                <span className="text-dark-neutral-500 text-sm leading-5 font-medium">
+                  {item}
+                </span>
               </div>
             ))}
             <div className="border-clam-shell-500 flex h-[74px] items-center border-b px-5">
@@ -52,19 +57,21 @@ const Navigation = ({ navItems }: NavigationProps) => {
       )}
 
       <div className="hidden h-[180px] items-center xl:flex">
-        <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-l px-[60px]">
+        <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-l px-15">
           <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
         </div>
         <div className="ml-auto flex h-[180px] items-stretch">
           {navItems.map((item) => (
             <div
               key={item}
-              className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-t border-r border-l px-[60px]"
+              className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-t border-r border-l px-15"
             >
-              <span className="text-dark-neutral-500 text-sm leading-5 font-medium">{item}</span>
+              <span className="text-dark-neutral-500 text-sm leading-5 font-medium">
+                {item}
+              </span>
             </div>
           ))}
-          <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-r border-l px-[60px]">
+          <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-r border-l px-15">
             <ArrowButton variant="pastel">Start building</ArrowButton>
           </div>
         </div>

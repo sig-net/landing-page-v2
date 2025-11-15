@@ -15,7 +15,7 @@ const variantClasses: Record<ArrowButtonProps['variant'], string> = {
 const ArrowButton = ({ children, className = '', variant }: ArrowButtonProps) => (
   <button
     type="button"
-    className={`border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-[18px] py-[12px] text-base leading-6 font-semibold transition hover:opacity-90 ${variantClasses[variant]} ${className}`.trim()}
+    className={`border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-5 py-[12px] text-base leading-6 font-semibold transition hover:opacity-90 ${variantClasses[variant]} ${className}`.trim()}
   >
     {children}
     <ArrowUpRight aria-hidden className="h-5 w-5" />

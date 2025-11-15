@@ -1,8 +1,5 @@
 import type { Release } from '../content'
-import {
-  techIllustration5,
-  techIllustrationMobile5,
-} from '../content'
+import { techIllustration5, techIllustrationMobile5 } from '../content'
 import SoftSurfacePanel from './SoftSurfacePanel'
 import TechnicalPanel from './TechnicalPanel'
 
@@ -18,20 +15,24 @@ const badgeTone: Record<Release['badgeType'], string> = {
 
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
   <section className="bg-dark-neutral-950">
-    <TechnicalPanel alt="Sig.Network future roadmap" src={techIllustration5} srcMobile={techIllustrationMobile5} />
-    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 px-4 py-12 md:px-0 md:py-[133px] md:pr-[60px] md:pl-0">
+    <TechnicalPanel
+      alt="Sig.Network future roadmap"
+      src={techIllustration5}
+      srcMobile={techIllustrationMobile5}
+    />
+    <SoftSurfacePanel className="text-dark-neutral-600 py-[30px] md:py-15">
       <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[0.89] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
         Releases
       </h2>
-      <div className="mt-10 ml-0 flex flex-col gap-8 md:mt-[50px] md:ml-[60px] md:gap-1">
+      <div className="mt-10 flex flex-col gap-8 px-5 md:mt-[50px] md:gap-1 md:px-15">
         {releases.map((release, index) => (
           <div
             key={release.date}
-            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-[4px] border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
+            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-4 border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
           >
             <div className="flex shrink-0 flex-col items-start gap-2.5">
               <span
-                className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-sm leading-[18px] font-bold tracking-[1.4px] uppercase ${badgeTone[release.badgeType]}`}
+                className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-sm leading-5 font-bold tracking-[1.4px] uppercase ${badgeTone[release.badgeType]}`}
               >
                 {release.badge}
               </span>

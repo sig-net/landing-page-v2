@@ -8,7 +8,7 @@ type FooterSectionProps = {
 }
 
 const FooterSection = ({ columns }: FooterSectionProps) => (
-  <footer className="border-clam-shell-500 bg-clam-shell-50 text-dark-neutral-600 relative overflow-hidden border-t">
+  <footer className="bg-clam-shell-50 text-dark-neutral-600 relative overflow-hidden">
     <img
       src={linesBottom}
       alt=""
@@ -19,10 +19,10 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
       <h2 className="text-left text-[clamp(48px,8vw,110px)] leading-[0.891] font-bold tracking-[-2.2px] text-[#625757] md:text-[110px] md:leading-[98px]">
         Ready to make your Dapp cross-chain?
       </h2>
-      <div className="mt-10 ml-0 flex w-full items-center justify-center md:ml-[60px]">
+      <div className="mt-10 ml-0 flex w-full items-center justify-center py-5">
         <ArrowButton variant="pastel">Start building</ArrowButton>
       </div>
-      <div className="border-clam-shell-500 mt-10 grid w-full grid-cols-1 gap-8 border-t p-16 pt-10 text-center md:grid-cols-4 md:gap-[60px] md:text-left">
+      <div className="border-clam-shell-500 grid w-full grid-cols-1 gap-8 border-t p-16 pt-10 text-center md:grid-cols-4 md:gap-[60px] md:text-left">
         {columns.map((column) => (
           <div key={column.heading}>
             <h3 className="text-dark-neutral-600 text-[26px] leading-[38px] font-bold md:text-[30px]">
@@ -41,7 +41,7 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
             alt="Sig.Network"
             className="h-[40px] w-[237px] md:h-[34px] md:w-[200px]"
           />
-          <p className="text-dark-neutral-600/80 mt-3 text-[15px] leading-[20px] font-semibold md:mt-[18px] md:text-[14px]">
+          <p className="text-dark-neutral-600/80 mt-3 text-[15px] leading-[20px] font-semibold md:mt-5 md:text-[14px]">
             2025 Sig.Network
           </p>
         </div>

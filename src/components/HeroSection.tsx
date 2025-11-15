@@ -14,7 +14,7 @@ const HeroSection = () => (
       <h1 className="text-dark-neutral-600 text-[clamp(60px,9.65vw,139px)] leading-[0.8] font-bold tracking-[-2.78px]">
         DeFi without borders.
       </h1>
-      <div className="px-5 md:px-[60px]">
+      <div className="px-5 md:px-15">
         <div className="font-mono-custom text-dark-neutral-600 mt-[33px] space-y-[9px] text-[12px] leading-[14px] md:mt-[21px] md:max-w-[632px] md:space-y-[15px] md:text-[16px] md:leading-[24px]">
           <p>DeFi is siloed today, but it doesn&apos;t need to be.</p>
           <p>
@@ -22,16 +22,16 @@ const HeroSection = () => (
             chain without restriction.
           </p>
         </div>
-        <div className="mt-[9px] flex flex-wrap items-center gap-[11px] md:mt-[15px] md:gap-[18px]">
+        <div className="mt-[9px] flex flex-wrap items-center gap-[11px] md:mt-[15px] md:gap-5">
           <ArrowButton
             variant="brandLight"
-            className="h-[31px] px-[11px] py-[8px] text-[10px] md:h-[48px] md:px-[18px] md:py-[12px] md:text-base"
+            className="h-[31px] px-[11px] py-[8px] text-[10px] md:h-[48px] md:px-5 md:py-[12px] md:text-base"
           >
             Launch demo
           </ArrowButton>
           <ArrowButton
             variant="brandDark"
-            className="h-[31px] px-[11px] py-[8px] text-[10px] md:h-[48px] md:px-[18px] md:py-[12px] md:text-base"
+            className="h-[31px] px-[11px] py-[8px] text-[10px] md:h-[48px] md:px-5 md:py-[12px] md:text-base"
           >
             Start building
           </ArrowButton>
