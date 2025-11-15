@@ -14,7 +14,7 @@ const badgeTone: Record<Release['badgeType'], string> = {
 }
 
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
-  <section>
+  <section id="roadmap">
     <TechnicalPanel
       alt="Sig.Network future roadmap"
       src={techIllustration5}

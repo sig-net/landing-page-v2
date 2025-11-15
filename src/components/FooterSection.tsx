@@ -1,6 +1,7 @@
 import linesBottom from '../assets/lines-bottom.svg'
 import signetworkLogo from '../assets/signetwork-logo.svg'
 import type { FooterColumn } from '../content'
+import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'
 
 type FooterSectionProps = {
@@ -20,7 +21,13 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
         Ready to make your Dapp cross-chain?
       </h2>
       <div className="flex w-full items-center justify-center py-5">
-        <ArrowButton variant="pastel">Start building</ArrowButton>
+        <ArrowButton
+          variant="pastel"
+          href={ctaButtons.docs.href}
+          external={ctaButtons.docs.external}
+        >
+          {ctaButtons.docs.label}
+        </ArrowButton>
       </div>
       <div className="border-clam-shell-500 grid w-full grid-cols-1 gap-5 border-t pt-3 text-center md:grid-cols-4 md:gap-15 md:px-15 md:pt-10 md:text-left">
         {columns.map((column) => (
@@ -30,7 +37,18 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
             </h3>
             <ul className="mt-1 flex flex-col gap-1 text-xs leading-4 md:mt-3 md:gap-3 md:text-sm md:leading-5">
               {column.links.map((link) => (
-                <li key={link}>{link}</li>
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    className="hover:opacity-80"
+                    {...(link.external && {
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                    })}
+                  >
+                    {link.label}
+                  </a>
+                </li>
               ))}
             </ul>
           </div>

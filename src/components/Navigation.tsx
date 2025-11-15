@@ -2,10 +2,12 @@ import { useState } from 'react'
 
 import burgerMenu from '../assets/burger-menu.svg'
 import signetworkLogo from '../assets/signetwork-logo.svg'
+import type { NavItem } from '../content'
+import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'
 
 type NavigationProps = {
-  navItems: readonly string[]
+  navItems: NavItem[]
 }
 
 const Navigation = ({ navItems }: NavigationProps) => {
@@ -41,16 +43,22 @@ const Navigation = ({ navItems }: NavigationProps) => {
           >
             {navItems.map((item) => (
               <div
-                key={item}
+                key={item.label}
                 className="border-clam-shell-500 flex h-[74px] items-center border-b px-5"
               >
-                <span className="text-dark-neutral-500 text-sm leading-5 font-medium">
-                  {item}
-                </span>
+                <a
+                  href={item.href}
+                  className="text-dark-neutral-500 text-sm leading-5 font-medium"
+                  {...(item.external && { target: '_blank', rel: 'noopener noreferrer' })}
+                >
+                  {item.label}
+                </a>
               </div>
             ))}
             <div className="border-clam-shell-500 flex h-[74px] items-center border-b px-5">
-              <ArrowButton variant="pastel">Start building</ArrowButton>
+              <ArrowButton variant="pastel" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
+                {ctaButtons.docs.label}
+              </ArrowButton>
             </div>
           </div>
         </>
@@ -63,16 +71,22 @@ const Navigation = ({ navItems }: NavigationProps) => {
         <div className="ml-auto flex h-[180px] items-stretch">
           {navItems.map((item) => (
             <div
-              key={item}
+              key={item.label}
               className="border-clam-shell-500 flex h-[180px] w-[180px] shrink-0 items-center border-t border-r border-l px-15"
             >
-              <span className="text-dark-neutral-500 text-sm leading-5 font-medium">
-                {item}
-              </span>
+              <a
+                href={item.href}
+                className="text-dark-neutral-500 text-sm leading-5 font-medium"
+                {...(item.external && { target: '_blank', rel: 'noopener noreferrer' })}
+              >
+                {item.label}
+              </a>
             </div>
           ))}
           <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-r border-l px-15">
-            <ArrowButton variant="pastel">Start building</ArrowButton>
+            <ArrowButton variant="pastel" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
+              {ctaButtons.docs.label}
+            </ArrowButton>
           </div>
         </div>
       </div>

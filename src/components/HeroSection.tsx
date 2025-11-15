@@ -1,5 +1,6 @@
 import linesTop from '../assets/lines-top.svg'
 
+import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'
 
 const HeroSection = () => (
@@ -7,7 +8,7 @@ const HeroSection = () => (
     <img
       src={linesTop}
       alt=""
-      className="absolute inset-x-0 top-0 w-full opacity-60"
+      className="absolute inset-x-0 top-0 h-[89px] w-full object-cover object-top opacity-60 md:h-[246px]"
       aria-hidden
     />
     <div className="relative mx-auto pt-[34px] pb-[27px] md:pt-[156px] md:pb-[82px]">
@@ -23,8 +24,12 @@ const HeroSection = () => (
           </p>
         </div>
         <div className="mt-[9px] flex items-center gap-[11px] md:mt-[15px] md:gap-5">
-          <ArrowButton variant="brandLight">Launch demo</ArrowButton>
-          <ArrowButton variant="brandDark">Start building</ArrowButton>
+          <ArrowButton variant="brandLight" href={ctaButtons.demo.href} external={ctaButtons.demo.external}>
+            {ctaButtons.demo.label}
+          </ArrowButton>
+          <ArrowButton variant="brandDark" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
+            {ctaButtons.docs.label}
+          </ArrowButton>
         </div>
       </div>
     </div>

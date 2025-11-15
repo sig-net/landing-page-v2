@@ -9,7 +9,17 @@ import techIllustrationMobile3 from './assets/technical-illustration-mobile-3.pn
 import techIllustrationMobile4 from './assets/technical-illustration-mobile-4.png'
 import techIllustrationMobile5 from './assets/technical-illustration-mobile-5.png'
 
-export const navItems = ['What?', 'Roadmap', 'Blog'] as const
+export type NavItem = {
+  label: string
+  href: string
+  external?: boolean
+}
+
+export const navItems: NavItem[] = [
+  { label: 'What?', href: '#what' },
+  { label: 'Roadmap', href: '#roadmap' },
+  { label: 'Blog', href: 'https://mirror.xyz/signetwork.eth', external: true },
+]
 
 export type NarrativeSlice = {
   image: string
@@ -151,16 +161,59 @@ export const releases: Release[] = [
   },
 ]
 
+export type FooterLink = {
+  label: string
+  href: string
+  external?: boolean
+}
+
 export type FooterColumn = {
   heading: string
-  links: string[]
+  links: FooterLink[]
 }
 
 export const footerColumns: FooterColumn[] = [
-  { heading: 'Learn', links: ['About', 'Blog'] },
-  { heading: 'Build', links: ['Docs', 'Demo'] },
-  { heading: 'Connect', links: ['Careers', 'Twitter'] },
+  {
+    heading: 'Learn',
+    links: [
+      { label: 'About', href: '#what' },
+      { label: 'Blog', href: 'https://mirror.xyz/signetwork.eth', external: true },
+    ],
+  },
+  {
+    heading: 'Build',
+    links: [
+      { label: 'Docs', href: 'https://docs.sig.network/', external: true },
+      { label: 'Demo', href: 'https://solana-contract-examples.vercel.app/', external: true },
+    ],
+  },
+  {
+    heading: 'Connect',
+    links: [
+      { label: 'Careers', href: 'https://djinni.co/jobs/company-sig-network/', external: true },
+      { label: 'Twitter', href: 'https://x.com/Sig_Network', external: true },
+    ],
+  },
 ]
+
+export type CTAButton = {
+  label: string
+  href: string
+  external?: boolean
+}
+
+export const ctaButtons = {
+  demo: {
+    label: 'Launch demo',
+    href: 'https://solana-contract-examples.vercel.app/',
+    external: true,
+  },
+  docs: {
+    label: 'Start building',
+    href: 'https://docs.sig.network/',
+    external: true,
+  },
+} as const
 
 export {
   techIllustration3,

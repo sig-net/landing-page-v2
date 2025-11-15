@@ -8,8 +8,8 @@ type NarrativeSectionsProps = {
 
 const NarrativeSections = ({ slices }: NarrativeSectionsProps) => (
   <>
-    {slices.map((slice) => (
-      <section key={slice.title}>
+    {slices.map((slice, index) => (
+      <section key={slice.title} id={index === 0 ? 'what' : undefined}>
         <TechnicalPanel alt={slice.alt} src={slice.image} srcMobile={slice.imageMobile} />
         <SectionContent
           title={slice.title}
