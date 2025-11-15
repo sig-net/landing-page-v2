@@ -1,6 +1,6 @@
 import type { Principle } from '../content'
 import { techIllustration4, techIllustrationMobile4 } from '../content'
-import SoftSurfacePanel from './SoftSurfacePanel'
+import SectionContent from './SectionContent'
 import TechnicalPanel from './TechnicalPanel'
 
 type PrinciplesSectionProps = {
@@ -8,17 +8,21 @@ type PrinciplesSectionProps = {
 }
 
 const PrinciplesSection = ({ principles }: PrinciplesSectionProps) => (
-  <section className="bg-dark-neutral-950">
+  <section>
     <TechnicalPanel
       alt="Sig.Network architectural principle"
       src={techIllustration4}
       srcMobile={techIllustrationMobile4}
     />
-    <SoftSurfacePanel className="text-dark-neutral-600 py-[30px] md:py-15">
-      <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[0.71] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
-        We built Sig.Network around three principles:
-      </h2>
-      <div className="mx-auto mt-12 grid grid-cols-1 gap-[38px] px-5 md:mt-[40px] md:grid-cols-3 md:gap-[62px] md:px-15">
+    <SectionContent
+      className="text-dark-neutral-600"
+      header={
+        <h2 className="section-heading leading-[0.71]">
+          We built Sig.Network around three principles:
+        </h2>
+      }
+      bodyClassName="mx-auto mt-12 grid grid-cols-1 gap-[38px] md:mt-[40px] md:grid-cols-3 md:gap-[62px]"
+    >
         {principles.map((principle) => (
           <div
             key={principle.number}
@@ -39,8 +43,7 @@ const PrinciplesSection = ({ principles }: PrinciplesSectionProps) => (
             </div>
           </div>
         ))}
-      </div>
-    </SoftSurfacePanel>
+    </SectionContent>
   </section>
 )
 

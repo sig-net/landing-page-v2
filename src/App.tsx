@@ -16,7 +16,7 @@ import {
 } from './content'
 
 const App = () => (
-  <div className="bg-dark-neutral-950 min-h-screen text-white">
+  <div className="page-gradient min-h-screen text-white">
     <LiveBanner />
     <Navigation navItems={navItems} />
     <HeroSection />

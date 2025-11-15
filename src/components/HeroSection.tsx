@@ -3,7 +3,7 @@ import linesTop from '../assets/lines-top.svg'
 import ArrowButton from './ArrowButton'
 
 const HeroSection = () => (
-  <section className="border-clam-shell-500 bg-clam-shell-50 text-dark-neutral-600 relative border-b">
+  <section className="border-clam-shell-500 text-dark-neutral-600 relative border-b">
     <img
       src={linesTop}
       alt=""

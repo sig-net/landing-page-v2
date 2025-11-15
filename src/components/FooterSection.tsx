@@ -8,7 +8,7 @@ type FooterSectionProps = {
 }
 
 const FooterSection = ({ columns }: FooterSectionProps) => (
-  <footer className="bg-clam-shell-50 text-dark-neutral-600 relative overflow-hidden">
+  <footer className="text-dark-neutral-600 relative overflow-hidden">
     <img
       src={linesBottom}
       alt=""

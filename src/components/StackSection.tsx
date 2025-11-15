@@ -1,6 +1,6 @@
 import type { StackStep } from '../content'
 import { techIllustration3, techIllustrationMobile3 } from '../content'
-import SoftSurfacePanel from './SoftSurfacePanel'
+import SectionContent from './SectionContent'
 import TechnicalPanel from './TechnicalPanel'
 
 type StackSectionProps = {
@@ -93,17 +93,21 @@ const StackDivider = ({
 )
 
 const StackSection = ({ steps }: StackSectionProps) => (
-  <section className="bg-dark-neutral-950">
+  <section>
     <TechnicalPanel
       alt="Sig.Network data flow"
       src={techIllustration3}
       srcMobile={techIllustrationMobile3}
     />
-    <SoftSurfacePanel className="text-dark-neutral-600 py-[30px] md:py-15">
-      <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[clamp(43px,7.13vw,98px)] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
-        Built on a proven stack:
-      </h2>
-      <div className="mx-auto mt-10 flex flex-col gap-8 px-5 md:mt-[35px] md:gap-10 md:px-15">
+    <SectionContent
+      className="text-dark-neutral-600"
+      header={
+        <h2 className="section-heading leading-[clamp(43px,7.13vw,98px)]">
+          Built on a proven stack:
+        </h2>
+      }
+      bodyClassName="mx-auto mt-10 flex flex-col gap-8 md:mt-[35px] md:gap-10"
+    >
         <div className="hidden md:block">
           <StackDivider label="Request" />
         </div>
@@ -143,8 +147,7 @@ const StackSection = ({ steps }: StackSectionProps) => (
         <div className="hidden md:block">
           <StackDivider direction="left" label="Response" />
         </div>
-      </div>
-    </SoftSurfacePanel>
+    </SectionContent>
   </section>
 )
 

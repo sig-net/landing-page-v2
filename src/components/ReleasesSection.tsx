@@ -1,6 +1,6 @@
 import type { Release } from '../content'
 import { techIllustration5, techIllustrationMobile5 } from '../content'
-import SoftSurfacePanel from './SoftSurfacePanel'
+import SectionContent from './SectionContent'
 import TechnicalPanel from './TechnicalPanel'
 
 type ReleasesSectionProps = {
@@ -14,21 +14,25 @@ const badgeTone: Record<Release['badgeType'], string> = {
 }
 
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
-  <section className="bg-dark-neutral-950">
+  <section>
     <TechnicalPanel
       alt="Sig.Network future roadmap"
       src={techIllustration5}
       srcMobile={techIllustrationMobile5}
     />
-    <SoftSurfacePanel className="text-dark-neutral-600 py-[30px] md:py-15">
-      <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[0.89] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
-        Releases
-      </h2>
-      <div className="mt-10 flex flex-col gap-8 px-5 md:mt-[50px] md:gap-1 md:px-15">
+    <SectionContent
+      className="text-dark-neutral-600"
+      header={
+        <h2 className="section-heading leading-[0.89]">
+          Releases
+        </h2>
+      }
+      bodyClassName="mt-10 flex flex-col gap-8 md:mt-[50px] md:gap-1"
+    >
         {releases.map((release, index) => (
           <div
             key={release.date}
-            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-4 border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
+            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-4 border-b border-border-divider' : 'border-b border-border-divider'}`}
           >
             <div className="flex shrink-0 flex-col items-start gap-2.5">
               <span
@@ -48,8 +52,7 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
             </p>
           </div>
         ))}
-      </div>
-    </SoftSurfacePanel>
+    </SectionContent>
   </section>
 )
 
