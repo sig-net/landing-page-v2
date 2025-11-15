@@ -15,20 +15,20 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
       className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-40"
       aria-hidden
     />
-    <div className="relative flex flex-col items-start pt-12 pb-16 pl-0 md:pt-[133px] md:pb-[270px]">
-      <h2 className="text-left text-[clamp(48px,8vw,110px)] leading-[0.891] font-bold tracking-[-2.2px] text-[#625757] md:text-[110px] md:leading-[98px]">
+    <div className="relative flex flex-col items-start pb-16 md:pt-[32px] md:pb-[270px]">
+      <h2 className="text-left text-5xl leading-[50px] font-bold tracking-[-2.2px] text-[#625757] md:text-8xl md:leading-[98px]">
         Ready to make your Dapp cross-chain?
       </h2>
-      <div className="mt-10 ml-0 flex w-full items-center justify-center py-5">
+      <div className="flex w-full items-center justify-center py-5">
         <ArrowButton variant="pastel">Start building</ArrowButton>
       </div>
-      <div className="border-clam-shell-500 grid w-full grid-cols-1 gap-8 border-t p-16 pt-10 text-center md:grid-cols-4 md:gap-[60px] md:text-left">
+      <div className="border-clam-shell-500 grid w-full grid-cols-1 gap-5 border-t pt-3 text-center md:grid-cols-4 md:gap-15 md:px-15 md:pt-10 md:text-left">
         {columns.map((column) => (
           <div key={column.heading}>
-            <h3 className="text-dark-neutral-600 text-[26px] leading-[38px] font-bold md:text-[30px]">
+            <h3 className="font-sans text-sm leading-5 font-bold md:text-3xl md:leading-9">
               {column.heading}
             </h3>
-            <ul className="font-mono-custom text-dark-neutral-600 mt-4 space-y-3 text-[15px] leading-5 md:mt-3 md:text-sm">
+            <ul className="mt-1 flex flex-col gap-1 text-xs leading-4 md:mt-3 md:gap-3 md:text-sm md:leading-5">
               {column.links.map((link) => (
                 <li key={link}>{link}</li>
               ))}
@@ -41,7 +41,7 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
             alt="Sig.Network"
             className="h-[40px] w-[237px] md:h-[34px] md:w-[200px]"
           />
-          <p className="text-dark-neutral-600/80 mt-3 text-[15px] leading-[20px] font-semibold md:mt-5 md:text-[14px]">
+          <p className="mt-3 text-sm leading-5 font-semibold opacity-80 md:mt-5">
             2025 Sig.Network
           </p>
         </div>

@@ -36,7 +36,7 @@ const StackDivider = ({
         </svg>
       </div>
     )}
-    <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 tracking-[0.04em] whitespace-nowrap">
+    <p className="text-dark-neutral-400 text-xs leading-4 font-medium whitespace-nowrap md:text-sm md:leading-5">
       {label}
     </p>
     {!vertical && (
@@ -101,52 +101,41 @@ const StackSection = ({ steps }: StackSectionProps) => (
     />
     <SectionContent
       className="text-dark-neutral-600"
-      header={
-        <h2 className="section-heading leading-[clamp(43px,7.13vw,98px)]">
-          Built on a proven stack:
-        </h2>
-      }
-      bodyClassName="mx-auto mt-10 flex flex-col gap-8 md:mt-[35px] md:gap-10"
+      title="Built on a proven stack:"
+      bodyClassName="mx-auto mt-5 flex flex-col gap-8 md:mt-[35px] md:gap-10"
     >
-        <div className="hidden md:block">
-          <StackDivider label="Request" />
-        </div>
+      <div className="hidden md:block">
+        <StackDivider label="Request" />
+      </div>
 
-        <div className="flex gap-5 md:hidden">
-          <StackDivider label="Request" vertical />
-          <div className="grid flex-1 grid-cols-1">
-            {steps.map((step) => (
-              <div
-                key={step.title}
-                className={`text-dark-neutral-400 flex flex-col gap-3 border border-white/20 p-5 ${step.tone}`}
-              >
-                <h3 className="text-base leading-6 font-bold">{step.title}</h3>
-                <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 opacity-85">
-                  {step.text}
-                </p>
-              </div>
-            ))}
-          </div>
-          <StackDivider direction="left" label="Response" vertical />
-        </div>
-
-        <div className="hidden md:grid md:grid-cols-5">
+      <div className="mx-auto flex gap-3 md:hidden">
+        <StackDivider label="Request" vertical />
+        <div className="grid flex-1 grid-cols-1">
           {steps.map((step) => (
-            <div
-              key={step.title}
-              className={`text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
-            >
-              <h3 className="text-base leading-6 font-bold">{step.title}</h3>
-              <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 opacity-85">
-                {step.text}
-              </p>
+            <div key={step.title} className={`text-dark-neutral-400 p-4 ${step.tone}`}>
+              <h3 className="font-sans text-sm leading-6 font-bold">{step.title}</h3>
+              <p className="text-xs leading-4">{step.text}</p>
             </div>
           ))}
         </div>
+        <StackDivider direction="left" label="Response" vertical />
+      </div>
 
-        <div className="hidden md:block">
-          <StackDivider direction="left" label="Response" />
-        </div>
+      <div className="hidden md:grid md:grid-cols-5">
+        {steps.map((step) => (
+          <div
+            key={step.title}
+            className={`text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
+          >
+            <h3 className="font-sans text-base leading-6 font-bold">{step.title}</h3>
+            <p className="text-sm">{step.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="hidden md:block">
+        <StackDivider direction="left" label="Response" />
+      </div>
     </SectionContent>
   </section>
 )

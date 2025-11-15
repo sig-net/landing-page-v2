@@ -22,36 +22,32 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
     />
     <SectionContent
       className="text-dark-neutral-600"
-      header={
-        <h2 className="section-heading leading-[0.89]">
-          Releases
-        </h2>
-      }
-      bodyClassName="mt-10 flex flex-col gap-8 md:mt-[50px] md:gap-1"
+      title="Releases"
+      bodyClassName="mt-4 flex flex-col md:mt-[50px]"
     >
-        {releases.map((release, index) => (
-          <div
-            key={release.date}
-            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-4 border-b border-border-divider' : 'border-b border-border-divider'}`}
-          >
-            <div className="flex shrink-0 flex-col items-start gap-2.5">
-              <span
-                className={`inline-flex items-center rounded-[4px] border px-[6px] py-[2px] text-sm leading-5 font-bold tracking-[1.4px] uppercase ${badgeTone[release.badgeType]}`}
-              >
-                {release.badge}
-              </span>
-              <p className="font-mono-custom text-dark-neutral-500 w-[200px] text-base leading-6 opacity-80">
-                {release.date}
-              </p>
-            </div>
-            <h3 className="text-dark-neutral-200 w-full shrink-0 text-[28px] leading-[38px] font-semibold md:w-[400px] md:text-3xl">
-              {release.title}
-            </h3>
-            <p className="font-mono-custom text-dark-neutral-500 flex-1 text-base leading-6 opacity-85">
-              {release.description}
+      {releases.map((release, index) => (
+        <div
+          key={release.date}
+          className={`border-border-divider flex flex-col gap-1 border-b pt-2 pb-3 md:flex-row md:gap-10 md:pt-6 md:pb-10 ${index === 0 ? 'border-t md:border-t-4' : ''}`}
+        >
+          <div className="flex shrink-0 flex-col items-start gap-1 md:gap-2.5">
+            <span
+              className={`rounded-[4px] border px-[6px] py-[2px] font-sans text-[10px] leading-[10px] font-bold tracking-wide uppercase md:text-sm md:leading-4 md:tracking-wider ${badgeTone[release.badgeType]}`}
+            >
+              {release.badge}
+            </span>
+            <p className="text-dark-neutral-500 w-[200px] text-xs leading-4 md:text-base">
+              {release.date}
             </p>
           </div>
-        ))}
+          <h3 className="text-dark-neutral-200 w-full shrink-0 font-sans text-xl leading-8 font-semibold md:w-[400px] md:text-3xl md:leading-9">
+            {release.title}
+          </h3>
+          <p className="text-dark-neutral-400 flex-1 text-xs leading-4 opacity-85 md:text-base md:leading-6">
+            {release.description}
+          </p>
+        </div>
+      ))}
     </SectionContent>
   </section>
 )

@@ -1,19 +1,21 @@
-import type { PropsWithChildren, ReactNode } from 'react'
+import type { PropsWithChildren } from 'react'
 
 type SectionContentProps = PropsWithChildren<{
-  header: ReactNode
+  title: string
   bodyClassName?: string
   className?: string
 }>
 
 const SectionContent = ({
-  header,
+  title,
   children,
   bodyClassName = '',
   className = '',
 }: SectionContentProps) => (
   <div className={`py-[30px] md:py-15 ${className}`.trim()}>
-    {header}
+    <h2 className="text-clam-shell-400 font-sans text-5xl leading-[50px] font-bold md:text-8xl md:leading-[98px]">
+      {title}
+    </h2>
     <div className={`px-5 md:px-15 ${bodyClassName}`.trim()}>{children}</div>
   </div>
 )

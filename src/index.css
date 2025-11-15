@@ -38,6 +38,7 @@
 
   /* Pastels */
   --colors-pastels-polar-200: #f2fcfb;
+  --colors-pastels-green-white-500: #e1e7de;
 
   /* Borders */
   --colors-border-divider: #c6b3b2;
@@ -58,6 +59,7 @@
   --color-brand-800: var(--colors-brand-800);
   --color-brand-950: var(--colors-brand-950);
   --color-pastels-polar-200: var(--colors-pastels-polar-200);
+  --color-pastels-green-white-500: var(--colors-pastels-green-white-500);
   --color-crt-blue-400: var(--colors-crt-blue-400);
   --color-error-600: var(--colors-error-600);
   --color-border-divider: var(--colors-border-divider);
@@ -75,29 +77,6 @@ body {
   min-height: 100dvh;
 }
 
-.font-mono-custom {
-  font-family: var(--font-mono);
-  letter-spacing: 0.04em;
-}
-
-.hero-gradient {
-  background: linear-gradient(90deg, #f5f0ee 0%, #edf5d6 100%);
-}
-
 .page-gradient {
   background: linear-gradient(90deg, #f5f0ee 0%, #edf5d6 100%);
-}
-
-.section-heading {
-  color: var(--colors-clam-shell-400);
-  font-size: clamp(48px, 8vw, 110px);
-  font-weight: bold;
-  letter-spacing: -2.2px;
-}
-
-@media (min-width: 768px) {
-  .section-heading {
-    font-size: 110px;
-    line-height: 98px;
-  }
 }
