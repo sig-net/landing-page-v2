@@ -1,7 +1,5 @@
 import type { StackStep } from '../content'
 import { techIllustration3, techIllustrationMobile3 } from '../content'
-import stackDividerArrowLeft from '../assets/stack-divider-arrow-left.svg'
-import stackDividerArrowRight from '../assets/stack-divider-arrow-right.svg'
 import SoftSurfacePanel from './SoftSurfacePanel'
 import TechnicalPanel from './TechnicalPanel'
 
@@ -19,24 +17,76 @@ const StackDivider = ({
   vertical?: boolean
 }) => (
   <div
-    className={`flex ${vertical ? 'flex-row items-start gap-3' : 'flex-row items-center gap-[25px]'}`}
+    className={`flex ${vertical ? 'flex-col items-center gap-3' : 'flex-row items-center gap-[25px]'}`}
   >
-    <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 tracking-[0.6em] whitespace-nowrap uppercase">
+    {vertical && direction === 'left' && (
+      <div className="relative w-3 flex-1">
+        <svg
+          preserveAspectRatio="none"
+          width="100%"
+          height="100%"
+          viewBox="0 0 12 1000"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        >
+          <polygon points="6,0 0,10 12,10" fill="#C6B3B2" />
+          <rect x="5" y="10" width="2" height="990" fill="#C6B3B2" />
+        </svg>
+      </div>
+    )}
+    <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 tracking-[0.04em] whitespace-nowrap">
       {label}
     </p>
     {!vertical && (
-      <div className="relative h-px flex-1">
-        <img
-          src={direction === 'left' ? stackDividerArrowLeft : stackDividerArrowRight}
-          alt=""
-          className="absolute inset-0 h-full w-full"
-          aria-hidden="true"
-        />
+      <div className="relative h-3 flex-1">
+        {direction === 'right' ? (
+          <svg
+            preserveAspectRatio="none"
+            width="100%"
+            height="100%"
+            viewBox="0 0 1000 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0 h-full w-full"
+            aria-hidden="true"
+          >
+            <rect x="0" y="5" width="990" height="2" fill="#C6B3B2" />
+            <polygon points="990,0 990,12 1000,6" fill="#C6B3B2" />
+          </svg>
+        ) : (
+          <svg
+            preserveAspectRatio="none"
+            width="100%"
+            height="100%"
+            viewBox="0 0 1000 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="absolute inset-0 h-full w-full"
+            aria-hidden="true"
+          >
+            <polygon points="0,6 10,0 10,12" fill="#C6B3B2" />
+            <rect x="10" y="5" width="990" height="2" fill="#C6B3B2" />
+          </svg>
+        )}
       </div>
     )}
-    {vertical && (
-      <div className="relative w-px flex-1">
-        <div className="h-full w-full bg-gradient-to-b from-[rgba(197,183,173,0.15)] to-[rgba(197,183,173,0.6)]" />
+    {vertical && direction === 'right' && (
+      <div className="relative w-3 flex-1">
+        <svg
+          preserveAspectRatio="none"
+          width="100%"
+          height="100%"
+          viewBox="0 0 12 1000"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        >
+          <rect x="5" y="0" width="2" height="990" fill="#C6B3B2" />
+          <polygon points="6,1000 0,990 12,990" fill="#C6B3B2" />
+        </svg>
       </div>
     )}
   </div>
