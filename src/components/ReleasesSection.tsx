@@ -19,15 +19,15 @@ const badgeTone: Record<Release['badgeType'], string> = {
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
   <section className="bg-dark-neutral-950">
     <TechnicalPanel alt="Sig.Network future roadmap" src={techIllustration5} srcMobile={techIllustrationMobile5} />
-    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 py-[133px] pr-[60px] pl-0 max-md:px-4 max-md:py-12">
-      <h2 className="text-clam-shell-400 text-[110px] leading-[98px] font-bold tracking-[-2.2px] max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[0.89]">
+    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 px-4 py-12 md:px-0 md:py-[133px] md:pr-[60px] md:pl-0">
+      <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[0.89] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
         Releases
       </h2>
-      <div className="mt-[50px] ml-[60px] flex flex-col gap-1 max-md:mt-10 max-md:ml-0 max-md:gap-8">
+      <div className="mt-10 ml-0 flex flex-col gap-8 md:mt-[50px] md:ml-[60px] md:gap-1">
         {releases.map((release, index) => (
           <div
             key={release.date}
-            className={`flex gap-10 pt-6 pb-10 max-md:flex-col max-md:gap-4 max-md:pb-8 ${index === 0 ? 'border-t-[4px] border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
+            className={`flex flex-col gap-4 pt-6 pb-8 md:flex-row md:gap-10 md:pb-10 ${index === 0 ? 'border-t-[4px] border-b border-[#c6b3b2]' : 'border-b border-[#c6b3b2]'}`}
           >
             <div className="flex shrink-0 flex-col items-start gap-2.5">
               <span
@@ -39,7 +39,7 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
                 {release.date}
               </p>
             </div>
-            <h3 className="text-dark-neutral-200 w-[400px] shrink-0 text-3xl leading-[38px] font-semibold max-md:w-full max-md:text-[28px]">
+            <h3 className="text-dark-neutral-200 w-full shrink-0 text-[28px] leading-[38px] font-semibold md:w-[400px] md:text-3xl">
               {release.title}
             </h3>
             <p className="font-mono-custom text-dark-neutral-500 flex-1 text-base leading-6 opacity-85">

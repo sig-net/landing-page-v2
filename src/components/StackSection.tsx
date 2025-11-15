@@ -1,8 +1,5 @@
 import type { StackStep } from '../content'
-import {
-  techIllustration3,
-  techIllustrationMobile3,
-} from '../content'
+import { techIllustration3, techIllustrationMobile3 } from '../content'
 import stackDividerArrowLeft from '../assets/stack-divider-arrow-left.svg'
 import stackDividerArrowRight from '../assets/stack-divider-arrow-right.svg'
 import SoftSurfacePanel from './SoftSurfacePanel'
@@ -21,7 +18,9 @@ const StackDivider = ({
   label: string
   vertical?: boolean
 }) => (
-  <div className={`flex ${vertical ? 'flex-row items-start gap-3' : 'flex-row items-center gap-[25px]'}`}>
+  <div
+    className={`flex ${vertical ? 'flex-row items-start gap-3' : 'flex-row items-center gap-[25px]'}`}
+  >
     <p className="font-mono-custom text-dark-neutral-400 text-sm leading-5 tracking-[0.6em] whitespace-nowrap uppercase">
       {label}
     </p>
@@ -45,12 +44,16 @@ const StackDivider = ({
 
 const StackSection = ({ steps }: StackSectionProps) => (
   <section className="bg-dark-neutral-950">
-    <TechnicalPanel alt="Sig.Network data flow" src={techIllustration3} srcMobile={techIllustrationMobile3} />
-    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 py-[133px] pr-[60px] pl-0 max-md:px-4 max-md:py-12">
-      <h2 className="text-clam-shell-400 text-[110px] leading-[98px] font-bold tracking-[-2.2px] max-md:text-[clamp(48px,8vw,110px)] max-md:leading-[clamp(43px,7.13vw,98px)]">
+    <TechnicalPanel
+      alt="Sig.Network data flow"
+      src={techIllustration3}
+      srcMobile={techIllustrationMobile3}
+    />
+    <SoftSurfacePanel className="text-dark-neutral-600 mt-0 px-4 py-12 md:px-0 md:py-[60px]">
+      <h2 className="text-clam-shell-400 text-[clamp(48px,8vw,110px)] leading-[clamp(43px,7.13vw,98px)] font-bold tracking-[-2.2px] md:text-[110px] md:leading-[98px]">
         Built on a proven stack:
       </h2>
-      <div className="mt-[35px] ml-[60px] flex flex-col gap-10 max-md:mt-10 max-md:ml-0 max-md:gap-8">
+      <div className="mt-10 ml-0 flex flex-col gap-8 md:mx-[60px] md:mt-[35px] md:gap-10">
         <div className="hidden md:block">
           <StackDivider label="Request" />
         </div>
