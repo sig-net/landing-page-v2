@@ -55,7 +55,7 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
         </div>
       </div>
     </div>
-    <img src={linesBottom} alt="" className="w-full" aria-hidden />
+    <img src={linesBottom} alt="" className="w-full md:pb-20" aria-hidden />
   </footer>
 )
 
