@@ -96,7 +96,7 @@ const Navigation = ({ navItems }: NavigationProps) => {
             >
               <a
                 href={item.href}
-                className="text-dark-neutral-500 text-sm leading-5 font-medium"
+                className="text-dark-neutral-500 text-[14px] leading-[20px] font-medium"
                 {...(item.external && { target: '_blank', rel: 'noopener noreferrer' })}
               >
                 {item.label}

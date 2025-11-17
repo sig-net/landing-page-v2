@@ -28,7 +28,7 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
       {releases.map((release, index) => (
         <div
           key={release.date}
-          className={`border-border-divider flex flex-col gap-1 border-b pt-2 pb-3 md:flex-row md:gap-10 md:pt-6 md:pb-10 ${index === 0 ? 'border-t md:border-t-4' : ''}`}
+          className={`border-border-divider flex flex-col gap-2 border-b pt-2 pb-3 md:flex-row md:gap-10 md:pt-6 md:pb-10 ${index === 0 ? 'border-t md:border-t-4' : ''}`}
         >
           <div className="flex shrink-0 flex-col items-start gap-1 md:gap-2.5">
             <span

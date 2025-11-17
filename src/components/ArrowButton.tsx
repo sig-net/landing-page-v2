@@ -14,10 +14,16 @@ const variantClasses: Record<ArrowButtonProps['variant'], string> = {
   pastel: 'bg-pastels-polar-200 text-dark-neutral-400',
 }
 
-const ArrowButton = ({ children, className = '', variant, href, external }: ArrowButtonProps) => (
+const ArrowButton = ({
+  children,
+  className = '',
+  variant,
+  href,
+  external,
+}: ArrowButtonProps) => (
   <a
     href={href}
-    className={`border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-3 py-2 font-sans text-xs leading-4 font-semibold transition hover:opacity-90 md:px-5 md:py-3 md:text-base md:leading-6 ${variantClasses[variant]} ${className}`.trim()}
+    className={`border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-3 py-2 font-sans text-[10px] leading-[15px] font-semibold md:px-[18px] md:py-[12px] md:text-[16px] md:leading-[24px] ${variantClasses[variant]} ${className}`.trim()}
     {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
   >
     {children}

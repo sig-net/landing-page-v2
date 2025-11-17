@@ -112,7 +112,7 @@ const StackSection = ({ steps }: StackSectionProps) => (
         <StackDivider label="Request" vertical />
         <div className="grid flex-1 grid-cols-1">
           {steps.map((step) => (
-            <div key={step.title} className={`text-dark-neutral-400 p-4 ${step.tone}`}>
+            <div key={step.title} className={`text-dark-neutral-400 p-5 ${step.tone}`}>
               <h3 className="font-sans text-[14px] leading-[20px] font-bold">
                 {step.title}
               </h3>
