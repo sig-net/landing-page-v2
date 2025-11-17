@@ -12,7 +12,7 @@ const HeroSection = () => (
     <img
       src={linesTop}
       alt=""
-      className="absolute inset-x-0 top-0 h-[89px] w-full object-cover object-top md:h-[246px]"
+      className="absolute inset-x-0 top-0 h-[134px] w-full object-cover object-top sm:h-[84px] md:h-[246px]"
       aria-hidden
     />
     <div className="relative mx-auto pt-[34px] pb-[27px] md:pt-[156px] md:pb-[82px]">
