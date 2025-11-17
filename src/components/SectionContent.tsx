@@ -4,6 +4,7 @@ type SectionContentProps = PropsWithChildren<{
   title: string
   bodyClassName?: string
   className?: string
+  id?: string
 }>
 
 const SectionContent = ({
@@ -11,8 +12,9 @@ const SectionContent = ({
   children,
   bodyClassName = '',
   className = '',
+  id,
 }: SectionContentProps) => (
-  <div className={`py-[30px] md:py-15 ${className}`.trim()}>
+  <div id={id} className={`py-[30px] md:py-15 ${className}`.trim()}>
     <h2 className="text-clam-shell-400 font-sans text-[48px] leading-[50px] font-bold -tracking-[0.98px] md:text-[110px] md:leading-[98px] md:-tracking-[2.2px]">
       {title}
     </h2>

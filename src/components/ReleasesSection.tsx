@@ -14,13 +14,14 @@ const badgeTone: Record<Release['badgeType'], string> = {
 }
 
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
-  <section id="roadmap">
+  <section>
     <TechnicalPanel
       alt="Sig.Network future roadmap"
       src={techIllustration5}
       srcMobile={techIllustrationMobile5}
     />
     <SectionContent
+      id="roadmap"
       className="text-dark-neutral-600"
       title="Releases"
       bodyClassName="mt-4 flex flex-col md:mt-[50px]"

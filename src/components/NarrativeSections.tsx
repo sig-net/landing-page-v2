@@ -9,9 +9,10 @@ type NarrativeSectionsProps = {
 const NarrativeSections = ({ slices }: NarrativeSectionsProps) => (
   <>
     {slices.map((slice, index) => (
-      <section key={slice.title} id={index === 0 ? 'what' : undefined}>
+      <section key={slice.title}>
         <TechnicalPanel alt={slice.alt} src={slice.image} srcMobile={slice.imageMobile} />
         <SectionContent
+          id={index === 0 ? 'what' : undefined}
           title={slice.title}
           bodyClassName="flex flex-col items-center mt-5 md:mt-[40px] md:items-start"
         >
