@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
 import burgerMenu from '../assets/burger-menu.svg'
-import signetworkLogo from '../assets/signetwork-logo.svg'
 import type { NavItem } from '../content'
 import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'
+import Logo from './Logo'
 
 type NavigationProps = {
   navItems: NavItem[]
@@ -30,7 +30,7 @@ const Navigation = ({ navItems }: NavigationProps) => {
   return (
     <nav className="border-clam-shell-500 bg-clam-shell-50 border-b">
       <div className="border-clam-shell-500 flex h-[74px] items-center justify-between border-b px-5 xl:hidden">
-        <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
+        <Logo className="text-dark-neutral-300 h-[34px] w-[200px]" />
         <button
           type="button"
           className="flex items-center"
@@ -68,8 +68,15 @@ const Navigation = ({ navItems }: NavigationProps) => {
                 </a>
               </div>
             ))}
-            <div className="border-clam-shell-500 flex h-[74px] items-center border-b px-5" onClick={toggleMenu}>
-              <ArrowButton variant="pastel" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
+            <div
+              className="border-clam-shell-500 flex h-[74px] items-center border-b px-5"
+              onClick={toggleMenu}
+            >
+              <ArrowButton
+                variant="pastel"
+                href={ctaButtons.docs.href}
+                external={ctaButtons.docs.external}
+              >
                 {ctaButtons.docs.label}
               </ArrowButton>
             </div>
@@ -79,7 +86,7 @@ const Navigation = ({ navItems }: NavigationProps) => {
 
       <div className="hidden h-[180px] items-center xl:flex">
         <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-l px-15">
-          <img src={signetworkLogo} alt="Sig.Network" className="h-[34px] w-[200px]" />
+          <Logo className="text-dark-neutral-300 h-[34px] w-[200px]" />
         </div>
         <div className="ml-auto flex h-[180px] items-stretch">
           {navItems.map((item) => (
@@ -97,7 +104,11 @@ const Navigation = ({ navItems }: NavigationProps) => {
             </div>
           ))}
           <div className="border-clam-shell-500 flex h-[180px] shrink-0 items-center border-t border-r border-l px-15">
-            <ArrowButton variant="pastel" href={ctaButtons.docs.href} external={ctaButtons.docs.external}>
+            <ArrowButton
+              variant="pastel"
+              href={ctaButtons.docs.href}
+              external={ctaButtons.docs.external}
+            >
               {ctaButtons.docs.label}
             </ArrowButton>
           </div>

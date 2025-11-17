@@ -1,22 +1,16 @@
 import linesBottom from '../assets/lines-bottom.svg'
-import signetworkLogo from '../assets/signetwork-logo.svg'
 import type { FooterColumn } from '../content'
 import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'
+import Logo from './Logo'
 
 type FooterSectionProps = {
   columns: FooterColumn[]
 }
 
 const FooterSection = ({ columns }: FooterSectionProps) => (
-  <footer className="text-dark-neutral-600 relative overflow-hidden">
-    <img
-      src={linesBottom}
-      alt=""
-      className="pointer-events-none absolute inset-x-0 bottom-0 w-full opacity-40"
-      aria-hidden
-    />
-    <div className="relative flex flex-col items-start pb-16 md:pt-[32px] md:pb-[270px]">
+  <footer className="text-dark-neutral-600">
+    <div className="flex flex-col items-start pb-16 md:pt-10">
       <h2 className="text-left text-5xl leading-[50px] font-bold tracking-[-2.2px] text-[#625757] md:text-8xl md:leading-[98px]">
         Ready to make your Dapp cross-chain?
       </h2>
@@ -54,17 +48,14 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
           </div>
         ))}
         <div className="flex flex-col items-center md:block">
-          <img
-            src={signetworkLogo}
-            alt="Sig.Network"
-            className="h-[40px] w-[237px] md:h-[34px] md:w-[200px]"
-          />
+          <Logo className="text-dark-neutral-600 h-[40px] w-[237px] md:h-[34px] md:w-[200px]" />
           <p className="mt-3 text-sm leading-5 font-semibold opacity-80 md:mt-5">
             2025 Sig.Network
           </p>
         </div>
       </div>
     </div>
+    <img src={linesBottom} alt="" className="w-full" aria-hidden />
   </footer>
 )
 
