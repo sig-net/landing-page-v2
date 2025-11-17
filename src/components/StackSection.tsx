@@ -113,8 +113,10 @@ const StackSection = ({ steps }: StackSectionProps) => (
         <div className="grid flex-1 grid-cols-1">
           {steps.map((step) => (
             <div key={step.title} className={`text-dark-neutral-400 p-4 ${step.tone}`}>
-              <h3 className="font-sans text-sm leading-6 font-bold">{step.title}</h3>
-              <p className="text-xs leading-4">{step.text}</p>
+              <h3 className="font-sans text-[14px] leading-[20px] font-bold">
+                {step.title}
+              </h3>
+              <p className="text-[12px] leading-[14px]">{step.text}</p>
             </div>
           ))}
         </div>
@@ -127,8 +129,10 @@ const StackSection = ({ steps }: StackSectionProps) => (
             key={step.title}
             className={`text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
           >
-            <h3 className="font-sans text-base leading-6 font-bold">{step.title}</h3>
-            <p className="text-sm">{step.text}</p>
+            <h3 className="font-sans text-[16px] leading-[24px] font-bold">
+              {step.title}
+            </h3>
+            <p className="text-[14px] leading-[20px]">{step.text}</p>
           </div>
         ))}
       </div>

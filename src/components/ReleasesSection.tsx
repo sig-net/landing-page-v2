@@ -32,18 +32,18 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
         >
           <div className="flex shrink-0 flex-col items-start gap-1 md:gap-2.5">
             <span
-              className={`rounded-[4px] border px-[6px] py-[2px] font-sans text-[10px] leading-[10px] font-bold tracking-wide uppercase md:text-sm md:leading-4 md:tracking-wider ${badgeTone[release.badgeType]}`}
+              className={`rounded-[4px] border px-[4px] py-[2px] font-sans text-[10px] leading-[10px] font-bold tracking-[1px] uppercase md:px-[6px] md:text-[14px] md:leading-[18px] md:tracking-[1.4px] ${badgeTone[release.badgeType]}`}
             >
               {release.badge}
             </span>
-            <p className="text-dark-neutral-500 w-[200px] text-xs leading-4 md:text-base">
+            <p className="text-dark-neutral-500 w-[200px] text-[12px] leading-[14px] md:text-[16px] md:leading-[24px]">
               {release.date}
             </p>
           </div>
-          <h3 className="text-dark-neutral-200 w-full shrink-0 font-sans text-xl leading-8 font-semibold md:w-[400px] md:text-3xl md:leading-9">
+          <h3 className="text-dark-neutral-200 w-full shrink-0 font-sans text-[20px] leading-[30px] font-semibold md:w-[400px] md:text-[30px] md:leading-[38px]">
             {release.title}
           </h3>
-          <p className="text-dark-neutral-400 flex-1 text-xs leading-4 opacity-85 md:text-base md:leading-6">
+          <p className="text-dark-neutral-500 flex-1 text-[12px] leading-[14px] opacity-85 md:text-[16px] md:leading-[24px]">
             {release.description}
           </p>
         </div>

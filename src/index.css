@@ -46,6 +46,9 @@
 }
 
 @theme {
+  --font-family-sans: var(--font-sans);
+  --font-family-mono: var(--font-mono);
+
   --color-clam-shell-50: var(--colors-clam-shell-50);
   --color-clam-shell-400: var(--colors-clam-shell-400);
   --color-clam-shell-500: var(--colors-clam-shell-500);

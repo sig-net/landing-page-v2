@@ -15,7 +15,7 @@ const NarrativeSections = ({ slices }: NarrativeSectionsProps) => (
           title={slice.title}
           bodyClassName="flex flex-col items-center mt-5 md:mt-[40px] md:items-start"
         >
-          <div className="text-dark-neutral-200 mx-auto max-w-[200px] text-xs leading-4 md:max-w-[520px] md:text-lg md:leading-7">
+          <div className="text-dark-neutral-200 mx-auto max-w-[200px] text-[12px] leading-[14px] md:max-w-[520px] md:text-[18px] md:leading-[28px]">
             {slice.description.split('\n\n').map((paragraph, index) => (
               <p key={index} className={index > 0 ? 'mt-5' : ''}>
                 {paragraph}
