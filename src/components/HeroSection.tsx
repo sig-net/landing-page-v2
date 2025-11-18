@@ -12,11 +12,11 @@ const HeroSection = () => (
     <img
       src={linesTop}
       alt=""
-      className="absolute inset-x-0 top-0 h-[134px] w-full object-cover object-top sm:h-[84px] md:h-[246px]"
+      className="absolute inset-x-0 top-0 h-[224px] w-full object-cover object-top sm:h-[160px] md:h-[386px]"
       aria-hidden
     />
     <div className="relative mx-auto pt-[34px] pb-[27px] md:pt-[156px] md:pb-[82px]">
-      <h1 className="text-dark-neutral-600 font-sans text-[48px] leading-[50px] font-bold -tracking-[0.98px] md:text-[110px] md:leading-[98px] md:-tracking-[2.2px]">
+      <h1 className="text-dark-neutral-600 max-w-[1140px] font-sans text-[64px] leading-[65px] font-bold -tracking-[1.28px] md:text-[140px] md:leading-[118px] md:-tracking-[2.8px]">
         Blockchains without borders.
       </h1>
       <div className="px-5 md:px-15">
