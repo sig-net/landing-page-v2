@@ -14,9 +14,10 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
       <h2 className="text-dark-neutral-500 font-sans text-[48px] leading-[50px] font-bold -tracking-[0.98px] md:text-[110px] md:leading-[98px] md:-tracking-[2.2px]">
         Ready to make your dApp cross-chain native?
       </h2>
-      <div className="flex w-full items-center justify-center py-5">
+      <div className="flex w-full items-center justify-center py-5 md:ml-15 md:justify-start">
         <ArrowButton
           variant="pastel"
+          className="px-[18px] py-[9px] md:px-[18px] md:py-[9px]"
           href={ctaButtons.docs.href}
           external={ctaButtons.docs.external}
         >

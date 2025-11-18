@@ -1,6 +1,8 @@
 import type { PropsWithChildren } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 
+import { cn } from '../lib/utils'
+
 type ArrowButtonProps = PropsWithChildren<{
   variant: 'brandLight' | 'brandDark' | 'pastel'
   href: string
@@ -23,7 +25,11 @@ const ArrowButton = ({
 }: ArrowButtonProps) => (
   <a
     href={href}
-    className={`border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-3 py-2 font-sans text-[10px] leading-[15px] font-semibold md:px-[18px] md:py-[12px] md:text-[16px] md:leading-[24px] ${variantClasses[variant]} ${className}`.trim()}
+    className={cn(
+      'border-dark-neutral-400 flex items-center gap-1.5 rounded-[2px] border px-3 py-2 font-sans text-[10px] leading-[15px] font-semibold md:px-[18px] md:py-[12px] md:text-[16px] md:leading-[24px]',
+      variantClasses[variant],
+      className
+    )}
     {...(external && { target: '_blank', rel: 'noopener noreferrer' })}
   >
     {children}
