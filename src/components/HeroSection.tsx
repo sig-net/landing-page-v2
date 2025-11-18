@@ -1,5 +1,5 @@
 import linesTop from '../assets/lines-top.svg'
-import gradientWithNoise from '../assets/gradient-with-noise.png'
+import gradientWithNoise from '../assets/gradient-with-noise.webp'
 
 import { ctaButtons } from '../content'
 import ArrowButton from './ArrowButton'

@@ -1,13 +1,13 @@
-import techIllustration1 from './assets/technical-illustration-1.png'
-import techIllustration2 from './assets/technical-illustration-2.png'
-import techIllustration3 from './assets/technical-illustration-3.png'
-import techIllustration4 from './assets/technical-illustration-4.png'
-import techIllustration5 from './assets/technical-illustration-5.png'
-import techIllustrationMobile1 from './assets/technical-illustration-mobile-1.png'
-import techIllustrationMobile2 from './assets/technical-illustration-mobile-2.png'
-import techIllustrationMobile3 from './assets/technical-illustration-mobile-3.png'
-import techIllustrationMobile4 from './assets/technical-illustration-mobile-4.png'
-import techIllustrationMobile5 from './assets/technical-illustration-mobile-5.png'
+import techIllustration1 from './assets/technical-illustration-1.webp'
+import techIllustration2 from './assets/technical-illustration-2.webp'
+import techIllustration3 from './assets/technical-illustration-3.webp'
+import techIllustration4 from './assets/technical-illustration-4.webp'
+import techIllustration5 from './assets/technical-illustration-5.webp'
+import techIllustrationMobile1 from './assets/technical-illustration-mobile-1.webp'
+import techIllustrationMobile2 from './assets/technical-illustration-mobile-2.webp'
+import techIllustrationMobile3 from './assets/technical-illustration-mobile-3.webp'
+import techIllustrationMobile4 from './assets/technical-illustration-mobile-4.webp'
+import techIllustrationMobile5 from './assets/technical-illustration-mobile-5.webp'
 
 export type NavItem = {
   label: string
