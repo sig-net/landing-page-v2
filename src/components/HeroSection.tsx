@@ -17,7 +17,7 @@ const HeroSection = () => (
     />
     <div className="relative mx-auto pt-[34px] pb-[27px] md:pt-[156px] md:pb-[82px]">
       <h1 className="text-dark-neutral-600 font-sans text-[48px] leading-[50px] font-bold -tracking-[0.98px] md:text-[110px] md:leading-[98px] md:-tracking-[2.2px]">
-        DeFi without borders.
+        Blockchains without borders.
       </h1>
       <div className="px-5 md:px-15">
         <div className="mt-[33px] space-y-[9px] text-xs leading-4 md:mt-[22px] md:max-w-[632px] md:space-y-[15px] md:text-base md:leading-6">

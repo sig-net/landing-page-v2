@@ -34,17 +34,17 @@ export const narrativeSlices: NarrativeSlice[] = [
     image: techIllustration1,
     imageMobile: techIllustrationMobile1,
     alt: 'Technical diagram showing cross-chain DEX connectivity',
-    title: 'Sig.Network is a universal layer that makes apps native across chains.',
+    title: 'Sig.Network is a cross-chain messaging layer that lets your app reach everything and run everywhere.',
     description:
-      'We enable smart contracts on different chains to interact directly, quickly, and securely by signing native messages with decentralized private keys.',
+      "We solve crypto's fragmentation and reach problems by enabling your app to access any asset and liquidity across ecosystems.",
   },
   {
     image: techIllustration2,
     imageMobile: techIllustrationMobile2,
     alt: 'Technical diagram showing synchronized execution',
-    title: 'Sig.Network synchronizes state and execution across ecosystems.',
+    title: 'Sig.Network makes apps native across chains without bridging or wrapping.',
     description:
-      "When your contract calls Sig.Network's SDK, unsigned transactions are generated for the target chain.\n\nThe MPC signers validate and execute these transactions, returning the results to your original contract.",
+      'Deploy on the chain you already use, and experience no regressions for your app.',
   },
 ]
 
