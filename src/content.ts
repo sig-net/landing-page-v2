@@ -34,7 +34,8 @@ export const narrativeSlices: NarrativeSlice[] = [
     image: techIllustration1,
     imageMobile: techIllustrationMobile1,
     alt: 'Technical diagram showing cross-chain DEX connectivity',
-    title: 'Sig.Network is a cross-chain messaging layer that lets your app reach everything and run everywhere.',
+    title:
+      'Sig.Network is a cross-chain messaging layer that lets your app reach everything and run everywhere.',
     description:
       "We solve crypto's fragmentation and reach problems by enabling your app to access any asset and liquidity across ecosystems.",
   },
@@ -141,21 +142,29 @@ export const releases: Release[] = [
   {
     badge: 'Testnet',
     badgeType: 'testnet',
-    date: 'October 2025',
+    date: 'December 2025',
     title: 'Ethereum ↔ Solana',
     description: 'Full bidirectional communication with response handling.',
   },
   {
     badge: 'Development',
     badgeType: 'development',
-    date: 'November 2025',
+    date: 'January 2026',
     title: '+Bitcoin',
-    description: 'Use native Bitcoin liquidity anywhere',
+    description: 'Use native Bitcoin liquidity anywhere.',
   },
   {
     badge: 'Development',
     badgeType: 'development',
-    date: 'January 2026',
+    date: 'February 2026',
+    title: '+Polkadot',
+    description:
+      'Multichain by default, access cross chain lending, swapping and yield through Hydration.',
+  },
+  {
+    badge: 'Development',
+    badgeType: 'development',
+    date: 'March 2026',
     title: '+Hyperliquid',
     description: 'Additional blockchain integrations and protocol enhancements.',
   },
@@ -184,13 +193,21 @@ export const footerColumns: FooterColumn[] = [
     heading: 'Build',
     links: [
       { label: 'Docs', href: 'https://docs.sig.network/', external: true },
-      { label: 'Demo', href: 'https://solana-contract-examples.vercel.app/', external: true },
+      {
+        label: 'Demo',
+        href: 'https://solana-contract-examples.vercel.app/',
+        external: true,
+      },
     ],
   },
   {
     heading: 'Connect',
     links: [
-      { label: 'Careers', href: 'https://djinni.co/jobs/company-sig-network/', external: true },
+      {
+        label: 'Careers',
+        href: 'https://djinni.co/jobs/company-sig-network/',
+        external: true,
+      },
       { label: 'Twitter', href: 'https://x.com/Sig_Network', external: true },
     ],
   },
