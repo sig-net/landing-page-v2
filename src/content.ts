@@ -140,8 +140,8 @@ export const releases: Release[] = [
     description: 'Execute transactions on any blockchain from Solana contracts.',
   },
   {
-    badge: 'Testnet',
-    badgeType: 'testnet',
+    badge: 'Mainnet',
+    badgeType: 'mainnet',
     date: 'December 2025',
     title: 'Ethereum ↔ Solana',
     description: 'Full bidirectional communication with response handling.',
