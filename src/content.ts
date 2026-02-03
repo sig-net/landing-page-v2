@@ -147,15 +147,8 @@ export const releases: Release[] = [
     description: 'Full bidirectional communication with response handling.',
   },
   {
-    badge: 'Development',
-    badgeType: 'development',
-    date: 'January 2026',
-    title: '+Bitcoin',
-    description: 'Use native Bitcoin liquidity anywhere.',
-  },
-  {
-    badge: 'Development',
-    badgeType: 'development',
+    badge: 'Testnet',
+    badgeType: 'testnet',
     date: 'February 2026',
     title: '+Polkadot',
     description:
@@ -165,8 +158,16 @@ export const releases: Release[] = [
     badge: 'Development',
     badgeType: 'development',
     date: 'March 2026',
-    title: '+Hyperliquid',
-    description: 'Additional blockchain integrations and protocol enhancements.',
+    title: '+Canton',
+    description:
+      'Access institutional-grade financial applications and tokenized assets on Canton.',
+  },
+  {
+    badge: 'Development',
+    badgeType: 'development',
+    date: 'April 2026',
+    title: '+Bitcoin',
+    description: 'Use native Bitcoin liquidity anywhere.',
   },
 ]
 
