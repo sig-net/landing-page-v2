@@ -149,15 +149,7 @@ export const releases: Release[] = [
   {
     badge: 'Testnet',
     badgeType: 'testnet',
-    date: 'February 2026',
-    title: '+Polkadot',
-    description:
-      'Multichain by default, access cross chain lending, swapping and yield through Hydration.',
-  },
-  {
-    badge: 'Development',
-    badgeType: 'development',
-    date: 'March 2026',
+    date: 'June 2026',
     title: '+Canton',
     description:
       'Access institutional-grade financial applications and tokenized assets on Canton.',
@@ -165,9 +157,23 @@ export const releases: Release[] = [
   {
     badge: 'Development',
     badgeType: 'development',
-    date: 'April 2026',
+    date: 'August 2026',
+    title: '+BNB',
+    description: "Access Asia's largest DeFi ecosystem and Binance-native liquidity.",
+  },
+  {
+    badge: 'Development',
+    badgeType: 'development',
+    date: 'September 2026',
+    title: '+Polygon',
+    description: 'Access the most liquid prediction markets in the world.',
+  },
+  {
+    badge: 'Development',
+    badgeType: 'development',
+    date: 'October 2026',
     title: '+Bitcoin',
-    description: 'Use native Bitcoin liquidity anywhere.',
+    description: 'Use native Bitcoin liquidity.',
   },
 ]
 
