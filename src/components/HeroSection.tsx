@@ -22,7 +22,7 @@ const HeroSection = () => (
       <div className="px-5 md:px-15">
         <div className="mt-[33px] space-y-[9px] text-xs leading-4 md:mt-[22px] md:max-w-[632px] md:space-y-[15px] md:text-base md:leading-6">
           <p>The apps you need and the liquidity you want are on other chains.</p>
-          <p>Deploy on the chain you use. Reach every market, and any liquidity.</p>
+          <p>Deploy on your chain, reach every market, and any liquidity.</p>
         </div>
         <div className="mt-[9px] flex items-center gap-[11px] md:mt-[15px] md:gap-5">
           <ArrowButton
