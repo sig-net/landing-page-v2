@@ -16,8 +16,9 @@ export type NavItem = {
 }
 
 export const navItems: NavItem[] = [
-  { label: 'What?', href: '#what' },
+  { label: 'How it works', href: '#what' },
   { label: 'Roadmap', href: '#roadmap' },
+  { label: 'Docs', href: 'https://docs.sig.network/', external: true },
   { label: 'Blog', href: 'https://mirror.xyz/signetwork.eth', external: true },
 ]
 
@@ -35,17 +36,17 @@ export const narrativeSlices: NarrativeSlice[] = [
     imageMobile: techIllustrationMobile1,
     alt: 'Technical diagram showing cross-chain DEX connectivity',
     title:
-      'Sig.Network is a cross-chain messaging layer that lets your app reach everything and run everywhere.',
+      "Sig.Network gives your application direct access to every chain's assets and markets.",
     description:
-      "We solve crypto's fragmentation and reach problems by enabling your app to access any asset and liquidity across ecosystems.",
+      'Your contracts control assets on every chain, and the ETH your app holds still swaps on Uniswap and can borrow on Aave.',
   },
   {
     image: techIllustration2,
     imageMobile: techIllustrationMobile2,
     alt: 'Technical diagram showing synchronized execution',
-    title: 'Sig.Network makes apps native across chains without bridging or wrapping.',
+    title: 'Onboard users from any wallet, exchange, or chain.',
     description:
-      'Deploy on the chain you already use, and experience no regressions for your app.',
+      'Deposits arrive natively and pool privately. The ledger sees a valid transaction, not who, how much, or where.',
   },
 ]
 
@@ -72,7 +73,7 @@ export const stackSteps: StackStep[] = [
     tone: 'bg-brand-600',
   },
   {
-    title: 'Cross-chain Message Router',
+    title: 'Transaction Router',
     text: "Native signed transactions are sent to the destination chain's mempool or execution layer.",
     tone: 'bg-brand-800',
   },
@@ -175,6 +176,14 @@ export const releases: Release[] = [
     title: '+Bitcoin',
     description: 'Use native Bitcoin liquidity.',
   },
+  {
+    badge: 'Development',
+    badgeType: 'development',
+    date: 'Q1 2027',
+    title: 'Atomic cross-chain calls',
+    description:
+      'Partner chains extend their sequencers so a single transaction settles atomically across chains.',
+  },
 ]
 
 export type FooterLink = {
@@ -210,6 +219,7 @@ export const footerColumns: FooterColumn[] = [
   {
     heading: 'Connect',
     links: [
+      { label: 'Contact', href: 'mailto:pitches@sig.network' },
       {
         label: 'Careers',
         href: 'https://djinni.co/jobs/company-sig-network/',
@@ -231,6 +241,11 @@ export const ctaButtons = {
     label: 'Launch demo',
     href: 'https://solana-contract-examples.vercel.app/',
     external: true,
+  },
+  contact: {
+    label: 'Talk to us',
+    href: 'mailto:pitches@sig.network',
+    external: false,
   },
   docs: {
     label: 'Start building',

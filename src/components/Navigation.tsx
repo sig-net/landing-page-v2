@@ -74,10 +74,10 @@ const Navigation = ({ navItems }: NavigationProps) => {
             >
               <ArrowButton
                 variant="pastel"
-                href={ctaButtons.docs.href}
-                external={ctaButtons.docs.external}
+                href={ctaButtons.contact.href}
+                external={ctaButtons.contact.external}
               >
-                {ctaButtons.docs.label}
+                {ctaButtons.contact.label}
               </ArrowButton>
             </div>
           </div>

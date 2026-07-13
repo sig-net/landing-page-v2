@@ -21,11 +21,8 @@ const HeroSection = () => (
       </h1>
       <div className="px-5 md:px-15">
         <div className="mt-[33px] space-y-[9px] text-xs leading-4 md:mt-[22px] md:max-w-[632px] md:space-y-[15px] md:text-base md:leading-6">
-          <p>DeFi is siloed today, but it doesn&apos;t need to be.</p>
-          <p>
-            For the first time, deploy on the chain you use and execute natively on every
-            chain without restriction.
-          </p>
+          <p>The apps you need and the liquidity you want are on other chains.</p>
+          <p>Deploy on the chain you use. Reach every market, and any liquidity.</p>
         </div>
         <div className="mt-[9px] flex items-center gap-[11px] md:mt-[15px] md:gap-5">
           <ArrowButton
@@ -37,10 +34,10 @@ const HeroSection = () => (
           </ArrowButton>
           <ArrowButton
             variant="brandDark"
-            href={ctaButtons.docs.href}
-            external={ctaButtons.docs.external}
+            href={ctaButtons.contact.href}
+            external={ctaButtons.contact.external}
           >
-            {ctaButtons.docs.label}
+            {ctaButtons.contact.label}
           </ArrowButton>
         </div>
       </div>
