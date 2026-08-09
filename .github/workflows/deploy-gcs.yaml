@@ -5,6 +5,8 @@ on:
     branches: [ main ]
     paths:
       - "src/**"
+      - "blog/**"
+      - "scripts/**"
       - "public/**"
       - "index.html"
       - "vite.config.ts"

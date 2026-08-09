@@ -19,7 +19,7 @@ export const navItems: NavItem[] = [
   { label: 'How it works', href: '#what' },
   { label: 'Roadmap', href: '#roadmap' },
   { label: 'Docs', href: 'https://docs.sig.network/', external: true },
-  { label: 'Blog', href: 'https://mirror.xyz/signetwork.eth', external: true },
+  { label: 'Blog', href: '/blog/index.html' },
 ]
 
 export type NarrativeSlice = {
@@ -48,6 +48,43 @@ export const narrativeSlices: NarrativeSlice[] = [
     description:
       'Deposits arrive natively and pool privately. The ledger sees a valid transaction, not who, how much, or where.',
   },
+]
+
+export type ProofPoint = {
+  title: string
+  text: string
+  link?: { label: string; href: string }
+}
+
+export const proofPoints: ProofPoint[] = [
+  {
+    title: 'Audited, live on mainnet',
+    text: 'In production on Ethereum and Solana since March 2025. The only live network with cross-chain read and write.',
+  },
+  {
+    title: 'A team with a track record',
+    text: 'Built by the team that created NEAR Chain Signatures.',
+  },
+  {
+    title: 'Native interop, shipped',
+    text: 'Our partnership with Hydration brings native Bitcoin, Ethereum, and Solana assets to Polkadot.',
+    link: {
+      label: 'Read the coverage in The Defiant',
+      href: 'https://thedefiant.io/news/defi/sig-network-unlocks-native-interoperability-between-polkadot-ethereum-solana-and-bitcoin',
+    },
+  },
+]
+
+export const proofClients: string[] = [
+  'Hydration',
+  'Temple',
+  'Hecto',
+  'OpenVector',
+  'Minted',
+  'Yieldly',
+  'Manifest AI',
+  'Sonic',
+  'Ammalgam',
 ]
 
 export type StackStep = {
@@ -150,7 +187,7 @@ export const releases: Release[] = [
   {
     badge: 'Testnet',
     badgeType: 'testnet',
-    date: 'June 2026',
+    date: 'September 2026',
     title: '+Canton',
     description:
       'Access institutional-grade financial applications and tokenized assets on Canton.',
@@ -158,16 +195,16 @@ export const releases: Release[] = [
   {
     badge: 'Development',
     badgeType: 'development',
-    date: 'August 2026',
-    title: '+BNB',
-    description: "Access Asia's largest DeFi ecosystem and Binance-native liquidity.",
+    date: 'October 2026',
+    title: '+Polygon',
+    description: 'Access the most liquid prediction markets in the world.',
   },
   {
     badge: 'Development',
     badgeType: 'development',
-    date: 'September 2026',
-    title: '+Polygon',
-    description: 'Access the most liquid prediction markets in the world.',
+    date: 'November 2026',
+    title: '+BNB',
+    description: "Access Asia's largest DeFi ecosystem and Binance-native liquidity.",
   },
   {
     badge: 'Development',
@@ -202,7 +239,7 @@ export const footerColumns: FooterColumn[] = [
     heading: 'Learn',
     links: [
       { label: 'About', href: '#what' },
-      { label: 'Blog', href: 'https://mirror.xyz/signetwork.eth', external: true },
+      { label: 'Blog', href: '/blog/index.html' },
     ],
   },
   {

@@ -27,7 +27,7 @@ const PrinciplesSection = ({ principles }: PrinciplesSectionProps) => (
           <p className="text-dark-neutral-200 text-[14px] leading-[20px] md:text-[18px] md:leading-[28px]">
             {principle.number}
           </p>
-          <h3 className="text-dark-neutral-200 font-sans text-[18px] leading-[28px] font-bold md:text-[30px] md:leading-[38x]">
+          <h3 className="text-dark-neutral-400 font-sans text-[18px] leading-[28px] font-bold md:text-[30px] md:leading-[38x]">
             {principle.title}
           </h3>
           <div className="text-dark-neutral-500 text-[12px] leading-[14px] md:text-[16px] md:leading-[24px]">

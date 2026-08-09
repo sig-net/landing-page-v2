@@ -9,8 +9,8 @@ type ReleasesSectionProps = {
 
 const badgeTone: Record<Release['badgeType'], string> = {
   development: 'bg-[#e9e8f0] border-[#d7d5e2] text-[#6c657d]',
-  mainnet: 'bg-[#deffd6] border-[#27ed02] text-[#1a8d07]',
-  testnet: 'bg-[#ffe8d9] border-[#f48a38] text-[#d16310]',
+  mainnet: 'bg-[#deffd6] border-[#27ed02] text-[#147005]',
+  testnet: 'bg-[#ffe8d9] border-[#f48a38] text-[#a04a00]',
 }
 
 const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
@@ -41,7 +41,7 @@ const ReleasesSection = ({ releases }: ReleasesSectionProps) => (
               {release.date}
             </p>
           </div>
-          <h3 className="text-dark-neutral-200 w-full shrink-0 font-sans text-[20px] leading-[30px] font-semibold md:w-[400px] md:text-[30px] md:leading-[38px]">
+          <h3 className="text-dark-neutral-400 w-full shrink-0 font-sans text-[20px] leading-[30px] font-semibold md:w-[400px] md:text-[30px] md:leading-[38px]">
             {release.title}
           </h3>
           <p className="text-dark-neutral-500 flex-1 text-[12px] leading-[14px] opacity-85 md:text-[16px] md:leading-[24px]">

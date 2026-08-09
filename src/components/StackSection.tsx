@@ -36,7 +36,7 @@ const StackDivider = ({
         </svg>
       </div>
     )}
-    <p className="text-dark-neutral-400 text-xs leading-4 font-medium whitespace-nowrap md:text-sm md:leading-5">
+    <p className="text-dark-neutral-500 text-xs leading-4 font-medium whitespace-nowrap md:text-sm md:leading-5">
       {label}
     </p>
     {!vertical && (
@@ -112,7 +112,7 @@ const StackSection = ({ steps }: StackSectionProps) => (
         <StackDivider label="Request" vertical />
         <div className="grid flex-1 grid-cols-1">
           {steps.map((step) => (
-            <div key={step.title} className={`text-dark-neutral-400 p-5 ${step.tone}`}>
+            <div key={step.title} className={`text-dark-neutral-500 p-5 ${step.tone}`}>
               <h3 className="font-sans text-[14px] leading-[20px] font-bold">
                 {step.title}
               </h3>
@@ -127,7 +127,7 @@ const StackSection = ({ steps }: StackSectionProps) => (
         {steps.map((step) => (
           <div
             key={step.title}
-            className={`text-dark-neutral-400 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
+            className={`text-dark-neutral-500 flex flex-col gap-3 border-r border-white/20 p-5 last:border-r-0 ${step.tone}`}
           >
             <h3 className="font-sans text-[16px] leading-[24px] font-bold">
               {step.title}

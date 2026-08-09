@@ -4,6 +4,7 @@ import LiveBanner from './components/LiveBanner'
 import NarrativeSections from './components/NarrativeSections'
 import Navigation from './components/Navigation'
 import PrinciplesSection from './components/PrinciplesSection'
+import ProofSection from './components/ProofSection'
 import ReleasesSection from './components/ReleasesSection'
 import StackSection from './components/StackSection'
 import {
@@ -20,6 +21,7 @@ const App = () => (
     <LiveBanner />
     <Navigation navItems={navItems} />
     <HeroSection />
+    <ProofSection />
     <NarrativeSections slices={narrativeSlices} />
     <StackSection steps={stackSteps} />
     <PrinciplesSection principles={principles} />

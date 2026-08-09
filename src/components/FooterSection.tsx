@@ -14,7 +14,7 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
       <h2 className="text-dark-neutral-500 font-sans text-[48px] leading-[50px] font-bold -tracking-[0.98px] md:text-[110px] md:leading-[98px] md:-tracking-[2.2px]">
         Ready to make your dApp cross-chain native?
       </h2>
-      <div className="flex w-full items-center justify-center py-5 md:ml-15 md:justify-start">
+      <div className="flex w-full items-center justify-center py-5 md:justify-start md:pl-15">
         <ArrowButton
           variant="pastel"
           className="px-[18px] py-[9px] md:px-[18px] md:py-[9px]"
@@ -51,7 +51,7 @@ const FooterSection = ({ columns }: FooterSectionProps) => (
         <div className="flex flex-col items-center md:block">
           <Logo className="text-dark-neutral-600 h-[40px] w-[237px] md:h-[34px] md:w-[200px]" />
           <p className="mt-3 text-sm leading-5 font-semibold opacity-80 md:mt-5">
-            2025 Sig.Network
+            2026 Sig.Network
           </p>
         </div>
       </div>

@@ -1,11 +1,51 @@
 @import 'tailwindcss';
 
+/* Archivo is the sanctioned fallback for Elza Text per sig-brand.sty; when an
+   Elza Text webfont license is added, declare its @font-face here and put
+   'Elza Text' back at the front of --font-sans. */
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/archivo-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-500.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/ibm-plex-mono-700.woff2') format('woff2');
+}
+
 :root {
-  --font-sans:
-    'Elza Text', 'Söhne', 'Space Grotesk', 'Inter', 'Segoe UI', system-ui, -apple-system,
-    BlinkMacSystemFont, sans-serif;
-  --font-mono:
-    'Söhne Mono', 'Space Mono', 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
+  --font-sans: 'Archivo', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
   font-family: var(--font-sans);
   color-scheme: dark;
   background-color: #111111;
@@ -68,6 +108,11 @@
   --color-crt-blue-400: var(--colors-crt-blue-400);
   --color-error-600: var(--colors-error-600);
   --color-border-divider: var(--colors-border-divider);
+}
+
+html,
+body {
+  overflow-x: clip;
 }
 
 body {
