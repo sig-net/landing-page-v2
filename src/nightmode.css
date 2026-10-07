@@ -1,0 +1,114 @@
+/* Night Mode site styles. Scoped under .nm so the existing components keep their own look.
+   Tokens come from the Night Mode deck (decks repo, night-mode/index.html). Fonts are the deck's, served from
+   /decks/night-mode/fonts so the deck and the site share one copy. */
+@font-face { font-family: 'Archivo'; font-weight: 100 900; font-display: swap; src: url('/decks/night-mode/fonts/archivo-variable.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-display: swap; src: url('/decks/night-mode/fonts/ibm-plex-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-display: swap; src: url('/decks/night-mode/fonts/ibm-plex-mono-600.woff2') format('woff2'); }
+
+.nm {
+  --nm-sans: 'Archivo', 'Segoe UI', system-ui, sans-serif;
+  --nm-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
+  --pampas: #f6f4f1; --clam-400: #d5c4bb; --clam-500: #cbb7ad;
+  --n200: #a28b8a; --n400: #786767; --n600: #4c4646; --n700: #3d3939; --n800: #2e2c2c; --n900: #201e1e; --n950: #111111;
+  --brand-50: #f2ddc4; --brand-950: #eaeec9; --polar: #e4f8f7; --live: #27ed02;
+  --bg: var(--n950); --ink: var(--clam-400); --ink-soft: var(--n200); --rule: var(--n700); --highlight: var(--brand-950);
+  --mid-bg: var(--n800); --mid-ink: var(--clam-400); --mid-rule: var(--n400);
+  --eth-bg: var(--polar); --eth-ink: var(--n600);
+  background: var(--bg); color: var(--ink); font-family: var(--nm-mono); font-size: 17px; line-height: 1.5;
+}
+.nm * { box-sizing: border-box; }
+.nm a { color: inherit; text-decoration: none; }
+.nm .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+.nm .kicker { font: 600 13px/1 var(--nm-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 22px; }
+.nm h1, .nm h2, .nm h3 { font-family: var(--nm-sans); font-weight: 800; letter-spacing: -.02em; margin: 0; }
+.nm h2 { font-size: clamp(36px, 5vw, 64px); line-height: 1; max-width: 18ch; }
+.nm section { padding: 96px 0; border-top: 1px solid var(--rule); }
+.nm .lead { max-width: 60ch; font-size: 19px; color: var(--ink); margin: 28px 0 0; }
+.nm .lead.soft { color: var(--ink-soft); }
+.nm .btn { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 18px; border-radius: 8px; font: 600 14px/1 var(--nm-mono); letter-spacing: .4px; border: 1px solid var(--rule); color: var(--ink); background: var(--n900); }
+.nm .btn.light { background: var(--pampas); color: var(--n600); border-color: var(--clam-500); }
+.nm .btn.dark { background: var(--n600); color: var(--pampas); border-color: var(--n600); }
+
+/* hero: the light state of the deck's title */
+.nm .hero { background: var(--pampas) url('/decks/night-mode/assets/gradient-with-noise.webp') center / cover; color: var(--n600); border-top: 0; padding: 120px 0 96px; }
+.nm .hero h1 { font-size: clamp(56px, 10vw, 136px); line-height: .92; letter-spacing: -.03em; max-width: 12ch; }
+.nm .hero .sub { font: 400 20px/1.5 var(--nm-mono); max-width: 56ch; margin: 36px 0 0; color: var(--n600); }
+.nm .hero .sub b { font-weight: 600; }
+.nm .hero .cta { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+.nm .hero .mode { display: flex; align-items: center; margin-top: 44px; font: 600 13px/1 var(--nm-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--n400); }
+.nm .hero .switch { display: inline-block; width: 92px; height: 48px; border-radius: 24px; background: var(--n600); border: 2px solid var(--n600); margin-right: 18px; position: relative; }
+.nm .hero .switch i { position: absolute; left: 46px; top: 4px; width: 36px; height: 36px; border-radius: 50%; background: var(--pampas); }
+
+/* boxes and the stack */
+.nm .boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 80px; margin-top: 48px; max-width: 980px; }
+.nm .box { height: 92px; border-radius: 12px; border: 2px solid var(--rule); display: flex; align-items: center; justify-content: space-between; padding: 0 26px; font: 800 30px/1 var(--nm-sans); letter-spacing: -.02em; }
+.nm .box .cap { font: 600 13px/1 var(--nm-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.nm .box.mid { background: var(--mid-bg); border-color: var(--mid-rule); color: var(--mid-ink); }
+.nm .box.eth { background: var(--eth-bg); border-color: var(--eth-bg); color: var(--eth-ink); }
+.nm .box.gap { border-style: dashed; color: var(--ink-soft); opacity: .5; font-weight: 500; }
+.nm .stack { max-width: 560px; margin-top: 48px; }
+.nm .stack .box { margin-bottom: 10px; }
+.nm .sigbar { height: 34px; border: 2px solid var(--ink-soft); border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font: 600 13px/1 var(--nm-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink); margin: 0 0 10px; }
+.nm .two { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: start; }
+.nm .three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 48px; }
+.nm .three .w { font: 800 28px/1.1 var(--nm-sans); letter-spacing: -.02em; border-top: 2px solid var(--rule); padding-top: 18px; }
+.nm .three .w small { display: block; font: 400 15px/1.5 var(--nm-mono); color: var(--ink-soft); margin-top: 10px; letter-spacing: 0; }
+
+/* the user experience: the pool frame with four cards */
+.nm .frame { border: 2px solid var(--mid-rule); border-radius: 12px; background: var(--mid-bg); padding: 22px 26px 26px; margin-top: 48px; }
+.nm .frame .lab { font: 600 12px/1 var(--nm-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; display: flex; justify-content: space-between; margin-bottom: 20px; }
+.nm .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.nm .card { background: var(--n900); border: 1px solid var(--n600); border-radius: 12px; padding: 18px; font: 400 14px/1.4 var(--nm-mono); color: var(--clam-400); display: flex; flex-direction: column; gap: 10px; min-height: 230px; }
+.nm .card .t { font: 700 18px/1 var(--nm-sans); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.nm .card .pill { font: 600 10px/1 var(--nm-mono); letter-spacing: .6px; padding: 5px 8px; border-radius: 10px; white-space: nowrap; }
+.nm .card .pill.pend { color: #e0a030; background: rgba(224,160,48,.12); }
+.nm .card .pill.done { color: var(--live); background: rgba(39,237,2,.10); }
+.nm .card .f { background: var(--n700); border: 1px solid var(--n600); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.nm .card .f b { font-weight: 600; font-size: 18px; }
+.nm .card .f .tk { font: 700 11px/1 var(--nm-sans); background: var(--n800); border: 1px solid var(--n600); border-radius: 10px; padding: 5px 8px; }
+.nm .card .addr { font-size: 11px; word-break: break-all; color: var(--ink-soft); }
+.nm .card .b { margin-top: auto; height: 34px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--nm-mono); background: var(--n700); border: 1px solid var(--n600); }
+.nm .card .b.p { background: var(--highlight); color: var(--n600); border-color: var(--highlight); }
+.nm .underframe { display: grid; gap: 10px; margin-top: 10px; }
+.nm .underframe .box { height: 64px; font-size: 24px; }
+
+/* moving the line */
+.nm .ladder { max-width: 560px; }
+.nm .layer { height: 64px; margin-bottom: 10px; border-radius: 10px; border: 2px solid var(--eth-bg); background: var(--eth-bg); color: var(--eth-ink); display: flex; align-items: center; gap: 16px; padding: 0 22px; font: 800 22px/1 var(--nm-sans); letter-spacing: -.02em; }
+.nm .layer .role { flex: 1; font: 400 13px/1.2 var(--nm-mono); opacity: .7; letter-spacing: 0; }
+.nm .layer .cap { font: 600 11px/1 var(--nm-mono); letter-spacing: 1.2px; text-transform: uppercase; opacity: .75; }
+.nm .layer.mid { background: var(--mid-bg); border-color: var(--mid-rule); color: var(--mid-ink); }
+.nm .notes { display: grid; gap: 28px; margin-top: 36px; }
+.nm .notes p { margin: 0; font-size: 17px; color: var(--ink); }
+.nm .notes b { display: inline-block; font-weight: 600; background: var(--highlight); color: var(--n600); padding: 0 6px; margin-right: 6px; }
+
+/* every chain */
+.nm .chainrow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-top: 10px; }
+.nm .chain { height: 84px; border-radius: 12px; border: 2px solid transparent; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font: 800 24px/1 var(--nm-sans); letter-spacing: -.02em; }
+.nm .chain .cap { font: 600 11px/1 var(--nm-mono); letter-spacing: 1.2px; text-transform: uppercase; opacity: .75; }
+.nm .chain.eth { background: var(--eth-bg); border-color: var(--eth-bg); color: var(--eth-ink); }
+.nm .chain.sol { background: var(--pampas); border-color: var(--pampas); color: var(--n600); }
+.nm .chain.mn { background: var(--mid-bg); border-color: var(--mid-rule); color: var(--mid-ink); }
+.nm .chain.tron { background: var(--brand-50); border-color: var(--brand-50); color: var(--n600); }
+.nm .chain.slot { border: 2px dashed var(--rule); color: var(--ink-soft); }
+.nm .timeline { margin: 48px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.nm .timeline li { border-top: 2px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--ink-soft); }
+.nm .timeline li b { display: block; font: 800 20px/1.1 var(--nm-sans); color: var(--ink); margin: 6px 0; letter-spacing: -.02em; }
+.nm .timeline .tag { font: 600 11px/1 var(--nm-mono); letter-spacing: 1.2px; text-transform: uppercase; }
+.nm .timeline .tag.live { color: var(--live); }
+
+/* compliance */
+.nm .four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; margin-top: 48px; }
+.nm .four .c { border-top: 2px solid var(--rule); padding-top: 18px; }
+.nm .four h3 { font-size: 24px; margin-bottom: 10px; }
+.nm .four p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+
+/* the ask */
+.nm .ask .mail { font: 600 30px/1 var(--nm-mono); color: var(--ink); margin: 40px 0 10px; display: block; }
+.nm .ask .repo { font: 400 18px/1 var(--nm-mono); color: var(--ink-soft); display: block; }
+
+@media (max-width: 900px) {
+  .nm .two, .nm .three, .nm .four, .nm .cards, .nm .chainrow, .nm .timeline, .nm .boxes { grid-template-columns: 1fr; }
+  .nm section { padding: 64px 0; }
+  .nm .hero { padding: 72px 0 64px; }
+}
