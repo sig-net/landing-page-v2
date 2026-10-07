@@ -124,20 +124,14 @@
       .adopt { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--bg-2); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; gap: 14px; position: relative; }
+      .ladder { display: grid; gap: 8px; }
       .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
       .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
       .layer .tag { font-size: 10px; display: grid; text-align: right; }
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
-      .line { position: absolute; left: 0; right: 0; top: 0; height: 14px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-      .line::before { content: ''; position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: var(--ink); }
-      .line span { position: relative; padding: 0 8px; background: var(--bg-2); font: 600 9px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
-      /* The line slides down the ladder as the card scrolls through the viewport; layers flip as it passes.
-         Progress (--t, 0 to 1) is set by the script at the end of the page; without it the static state shows. */
-      .ladder { --t: 0.3333; }
-      .line { transform: translateY(calc(40px + var(--t) * 162px)); }
+      /* Layers move onto Midnight one by one as the card scrolls through the viewport (script at the end of the page). */
       .layer, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
       @media (prefers-reduced-motion: reduce) { .layer, .layer .tag i { transition: none; } }
 
@@ -318,7 +312,6 @@
               <div class="layer l3"><span>Routing</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
               <div class="layer l4"><span>Lending pool</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
               <div class="layer l5"><span>DEX liquidity</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
-              <div class="line" aria-hidden="true"><span>sig.network</span></div>
             </div>
           </div>
         </div>
@@ -511,7 +504,7 @@
     <script>
       for (const a of document.querySelectorAll('.top details a')) a.addEventListener('click', () => a.closest('details').removeAttribute('open'));
 
-      // Moving the line: progress through the viewport drives the ladder.
+      // Moving the line: progress through the viewport moves layers onto Midnight.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const card = document.querySelector('.adopt');
         const ladder = card.querySelector('.ladder');
@@ -522,7 +515,6 @@
           const r = card.getBoundingClientRect();
           const cover = (innerHeight - r.top) / (innerHeight + r.height);
           const t = Math.min(1, Math.max(0, (cover - 0.25) / 0.36));
-          ladder.style.setProperty('--t', t.toFixed(4));
           layers.forEach((l, i) => l.classList.toggle('mid', t >= (i + 0.5) / 3));
         };
         const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(tick); } };
