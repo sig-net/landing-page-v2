@@ -1,0 +1,1703 @@
+<!doctype html>
+<html lang="en" class="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Night Mode</title>
+<!--
+  Night Mode deck, Privacy Pitched with Midnight, Thu 8 Oct 2026.
+  Self contained: no build step, no network. Open in Chrome, press F for fullscreen.
+  Keys: right / space / enter = next build, then next slide; left = back; number keys jump; P = print layout (all builds shown).
+  The first keypress on slide 1 flips the deck from light to dark; the second advances.
+  Tokens come from ~/landing-page-v2/src/index.css and ~/Documents/brand-colors.txt.
+  Fonts and the hero gradient are copied from the landing page repo.
+  Print to PDF: Cmd+P, landscape, background graphics on, margins none.
+-->
+<style>
+@font-face { font-family: 'Archivo'; font-weight: 100 900; font-display: swap; src: url('fonts/archivo-variable.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 400; font-display: swap; src: url('fonts/ibm-plex-mono-400.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-display: swap; src: url('fonts/ibm-plex-mono-600.woff2') format('woff2'); }
+
+/* Brand tokens. Light is the Product UI and hero; dark is the website's dark sections. */
+:root {
+  --font-sans: 'Archivo', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', ui-monospace, monospace;
+  --pampas-500: #F6F4F1;
+  --clam-400: #D5C4BB;
+  --clam-500: #CBB7AD;
+  --clam-700: #B59C90;
+  --neutral-200: #A28B8A;
+  --neutral-400: #786767;
+  --neutral-600: #4C4646;
+  --neutral-700: #3D3939;
+  --neutral-800: #2E2C2C;
+  --neutral-900: #201E1E;
+  --neutral-950: #111111;
+  --brand-50: #F2DDC4;
+  --brand-950: #EAEEC9;
+  --polar-500: #E4F8F7;    /* coolest light tint in the palette, stands in for Ethereum blue */
+  --live: #27ED02;
+  --ease: cubic-bezier(.34, 1.3, .64, 1);   /* slight overshoot, Apple-like */
+  --dur: .55s;
+}
+html.light {
+  --bg: var(--pampas-500);
+  --ink: var(--neutral-600);
+  --ink-soft: var(--neutral-400);
+  --rule: var(--clam-500);
+  --highlight: var(--brand-950);
+  --track: var(--pampas-500);
+  --knob: var(--neutral-600);
+  --switch-border: var(--clam-500);
+  --knob-ink: var(--pampas-500);
+  --grain: .03;
+  --hero-opacity: 1;
+  --midnight-bg: var(--neutral-600);   /* closed, shielded: dark box */
+  --midnight-ink: var(--pampas-500);
+  --midnight-rule: var(--neutral-600);
+  --ethereum-bg: var(--polar-500);     /* open, public: light box, cool so it reads as Ethereum next to Tron and Zcash later */
+  --ethereum-ink: var(--neutral-600);
+}
+html.dark {
+  --bg: var(--neutral-950);
+  --ink: var(--clam-400);
+  --ink-soft: var(--neutral-200);
+  --rule: var(--neutral-700);
+  --highlight: var(--brand-950);
+  --track: var(--neutral-800);
+  --knob: var(--clam-400);
+  --switch-border: var(--neutral-600);
+  --knob-ink: var(--neutral-900);
+  --grain: .07;
+  --hero-opacity: 0;
+  --midnight-bg: var(--neutral-800);
+  --midnight-ink: var(--clam-400);
+  --midnight-rule: var(--neutral-400);
+  --ethereum-bg: var(--polar-500);
+  --ethereum-ink: var(--neutral-600);
+}
+
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font-sans); transition: background-color var(--dur) ease .12s, color var(--dur) ease .12s; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: center; transform: translate(-50%, -50%) scale(var(--scale, 1)); }
+
+/* Hero gradient (light only) and grain (both) */
+#hero-bg { position: fixed; inset: 0; background: url('assets/gradient-with-noise.webp') center / cover; opacity: var(--hero-opacity); transition: opacity var(--dur) ease .12s; pointer-events: none; }
+#grain { position: fixed; inset: 0; width: 100%; height: 100%; opacity: var(--grain); transition: opacity var(--dur) ease .12s; pointer-events: none; mix-blend-mode: multiply; }
+html.dark #grain { mix-blend-mode: screen; }
+
+.slide { position: absolute; inset: 0; display: none; padding: 120px 140px; box-sizing: border-box; }
+.slide.active { display: block; }
+
+/* Chrome: wordmark top left, stagenet line top right, both mono */
+#rule-top { position: absolute; left: 60px; right: 60px; top: 96px; border-top: 1px solid var(--rule); transition: border-color var(--dur) ease .12s; }
+.chrome { position: absolute; right: 60px; top: 44px; display: flex; align-items: center; font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-soft); }
+.chrome .live { display: inline-flex; align-items: center; gap: 10px; }
+.chrome .live i { width: 10px; height: 10px; border-radius: 50%; background: var(--live); box-shadow: 0 0 0 0 rgba(39,237,2,.5); animation: pulse 2.4s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(39,237,2,.45);} 70% { box-shadow: 0 0 0 12px rgba(39,237,2,0);} 100% { box-shadow: 0 0 0 0 rgba(39,237,2,0);} }
+
+/* Type */
+.kicker { font: 600 20px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 36px; }
+h1 { font: 800 200px/.92 var(--font-sans); letter-spacing: -4px; margin: 0; }
+h2 { font: 800 112px/.95 var(--font-sans); letter-spacing: -2.8px; margin: 0 0 48px; max-width: 1500px; }
+.body { font: 400 30px/1.5 var(--font-mono); color: var(--ink); max-width: 1180px; }
+.body p { margin: 0 0 18px; }
+.body b { font-weight: 600; background: var(--highlight); color: var(--neutral-600); padding: 0 6px; }
+.cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 48px; }
+.cols.four { grid-template-columns: repeat(4, 1fr); gap: 32px; }
+.cols.four .col h3 { font-size: 34px; }
+.cols.four .col p { font-size: 22px; }
+.col { border-top: 2px solid var(--rule); padding-top: 24px; }
+.col h3 { font: 800 40px/1.05 var(--font-sans); letter-spacing: -1px; margin: 0 0 16px; }
+.col p { font: 400 24px/1.45 var(--font-mono); margin: 0; }
+.col p + p { margin-top: 10px; color: var(--ink-soft); }
+
+/* Ecosystems slide: four boxes, two chains, a gap between them. Boxes are named by capability, chain tag on the right.
+   Two states. 0: four boxes, two dashed holes, the Hayes caption under Ethereum's hole. 1: holes, caption and chain
+   labels fade, then the two columns slide together in the centre and layer, Midnight over Ethereum, the Sig.Network
+   line appears between them.
+   End geometry on stage: pool box at (605, 477) 710x128, line at (605, 617) 710x40, Markets box at (605, 669) 710x128.
+   The primitive slide zooms in from these and back out to them. */
+.boxes { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 220px; margin-top: 24px; }
+.chain { position: relative; transition: transform .7s cubic-bezier(.4, 0, .2, 1) .35s; }
+.chain h3 { font: 600 20px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink-soft); margin: 0 0 20px; transition: opacity .4s ease; }
+.box { position: relative; height: 128px; margin-bottom: 20px; border: 2px solid var(--rule); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; box-sizing: border-box; font: 800 44px/1.05 var(--font-sans); letter-spacing: -1px; transition: opacity .4s ease, border-color var(--dur) ease, background-color var(--dur) ease, color var(--dur) ease; }
+.box .cap { font: 600 22px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.midnight .box.has, .box.has.midnight { background: var(--midnight-bg); border-color: var(--midnight-rule); color: var(--midnight-ink); }
+.ethereum .box.has, .box.has.ethereum { background: var(--ethereum-bg); border-color: var(--ethereum-bg); color: var(--ethereum-ink); }
+.box.gap { border: 2px dashed var(--rule); color: var(--ink-soft); opacity: .45; font-weight: 500; }
+.slide[data-step="1"] .box.gap, .slide[data-step="1"] .chain h3, .slide[data-step="1"] .cite { opacity: 0; }
+.slide[data-step="1"] .chain.midnight { transform: translateX(calc(50% + 110px)); z-index: 3; }
+.slide[data-step="1"] .chain.ethereum { transform: translate(calc(-50% - 110px), 44px); z-index: 1; }
+.cite { font: 400 20px/1.4 var(--font-mono); color: var(--ink-soft); margin: 4px 0 0; transition: opacity .4s ease; }
+/* Sig.Network: the thin labelled layer between Midnight and Ethereum once they stack. */
+.sigbar { box-sizing: border-box; height: 32px; border: 2px solid var(--ink-soft); border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font: 600 16px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; color: var(--ink); transition: opacity .4s ease, background-color var(--dur) ease; }
+.boxes > .sigbar { position: absolute; left: 50%; top: 180px; width: calc(50% - 110px); height: 40px; font-size: 18px; transform: translateX(-50%); z-index: 4; opacity: 0; }
+.slide[data-step="1"] .boxes > .sigbar { opacity: 1; transition-delay: 1.1s; }
+/* Moving the line: a leveraged yield vault's dependency stack, public (Ethereum colour) with a privacy pool on top.
+   No heading: the kicker, the stack on the left and a stage note on the right. Three states. 0: only the pool is
+   shielded. 1: the vault logic has moved to Midnight. 2: the far future, only tokens and settlement are still public.
+   Layers are 92 tall on a 108 pitch. The Sig.Network line (32 tall) is centred on the 16px gap below the last
+   shielded layer k, so its top is k*108 - 24. */
+.ladder { position: relative; width: 900px; margin: 16px 0 0; }
+.layer { box-sizing: border-box; height: 92px; margin-bottom: 16px; border: 2px solid var(--ethereum-bg); border-radius: 12px; background: var(--ethereum-bg); color: var(--ethereum-ink); display: flex; align-items: center; gap: 24px; padding: 0 36px; font: 800 36px/1 var(--font-sans); letter-spacing: -.8px; transition: background-color .5s ease, border-color .5s ease, color .5s ease; }
+.layer .role { flex: 1; font: 400 19px/1.2 var(--font-mono); letter-spacing: 0; opacity: .7; }
+.layer .cap { font: 600 17px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.layer .cap::after { content: 'Ethereum'; }
+.layer.pool { background: var(--midnight-bg); border-color: var(--midnight-rule); color: var(--midnight-ink); }
+.layer.pool .cap::after { content: 'Midnight'; }
+.ladder .line { position: absolute; left: 0; right: 0; top: 84px; z-index: 2; transition: top .6s cubic-bezier(.4, 0, .2, 1), background-color var(--dur) ease; }
+.slide[data-step="1"] .layer.l1,
+.slide[data-step="2"] .layer.l1, .slide[data-step="2"] .layer.l2, .slide[data-step="2"] .layer.l3, .slide[data-step="2"] .layer.l4,
+.slide[data-step="3"] .layer.l1, .slide[data-step="3"] .layer.l2, .slide[data-step="3"] .layer.l3, .slide[data-step="3"] .layer.l4 { background: var(--midnight-bg); border-color: var(--midnight-rule); color: var(--midnight-ink); }
+.slide[data-step="1"] .layer.l1 .cap::after,
+.slide[data-step="2"] .layer.l1 .cap::after, .slide[data-step="2"] .layer.l2 .cap::after, .slide[data-step="2"] .layer.l3 .cap::after, .slide[data-step="2"] .layer.l4 .cap::after,
+.slide[data-step="3"] .layer.l1 .cap::after, .slide[data-step="3"] .layer.l2 .cap::after, .slide[data-step="3"] .layer.l3 .cap::after, .slide[data-step="3"] .layer.l4 .cap::after { content: 'Midnight'; }
+.slide[data-step="1"] .ladder .line { top: 192px; }
+.slide[data-step="2"] .ladder .line, .slide[data-step="3"] .ladder .line { top: 516px; }
+/* Entry from the demo layout the primitive slide ends on: the pool frame (360,200 1200x560) collapses into the top row,
+   the strip (360,776 1200x40) slides up to become the line, and the five Ethereum layers fan out of the Ethereum band
+   (360,832 1200x92). Rows are 900x92 at x 140, pitch 108 from y 176. Text in the pool row fades in last. */
+.layer { transform-origin: 0 0; }
+.ladder .line { transform-origin: 0 0; }
+.layer.l1 { --fy: 548px; } .layer.l2 { --fy: 440px; } .layer.l3 { --fy: 332px; } .layer.l4 { --fy: 224px; } .layer.l5 { --fy: 116px; }
+.slide.active .layer.pool { animation: pool-collapse .65s cubic-bezier(.4, 0, .2, 1) both; }
+.slide.active .layer.pool > * { animation: text-in .65s both; }
+.slide.active .ladder .line { animation: rise-line .65s cubic-bezier(.4, 0, .2, 1) both; }
+.slide.active .layer.l1 { animation: unfold .55s cubic-bezier(.4, 0, .2, 1) .15s both; }
+.slide.active .layer.l2 { animation: unfold .55s cubic-bezier(.4, 0, .2, 1) .21s both; }
+.slide.active .layer.l3 { animation: unfold .55s cubic-bezier(.4, 0, .2, 1) .27s both; }
+.slide.active .layer.l4 { animation: unfold .55s cubic-bezier(.4, 0, .2, 1) .33s both; }
+.slide.active .layer.l5 { animation: unfold .55s cubic-bezier(.4, 0, .2, 1) .39s both; }
+@keyframes pool-collapse { from { transform: translate(220px, 24px) scale(1.333, 6.087); } to { transform: none; } }
+@keyframes text-in { 0%, 70% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes rise-line { from { transform: translate(220px, 516px) scale(1.333, 1.25); } to { transform: none; } }
+@keyframes unfold { from { transform: translate(220px, var(--fy)) scale(1.333, 1); opacity: 0; } to { transform: none; opacity: 1; } }
+/* State 3, out of step: the ladder narrows to a column and three more apps appear beside it, each with its own line at
+   a different height, in the same 900px. Roles and tags fade, names shrink. A pulse travels along the dark rows of the
+   four apps, twice, then rests. No labels; only the vault's line carries the sig.network word. */
+.ladder { transition: width .6s cubic-bezier(.4, 0, .2, 1); }
+.layer { transition: background-color .5s ease, border-color .5s ease, color .5s ease, font-size .6s ease, padding .6s ease; }
+.layer .role, .layer .cap { transition: opacity .3s ease; }
+.slide[data-step="3"] .ladder { width: 210px; }
+.slide[data-step="3"] .layer { font-size: 20px; padding: 0 16px; letter-spacing: -.4px; gap: 0; }
+.slide[data-step="3"] .layer .role, .slide[data-step="3"] .layer .cap { opacity: 0; flex: 0 0 0; width: 0; overflow: hidden; white-space: nowrap; }
+.ghosts { position: absolute; left: 370px; top: 176px; width: 670px; height: 636px; opacity: 0; transform: translateX(-30px); transition: opacity .5s ease .35s, transform .5s cubic-bezier(.4, 0, .2, 1) .35s; pointer-events: none; }
+.slide[data-step="3"] .ghosts { opacity: 1; transform: none; }
+.ghost { position: absolute; top: 0; width: 210px; }
+.ghost:nth-child(1) { left: 0; } .ghost:nth-child(2) { left: 230px; } .ghost:nth-child(3) { left: 460px; }
+.ghost .blk { height: 92px; margin-bottom: 16px; border-radius: 12px; box-sizing: border-box; border: 2px solid var(--ethereum-bg); background: var(--ethereum-bg); }
+.ghost .blk.dark { background: var(--midnight-bg); border-color: var(--midnight-rule); }
+.ghost .blk { display: flex; align-items: center; padding: 0 16px; }
+.ghost .sk { display: block; height: 10px; border-radius: 5px; background: var(--neutral-600); opacity: .35; }
+.ghost .blk.dark .sk { background: var(--clam-400); opacity: .28; }
+
+.ghost .gline { position: absolute; left: 0; right: 0; top: calc(var(--k) * 108px - 24px); z-index: 2; }
+@keyframes wave-dark { 0%, 10%, 100% { box-shadow: none; border-color: var(--midnight-rule); } 5% { box-shadow: 0 0 26px rgba(213,196,187,.4); border-color: var(--clam-400); } }
+.slide[data-step="3"] .layer.pool, .slide[data-step="3"] .layer.l1, .slide[data-step="3"] .layer.l2, .slide[data-step="3"] .layer.l3, .slide[data-step="3"] .layer.l4 { animation: wave-dark 6s ease-in-out .9s 2; }
+.slide[data-step="3"] .ghost .blk.dark { animation: wave-dark 6s ease-in-out calc(.9s + var(--d)) 2; }
+/* Stage notes to the right of the ladder, one per state. Held until the unfold has finished. */
+.stages { position: absolute; left: 1120px; top: 192px; width: 660px; }
+.slide.active .stages { animation: flow-in .3s .8s both; }
+.stages p { position: absolute; top: 0; margin: 0; font: 400 28px/1.5 var(--font-mono); color: var(--ink); opacity: 0; transition: opacity .4s ease; }
+.stages p b { display: block; width: max-content; margin-bottom: 10px; font-weight: 600; background: var(--highlight); color: var(--neutral-600); padding: 0 8px; }
+.slide[data-step="0"] .stages .st0, .slide[data-step="1"] .stages .st1, .slide[data-step="2"] .stages .st2, .slide[data-step="3"] .stages .st3 { opacity: 1; transition-delay: .3s; }
+/* The primitive. On entry the two chain boxes fade and the Sig.Network strip alone grows into a frame for the one
+   sentence of explanation. On the next press the strip drops to a thin band and the privacy pool box grows into the
+   demo frame above it, Ethereum below; the app's pieces play inside the pool frame, one key press per step:
+   0 the primitive line with three words (liquidity, protocols, privacy), 1 deposit, 2 confirmation, 3 swap,
+   step 1 returns to the stack; 2 deposit, 3 confirmation, 4 swap, 5 lend on Aave, 6 send, 7 Send pressed and the
+   relay plays. The vault slide then unfolds straight from the demo layout. */
+.ptitles { position: absolute; left: 140px; top: 176px; width: 1640px; display: grid; min-height: 120px; }
+.ptitles h2 { grid-area: 1 / 1; margin: 0; font-size: 56px; line-height: 1.05; letter-spacing: -1.4px; max-width: 1640px; opacity: 0; transition: opacity .4s ease; }
+.slide[data-step="0"] .ptitles .t0, .slide[data-step="1"] .ptitles .t1, .slide[data-step="2"] .ptitles .t2 { opacity: 1; transition-delay: .2s; }
+/* Three states of geometry. Stack (as the Ecosystems slide left it): Midnight (605,477 710x128), strip (605,617 710x40),
+   Ethereum (605,669 710x128). Explain (step 0): the strip alone grows to a frame (360,300 1200x580), the boxes fade.
+   Demo (steps 1-5): the privacy pool box grows to a frame (360,200 1200x560) that holds the app, the strip sits under
+   it (360,776 1200x40) and Ethereum under that (360,832 1200x92). There is no zoom out: the next slide unfolds from
+   this demo layout. */
+.band { position: absolute; box-sizing: border-box; border: 2px solid transparent; border-radius: 12px; overflow: hidden; transition: top .7s cubic-bezier(.4, 0, .2, 1), left .7s cubic-bezier(.4, 0, .2, 1), width .7s cubic-bezier(.4, 0, .2, 1), height .7s cubic-bezier(.4, 0, .2, 1), opacity .35s ease; }
+.band.midnight { left: 605px; top: 477px; width: 710px; height: 128px; background: var(--midnight-bg); border-color: var(--midnight-rule); color: var(--midnight-ink); z-index: 1; }
+.band.ethereum { left: 605px; top: 669px; width: 710px; height: 128px; background: var(--ethereum-bg); border-color: var(--ethereum-bg); color: var(--ethereum-ink); z-index: 1; }
+.band.sig { left: 605px; top: 617px; width: 710px; height: 40px; background: var(--bg); border-color: var(--ink-soft); border-radius: 8px; color: var(--ink); z-index: 3; }
+/* explain: strip grows, boxes fade */
+.slide[data-step="0"] .band.sig { top: 300px; left: 360px; width: 1200px; height: 580px; border-radius: 10px; }
+.slide.active[data-step="0"] .band.sig { animation: frame-in .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes frame-in { from { top: 617px; left: 605px; width: 710px; height: 40px; } to { top: 300px; left: 360px; width: 1200px; height: 580px; } }
+.slide[data-step="0"] .band.midnight, .slide[data-step="0"] .band.ethereum { opacity: 0; }
+.slide.active[data-step="0"] .band.midnight, .slide.active[data-step="0"] .band.ethereum { animation: box-out .35s ease both; }
+@keyframes box-out { from { opacity: 1; } to { opacity: 0; } }
+/* back to the stack (step 1): the frame shrinks to the strip and Privacy and Markets fade back in around it */
+.slide[data-step="1"] .band.sig { animation: frame-to-strip .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes frame-to-strip { from { top: 300px; left: 360px; width: 1200px; height: 580px; border-radius: 10px; } to { top: 617px; left: 605px; width: 710px; height: 40px; border-radius: 8px; } }
+.slide[data-step="1"] .band.midnight, .slide[data-step="1"] .band.ethereum { animation: box-in .35s ease .55s both; }
+@keyframes box-in { from { opacity: 0; } to { opacity: 1; } }
+.slide[data-step="1"] .band.sig .bstack { transition-delay: .6s; }
+/* demo: strip drops to a band, the privacy pool grows into the frame above it, Ethereum sits below.
+   The move itself is animated with keyframes rather than transitions, because the step 0 geometry is held by the
+   entry animation and a transition will not start from an animated value. The boxes grow from the stack. */
+.slide[data-step="2"] .band.sig { animation: frame-to-band .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes frame-to-band { from { top: 617px; left: 605px; width: 710px; height: 40px; } to { top: 776px; left: 360px; width: 1200px; height: 40px; } }
+.slide[data-step="2"] .band.midnight { animation: pool-grow .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes pool-grow { from { top: 477px; left: 605px; width: 710px; height: 128px; opacity: 1; } to { top: 200px; left: 360px; width: 1200px; height: 560px; opacity: 1; } }
+.slide[data-step="2"] .band.ethereum { animation: eth-grow .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes eth-grow { from { top: 669px; left: 605px; width: 710px; height: 128px; opacity: 1; } to { top: 832px; left: 360px; width: 1200px; height: 92px; opacity: 1; } }
+.kicker.dual { display: grid; }
+.kicker.dual span { grid-area: 1 / 1; transition: opacity .3s ease; }
+.kicker.dual .k1 { opacity: 0; }
+.slide:not([data-step="0"]):not([data-step="1"]) .kicker.dual .k0 { opacity: 0; }
+.slide:not([data-step="0"]):not([data-step="1"]) .kicker.dual .k1 { opacity: 1; }
+.slide[data-step="2"] .band.sig, .slide[data-step="3"] .band.sig, .slide[data-step="4"] .band.sig, .slide[data-step="5"] .band.sig, .slide[data-step="6"] .band.sig, .slide[data-step="7"] .band.sig { top: 776px; left: 360px; width: 1200px; height: 40px; }
+.slide[data-step="2"] .band.midnight, .slide[data-step="3"] .band.midnight, .slide[data-step="4"] .band.midnight, .slide[data-step="5"] .band.midnight, .slide[data-step="6"] .band.midnight, .slide[data-step="7"] .band.midnight { top: 200px; left: 360px; width: 1200px; height: 560px; opacity: 1; transition-delay: .35s; }
+.slide[data-step="2"] .band.ethereum, .slide[data-step="3"] .band.ethereum, .slide[data-step="4"] .band.ethereum, .slide[data-step="5"] .band.ethereum, .slide[data-step="6"] .band.ethereum, .slide[data-step="7"] .band.ethereum { top: 832px; left: 360px; width: 1200px; height: 92px; opacity: 1; transition-delay: .35s; }
+/* labels: the frame carries "Privacy pool" and "Your app"; in stack form the boxes carry their stack labels */
+.band .blabel { position: absolute; left: 28px; top: 20px; font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; transition: opacity .3s ease; }
+.band .blabel.yours { left: auto; right: 28px; opacity: 1; }
+.band .bstack { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; font: 800 44px/1 var(--font-sans); letter-spacing: -1px; transition: opacity .3s ease; }
+.band .bstack i { font-style: normal; }
+.band .bstack .cap { font: 600 22px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.band.sig .bstack { justify-content: center; font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; }
+.band.midnight .blabel { opacity: 0; }
+.slide[data-step="2"] .band.midnight .blabel, .slide[data-step="3"] .band.midnight .blabel, .slide[data-step="4"] .band.midnight .blabel, .slide[data-step="5"] .band.midnight .blabel, .slide[data-step="6"] .band.midnight .blabel, .slide[data-step="7"] .band.midnight .blabel { opacity: .75; transition-delay: .6s; }
+.slide[data-step="2"] .band.midnight .blabel.yours, .slide[data-step="3"] .band.midnight .blabel.yours, .slide[data-step="4"] .band.midnight .blabel.yours, .slide[data-step="5"] .band.midnight .blabel.yours, .slide[data-step="6"] .band.midnight .blabel.yours, .slide[data-step="7"] .band.midnight .blabel.yours { opacity: 1; }
+.slide[data-step="2"] .band.midnight .bstack, .slide[data-step="3"] .band.midnight .bstack, .slide[data-step="4"] .band.midnight .bstack, .slide[data-step="5"] .band.midnight .bstack, .slide[data-step="6"] .band.midnight .bstack, .slide[data-step="7"] .band.midnight .bstack { opacity: 0; }
+.band.sig .blabel { opacity: 0; }
+.slide[data-step="0"] .band.sig .blabel { opacity: .75; transition-delay: .5s; left: 50%; transform: translateX(-50%); }
+.slide[data-step="0"] .band.sig .bstack { opacity: 0; }
+/* Relay pulses: each band pulses once, in turn, when it does its job. Deposit: Ethereum, Sig, Midnight, then the
+   card. Actions (after the button press): Midnight, Sig, Ethereum, then the next card. Same length, same spacing.
+   A CSS animation only restarts when its name changes, so each step uses its own copy of the same keyframes. */
+@keyframes mid-pulse-in { 0%, 100% { border-color: var(--midnight-rule); box-shadow: none; } 40% { border-color: var(--clam-400); box-shadow: 0 0 30px rgba(213,196,187,.35); } }
+@keyframes sig-pulse-in { 0%, 100% { border-color: var(--ink-soft); box-shadow: none; } 40% { border-color: var(--highlight); box-shadow: 0 0 28px rgba(234,238,201,.4); } }
+@keyframes eth-pulse-in { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(228,248,247,.8); } }
+@keyframes mid-pulse-a { 0%, 100% { border-color: var(--midnight-rule); box-shadow: none; } 40% { border-color: var(--clam-400); box-shadow: 0 0 30px rgba(213,196,187,.35); } }
+@keyframes sig-pulse-a { 0%, 100% { border-color: var(--ink-soft); box-shadow: none; } 40% { border-color: var(--highlight); box-shadow: 0 0 28px rgba(234,238,201,.4); } }
+@keyframes eth-pulse-a { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(228,248,247,.8); } }
+@keyframes mid-pulse-b { 0%, 100% { border-color: var(--midnight-rule); box-shadow: none; } 40% { border-color: var(--clam-400); box-shadow: 0 0 30px rgba(213,196,187,.35); } }
+@keyframes sig-pulse-b { 0%, 100% { border-color: var(--ink-soft); box-shadow: none; } 40% { border-color: var(--highlight); box-shadow: 0 0 28px rgba(234,238,201,.4); } }
+@keyframes eth-pulse-b { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(228,248,247,.8); } }
+@keyframes mid-pulse-c { 0%, 100% { border-color: var(--midnight-rule); box-shadow: none; } 40% { border-color: var(--clam-400); box-shadow: 0 0 30px rgba(213,196,187,.35); } }
+@keyframes sig-pulse-c { 0%, 100% { border-color: var(--ink-soft); box-shadow: none; } 40% { border-color: var(--highlight); box-shadow: 0 0 28px rgba(234,238,201,.4); } }
+@keyframes eth-pulse-c { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(228,248,247,.8); } }
+.slide[data-step="3"] .band.ethereum { animation: eth-pulse-in .5s ease .15s 1; }
+.slide[data-step="3"] .band.sig { animation: sig-pulse-in .5s ease .65s 1; }
+.slide[data-step="3"] .band.midnight { animation: mid-pulse-in .5s ease 1.15s 1; }
+.slide[data-step="5"] .band.midnight { animation: mid-pulse-a .5s ease .6s 1; }
+.slide[data-step="5"] .band.sig { animation: sig-pulse-a .5s ease 1.1s 1; }
+.slide[data-step="5"] .band.ethereum { animation: eth-pulse-a .5s ease 1.6s 1; }
+.slide[data-step="6"] .band.midnight { animation: mid-pulse-b .5s ease .6s 1; }
+.slide[data-step="6"] .band.sig { animation: sig-pulse-b .5s ease 1.1s 1; }
+.slide[data-step="6"] .band.ethereum { animation: eth-pulse-b .5s ease 1.6s 1; }
+.slide[data-step="7"] .band.midnight { animation: mid-pulse-c .5s ease .6s 1; }
+.slide[data-step="7"] .band.sig { animation: sig-pulse-c .5s ease 1.1s 1; }
+.slide[data-step="7"] .band.ethereum { animation: eth-pulse-c .5s ease 1.6s 1; }
+/* the pieces of the app, one at a time, inside the frame */
+.flow { position: absolute; inset: 0; z-index: 4; pointer-events: none; transition: opacity .3s ease; }
+.slide.active[data-step="0"] .flow { animation: flow-in .3s .7s both; }
+@keyframes flow-in { from { opacity: 0; } to { opacity: 1; } }
+.st { opacity: 0; transition: opacity .35s ease; }
+.slide[data-step="0"] .s0 { opacity: 1; }
+.slide[data-step="1"] .s1 { opacity: 1; }
+.slide[data-step="2"] .s2 { opacity: 1; }
+.slide[data-step="3"] .s3 { opacity: 1; }
+.slide[data-step="4"] .s4 { opacity: 1; }
+.slide[data-step="5"] .s5 { opacity: 1; }
+.slide[data-step="6"] .s6 { opacity: 1; }
+.slide[data-step="7"] .s7 { opacity: 1; }
+.gives { position: absolute; left: 360px; top: 300px; width: 1200px; height: 580px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px; padding: 0 100px; box-sizing: border-box; text-align: center; }
+.gives .how { margin: 0; font: 400 32px/1.45 var(--font-mono); color: var(--ink); max-width: 960px; }
+.gives .why { margin: 16px 0 0; display: flex; gap: 120px; font: 800 44px/1 var(--font-sans); letter-spacing: -1px; color: var(--ink); }
+.gives .why span { position: relative; }
+.gives .why span + span::before { content: ''; position: absolute; left: -66px; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--ink-soft); transform: translateY(-50%); opacity: .6; }
+/* Deposit card waits for the three boxes to finish moving together (0 to .7s). */
+.slide[data-step="2"] .card.s2 { transition-delay: .8s; }
+/* Landing: the card arrives after the three pulses, no pulse of its own. */
+.slide[data-step="3"] .card.s3 { transition-delay: 1.7s; }
+/* Button press: the outgoing card stays while its button presses and all three pulses play, then it fades and the
+   next card arrives. On Send (step 6) the card simply stays; the next press leaves the slide. */
+.slide[data-step="5"] .card.s4, .slide[data-step="6"] .card.s5 { transition-delay: 2.2s; }
+.slide[data-step="5"] .card.s5, .slide[data-step="6"] .card.s6 { transition-delay: 2.4s; }
+.slide[data-step="5"] .card.s4 .btn.primary, .slide[data-step="6"] .card.s5 .btn.primary, .slide[data-step="7"] .card.s6 .btn.primary { animation: press .55s ease-out both; }
+@keyframes press { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(234,238,201,.6); } 30% { transform: scale(.96); filter: brightness(.82); } 60% { transform: scale(1); filter: none; } 100% { transform: scale(1); box-shadow: 0 0 0 22px rgba(234,238,201,0); } }
+/* Typed fields: the amount types itself, smoothly, with a caret. The output field is there from the start with an
+   empty placeholder, and its value appears after a pause. */
+.card .typed { display: inline-block; overflow: hidden; white-space: nowrap; width: 0; border-right: 3px solid currentColor; padding-right: 2px; box-sizing: content-box; }
+.card .out { display: grid; }
+.card .out i { grid-area: 1 / 1; font-style: normal; transition: opacity .35s ease; }
+.card .out .ph { color: var(--neutral-200); }
+.card .out .outcome { opacity: 0; }
+.slide[data-step="4"] .card.s4 .typed { animation: typing .15s linear .5s both, caret .6s step-end infinite; }
+.slide[data-step="4"] .card.s4 .out .outcome { opacity: 1; transition-delay: 1.5s; }
+.slide[data-step="4"] .card.s4 .out .ph { opacity: 0; transition-delay: 1.5s; }
+.slide[data-step="5"] .card.s5 .typed { animation: typing .4s linear 2.9s both, caret .6s step-end infinite; }
+.slide[data-step="5"] .card.s5 .out .outcome { opacity: 1; transition-delay: 4s; }
+.slide[data-step="5"] .card.s5 .out .ph { opacity: 0; transition-delay: 4s; }
+.slide[data-step="5"] .card.s4 .typed, .slide[data-step="6"] .card.s5 .typed { width: var(--n); border-right-color: transparent; animation: none; }
+.slide[data-step="5"] .card.s4 .out .outcome, .slide[data-step="6"] .card.s5 .out .outcome { opacity: 1; }
+.slide[data-step="5"] .card.s4 .out .ph, .slide[data-step="6"] .card.s5 .out .ph { opacity: 0; }
+@keyframes typing { from { width: 0; } to { width: var(--n); } }
+@keyframes caret { 0%, 100% { border-right-color: currentColor; } 50% { border-right-color: transparent; } }
+.card { position: absolute; left: 560px; top: 480px; transform: translateY(-50%); margin-top: 0; width: 800px; box-sizing: border-box; background: var(--neutral-800); border: 1px solid var(--neutral-600); border-radius: 14px; padding: 30px 32px; color: var(--clam-400); font: 400 18px/1.4 var(--font-mono); display: flex; flex-direction: column; gap: 16px; }
+.card .ptitle { font: 700 28px/1 var(--font-sans); letter-spacing: -.5px; display: flex; align-items: center; justify-content: space-between; }
+.card .pill { font: 600 13px/1 var(--font-mono); letter-spacing: .6px; padding: 7px 11px; border-radius: 12px; }
+.card .pill.pend { color: #E0A030; background: rgba(224,160,48,.12); }
+.card .pill.done { color: var(--live); background: rgba(39,237,2,.10); }
+.card .field { background: var(--neutral-700); border: 1px solid var(--neutral-600); border-radius: 10px; padding: 16px 18px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.card .field .v { font: 600 32px/1 var(--font-mono); }
+.card .field .t { font: 700 16px/1 var(--font-sans); background: var(--neutral-800); border: 1px solid var(--neutral-600); border-radius: 14px; padding: 7px 12px; }
+.card .field .k { font: 600 13px/1 var(--font-mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--neutral-200); }
+.ethlogo { width: 14px; height: 22px; vertical-align: -5px; margin-right: 8px; color: currentColor; }
+.card .addrwrap { display: flex; flex-direction: column; gap: 8px; min-width: 0; flex: 1; }
+.card .chain { font: 600 13px/1 var(--font-mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--neutral-200); display: inline-flex; align-items: center; }
+.card .chain .ethlogo { width: 11px; height: 17px; vertical-align: 0; margin-right: 7px; }
+.card .pill { display: inline-flex; align-items: center; }
+.card .pill .ethlogo { width: 9px; height: 14px; vertical-align: 0; margin-right: 6px; }
+.card .addr { font: 600 19px/1.4 var(--font-mono); letter-spacing: 0; overflow-wrap: anywhere; word-break: break-all; max-width: 100%; }
+.card .arrow { text-align: center; color: var(--neutral-200); font-size: 20px; margin: -8px 0; }
+.card .qr { width: 132px; height: 132px; flex: none; padding: 8px; box-sizing: border-box; background: var(--pampas-500); border-radius: 8px; }
+.card .qr svg { display: block; width: 100%; height: 100%; }
+.card .qr svg path, .card .qr svg rect { fill: var(--neutral-900) !important; }
+.card .deprow { display: flex; gap: 22px; align-items: center; min-width: 0; }
+.card .btn { display: flex; align-items: center; justify-content: center; height: 48px; border-radius: 8px; font: 600 16px/1 var(--font-mono); letter-spacing: .4px; border: 1px solid var(--neutral-600); color: var(--clam-400); background: var(--neutral-700); }
+.card .btn.primary { background: var(--highlight); color: var(--neutral-600); border-color: var(--highlight); }
+.card .big { font: 600 44px/1 var(--font-mono); }
+.card .row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.card .row .dim { color: var(--neutral-200); font-size: 16px; }
+/* Every chain: one state. On entry it gathers out of the vault slide's last state: the dark rows become the one wide
+   pool, the vault's line becomes the one wide line, the light rows become the Ethereum box; then Tron, three empty
+   slots and the caption arrive. Row of five slots of 312 across 1640. The Zcash mark flashes once, faintly. */
+.chains { position: absolute; left: 140px; top: 477px; width: 1640px; height: 480px; }
+.chains .pool { position: absolute; left: 0; top: 0; width: 1640px; height: 128px; box-sizing: border-box; border: 2px solid var(--midnight-rule); border-radius: 12px; background: var(--midnight-bg); color: var(--midnight-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 36px; font: 800 44px/1 var(--font-sans); letter-spacing: -1px; overflow: hidden; }
+.chains .pool .cap { font: 600 22px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.chains .pool > span { opacity: 0; animation: fade-in .4s ease .6s both; }
+.chains .cline { position: absolute; left: 0; top: 140px; width: 1640px; height: 40px; font-size: 18px; }
+.chains .chain { position: absolute; top: 192px; height: 128px; width: 312px; box-sizing: border-box; border: 2px solid transparent; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; font: 800 40px/1 var(--font-sans); letter-spacing: -1px; overflow: hidden; }
+.chains .chain .cap { font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; }
+.chains .chain.eth { left: 0; background: var(--ethereum-bg); border-color: var(--ethereum-bg); color: var(--ethereum-ink); }
+.chains .chain.eth > span { opacity: 0; animation: fade-in .4s ease .6s both; }
+.chains .chain.tron { left: 332px; background: var(--brand-50); border-color: var(--brand-50); color: var(--neutral-600); animation: fade-in .45s ease .9s both; }
+.chains .chain.slot { border: 2px dashed var(--rule); color: var(--ink-soft); justify-content: center; animation: fade-in .45s ease both; }
+.chains .chain.slot:nth-of-type(4) { animation-delay: 1.1s; } .chains .chain.slot:nth-of-type(5) { animation-delay: 1.25s; } .chains .chain.slot:nth-of-type(6) { animation-delay: 1.4s; }
+.chains .slot .zec { width: 40px; height: 40px; color: var(--ink-soft); opacity: 0; animation: zec-flash 2s ease-in-out 2s 1; }
+.chains .cap2 { position: absolute; left: 0; top: 352px; margin: 0; font: 400 22px/1.4 var(--font-mono); color: var(--ink-soft); animation: fade-in .5s ease 1.7s both; }
+/* gather from the vault's last state: dark rows (140,176 900x~590), its line (140,692 900x32), Tokens row (140,716 900x92) */
+.slide.active .chains .pool { animation: pool-gather .7s cubic-bezier(.4, 0, .2, 1) both; }
+.slide.active .chains .cline { animation: line-gather .7s cubic-bezier(.4, 0, .2, 1) both; }
+.slide.active .chains .chain.eth { animation: eth-gather .7s cubic-bezier(.4, 0, .2, 1) both; }
+@keyframes pool-gather { from { left: 0; top: -301px; width: 900px; height: 500px; } to { left: 0; top: 0; width: 1640px; height: 128px; } }
+@keyframes line-gather { from { left: 0; top: 215px; width: 900px; } to { left: 0; top: 140px; width: 1640px; } }
+@keyframes eth-gather { from { left: 0; top: 239px; width: 900px; height: 92px; } to { left: 0; top: 192px; width: 312px; height: 128px; } }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zec-flash { 0%, 100% { opacity: 0; } 45% { opacity: .3; } }
+/* Every chain, steps 1 and 2: the Midnight box opens upward into a frame (140,176 1640x424) while the line and the
+   chain row move down to the bottom (as in the demo), the heading goes, and one piece of a cross-chain app shows inside: the deposit screen with an
+   address per chain and skeleton rows for the next ones, then a swap from USDC on Ethereum to USDT on Tron. On the swap
+   the Ethereum box pulses, then the Tron box. Keyframed, because the step 0 geometry is held by the gather animation. */
+.xhead { transition: opacity .3s ease; }
+.slide[data-step="1"] .xhead, .slide[data-step="2"] .xhead { opacity: 0; }
+.chains .pool .yours { position: absolute; right: 28px; top: 20px; font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: 0; animation: none; transition: opacity .3s ease; }
+.slide[data-step="1"] .chains .pool, .slide[data-step="2"] .chains .pool { animation: pool-open .7s cubic-bezier(.4, 0, .2, 1) both; align-items: flex-start; padding: 20px 28px; }
+.slide[data-step="1"] .chains .pool > span:first-child, .slide[data-step="2"] .chains .pool > span:first-child { font: 600 18px/1 var(--font-mono); letter-spacing: 1.4px; text-transform: uppercase; opacity: .75; animation: none; }
+.slide[data-step="1"] .chains .pool .yours, .slide[data-step="2"] .chains .pool .yours { opacity: 1; transition-delay: .6s; }
+.chains .pool > span:first-child { transition: font-size .5s ease, letter-spacing .5s ease; }
+@keyframes pool-open { from { left: 0; top: 0; width: 1640px; height: 128px; } to { left: 0; top: -301px; width: 1640px; height: 560px; } }
+@keyframes line-down { from { top: 140px; } to { top: 275px; } }
+@keyframes chain-down { from { top: 192px; height: 128px; } to { top: 331px; height: 92px; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+.slide[data-step="1"] .chains .cline, .slide[data-step="2"] .chains .cline { animation: line-down .7s cubic-bezier(.4, 0, .2, 1) both; }
+.slide[data-step="1"] .chains .chain, .slide[data-step="2"] .chains .chain { animation: chain-down .7s cubic-bezier(.4, 0, .2, 1) both; font-size: 32px; }
+.slide[data-step="1"] .chains .cap2, .slide[data-step="2"] .chains .cap2 { animation: fade-out .3s ease both; }
+.slide[data-step="1"] .chains .chain.eth > span, .slide[data-step="2"] .chains .chain.eth > span { animation: none; opacity: 1; }
+.slide[data-step="1"] .chains .chain.eth { animation: chain-down .7s cubic-bezier(.4, 0, .2, 1) both; }
+.xflow { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.card.xc { top: 456px; }
+.slide[data-step="1"] .card.s1 { transition-delay: .7s; }
+.card .field.dep { justify-content: flex-start; gap: 22px; padding: 0 18px; height: 50px; box-sizing: border-box; }
+.card .field.dep .chain { font: 600 15px/1 var(--font-mono); letter-spacing: 1.2px; text-transform: uppercase; color: var(--clam-400); display: inline-flex; align-items: center; min-width: 150px; }
+.card .field.dep .addr { font: 600 17px/1.3 var(--font-mono); letter-spacing: 0; }
+.card .field.dep .mini { margin-left: auto; font: 600 13px/1 var(--font-mono); letter-spacing: .4px; padding: 7px 12px; border-radius: 6px; border: 1px solid var(--neutral-600); color: var(--clam-400); background: var(--neutral-800); }
+.card .field.dep .addr { flex: 1; }
+.card .field.dep.ghostrow .sk { display: block; height: 10px; border-radius: 5px; background: var(--clam-400); opacity: .22; }
+.card .field.dep.ghostrow .chain .sk { display: inline-block; vertical-align: middle; }
+.card .field.dep.ghostrow .trx.etc { opacity: .35; letter-spacing: -1px; font-size: 9px; }
+.card .field.dep.ghostrow .ghostbtn { width: 56px; height: 29px; box-sizing: border-box; background: transparent; border-color: var(--neutral-600); opacity: .6; }
+.card .t { display: inline-flex; align-items: center; }
+.trx { display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; font: 800 10px/1 var(--font-sans); font-style: normal; margin-right: 8px; }
+.card .field.dep .chain .ethlogo { width: 10px; height: 16px; margin-right: 8px; vertical-align: 0; }
+.card .t .ethlogo { width: 9px; height: 14px; margin-right: 6px; vertical-align: 0; }
+@keyframes eth-pulse-x { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(228,248,247,.8); } }
+@keyframes tron-pulse-x { 0%, 100% { box-shadow: none; } 40% { box-shadow: 0 0 32px rgba(242,221,196,.8); } }
+.slide[data-step="2"] .chains .chain.eth { animation: chain-down .7s cubic-bezier(.4, 0, .2, 1) both, eth-pulse-x .5s ease 1.4s 1; }
+.slide[data-step="2"] .chains .chain.tron { animation: chain-down .7s cubic-bezier(.4, 0, .2, 1) both, tron-pulse-x .5s ease 1.9s 1; }
+/* The ask */
+.ask .status { font: 400 36px/1.45 var(--font-mono); color: var(--ink); margin: 0; }
+.ask .mail { font: 600 40px/1 var(--font-mono); color: var(--ink); margin: 56px 0 0; }
+.ask .repo { font: 400 28px/1 var(--font-mono); color: var(--ink-soft); margin: 28px 0 0; }
+.ask .askqr { position: absolute; left: 140px; bottom: 120px; width: 220px; height: 220px; padding: 14px; box-sizing: border-box; background: var(--pampas-500); border-radius: 12px; }
+.ask .askqr svg { display: block; width: 100%; height: 100%; }
+/* Title slide. Light is the holding state: big wordmark where the title will be, switch below.
+   The flip sends the wordmark to the top-left corner and fades the title in under it. */
+#logo { position: absolute; left: 60px; top: 38px; height: 30px; width: 176px; color: var(--ink); transform-origin: 0 0; transform: translate(80px, 242px) scale(6.82); transition: transform .45s cubic-bezier(.4, 0, .2, 1) .12s, color var(--dur) ease .12s; }
+html.dark #logo { transform: none; color: var(--ink-soft); }
+#s1.active { display: block; }
+#s1 h1 { position: absolute; left: 140px; top: 290px; opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+html.dark #s1 h1 { opacity: 1; transform: none; transition-delay: .45s; }
+#s1 .switch-row { position: absolute; left: 140px; top: 560px; }
+#s1 .sub { position: absolute; left: 140px; top: 790px; font: 400 34px/1.4 var(--font-mono); margin: 0; }
+#s1 .sub span { display: block; opacity: 0; transform: translateY(12px); transition: opacity .45s ease, transform .45s ease; }
+#s1 .sub .punch { font-weight: 600; transform: translateY(12px) scale(.96); transform-origin: 0 50%; }
+html.dark #s1 .sub span { opacity: 1; transform: none; transition-delay: .65s; }
+html.dark #s1 .sub .punch { transition: opacity .3s ease, transform .35s var(--ease); transition-delay: 1.25s; }
+.switch-row { display: flex; align-items: center; gap: 56px; }
+.switch { position: relative; width: 340px; height: 176px; border-radius: 88px; background: var(--track); border: 3px solid var(--switch-border); box-sizing: border-box; cursor: pointer; transition: background-color var(--dur) ease .12s, border-color var(--dur) ease .12s; }
+.switch .knob { position: absolute; top: 11px; left: 11px; width: 148px; height: 148px; border-radius: 50%; background: var(--knob); display: flex; align-items: center; justify-content: center; transition: transform var(--dur) var(--ease), background-color var(--dur) ease; box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+html.dark .switch .knob { transform: translateX(164px); box-shadow: 0 0 0 12px rgba(234,238,201,.22), 0 6px 24px rgba(0,0,0,.5); }
+.eye { width: 92px; height: 59px; color: var(--knob-ink); transition: color var(--dur) ease; }
+.eye path, .eye circle { stroke: currentColor; fill: none; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+.eye .pupil { fill: currentColor; transform-origin: 50% 50%; transition: transform .18s ease .15s; }
+.eye .lid { transition: d .4s var(--ease); }
+html.dark .eye .lid { transition-delay: .2s; }
+.eye .lash { opacity: 0; transition: opacity .2s ease; }
+html.dark .eye .lash { opacity: 1; transition-delay: .5s; }
+html.dark .eye .pupil { transform: scaleY(0); transition-delay: .05s; }
+html.dark .eye .lid { d: path('M10 28 C28 52 82 52 100 28 C82 52 28 52 10 28 Z'); }
+
+/* Print: every slide on its own page, dark, 16:9 */
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { overflow: visible; background: var(--neutral-950); }
+  #stage { position: static; transform: none; width: 1920px; height: auto; }
+  .slide { display: block !important; position: relative; width: 1920px; height: 1080px; page-break-after: always; }
+  #logo { transform: none; }
+  #hero-bg { display: none; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="eth-logo" viewBox="0 0 256 417"><path fill="currentColor" opacity=".6" d="M127.9 0 125.2 9.5v275.3l2.7 2.8 127.9-75.6z"/><path fill="currentColor" d="M127.9 0 0 212l127.9 75.6V154.2z"/><path fill="currentColor" opacity=".6" d="m127.9 312-1.5 1.9v98l1.5 4.5L256 236.6z"/><path fill="currentColor" d="M127.9 416.4v-104.4L0 236.6z"/><path fill="currentColor" opacity=".2" d="m127.9 287.6 127.9-75.6-127.9-58.1z"/><path fill="currentColor" opacity=".6" d="m0 212 127.9 75.6V154.2z"/></symbol></svg>
+<div id="hero-bg"></div>
+<svg id="grain" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><filter id="g"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter><rect width="100%" height="100%" filter="url(#g)"/></svg>
+<div id="stage">
+  <svg id="logo" viewBox="0 0 200 34" fill="currentColor" aria-label="Sig.Network"><g > <path d="M28.2183 21.7208C28.2183 21.633 28.2329 21.1775 27.8827 20.8263L15.6377 8.54345C15.5757 8.48125 15.5411 8.39709 15.5411 8.30928V5.52123C15.5411 5.43341 15.5757 5.34926 15.6377 5.28706L17.5895 3.32957C17.6515 3.26737 17.7354 3.23261 17.823 3.23261H20.5846C20.6722 3.23261 20.7561 3.26737 20.8181 3.32957L22.7698 5.28706C22.8319 5.34926 22.8665 5.43341 22.8665 5.52123V8.29099C22.8665 8.3788 22.8319 8.46295 22.7698 8.52515L21.0169 10.2832C20.6813 10.6199 20.6813 11.1669 21.0169 11.5053L23.4539 13.9494C23.8479 14.3446 24.4553 14.4287 24.9423 14.1561L25.4403 13.8762C25.6993 13.7317 25.785 13.4006 25.63 13.1463L24.6596 11.5565C24.5793 11.4266 24.5994 11.2565 24.707 11.1486L25.6573 10.1954C25.9328 9.91918 26.0878 9.54415 26.0878 9.15448V4.65408C26.0878 4.26258 25.9328 3.88754 25.6573 3.6113L22.4853 0.431746C22.2099 0.155502 21.8359 0 21.4456 0H16.9584C16.568 0 16.1941 0.155502 15.9186 0.431746L12.7466 3.61313C12.4712 3.88937 12.3161 4.26441 12.3161 4.65591V9.15631C12.3161 9.54598 12.4712 9.92101 12.7448 10.1973L24.9095 22.416C24.9715 22.4782 25.0062 22.5624 25.0062 22.6502V24.1558C25.0062 24.4504 24.6505 24.5985 24.4425 24.39L0.563637 0.439064C0.355693 0.230508 0 0.378693 0 0.673231V3.83266C0 4.22416 0.155046 4.59919 0.43048 4.87544L23.6946 28.208C23.8242 28.3379 23.8242 28.5483 23.6946 28.6763L22.945 29.4282C22.8155 29.5581 22.6057 29.5581 22.478 29.4282L0.563637 7.45311C0.355693 7.24455 0 7.39274 0 7.68727V10.8467C0 11.2382 0.155046 11.6132 0.43048 11.8895L18.6894 30.2021C18.8974 30.4107 18.7496 30.7674 18.4559 30.7674H17.2174C16.9511 30.7674 16.6939 30.6613 16.5042 30.471L0.563637 14.4745C0.355693 14.2659 0 14.4141 0 14.7086V17.8607C0 18.2522 0.155046 18.6273 0.43048 18.9035L15.0522 33.5683C15.3276 33.8445 15.7016 34 16.0919 34H22.3339C22.7242 34 23.0982 33.8445 23.3736 33.5683L27.7113 29.2179C28.0615 28.8666 28.2311 28.4111 28.2311 27.9958L28.2183 21.7208Z" /> <path d="M20.0721 7.85375C19.9936 7.77509 19.8878 7.73118 19.7784 7.73118H19.2001C19.0907 7.73118 18.9849 7.77509 18.9065 7.85375L18.4979 8.26355C18.4194 8.34221 18.3757 8.44832 18.3757 8.55808V9.13801C18.3757 9.24778 18.4194 9.35389 18.4979 9.43255L18.9065 9.84235C18.9849 9.92101 19.0907 9.96492 19.2001 9.96492H19.7784C19.8878 9.96492 19.9936 9.92101 20.0721 9.84235L20.4806 9.43255C20.5591 9.35389 20.6029 9.24778 20.6029 9.13801V8.55808C20.6029 8.44832 20.5591 8.34221 20.4806 8.26355L20.0721 7.85375Z" /> <path d="M46.034 20.3579L37.1855 15.5282C37.1143 15.4898 37.0705 15.4148 37.0705 15.3343V11.7815C37.0705 11.723 37.0943 11.6681 37.1344 11.626L39.5057 9.22034C39.5476 9.17826 39.6042 9.15448 39.6625 9.15448H47.351C47.4094 9.15448 47.4659 9.17826 47.506 9.21851L49.9047 11.6242C49.9466 11.6663 49.9685 11.7212 49.9685 11.7797V13.9458C49.9685 14.0683 49.87 14.1671 49.7478 14.1671H46.3095C46.1872 14.1671 46.0887 14.0683 46.0887 13.9458V12.4292C46.0887 12.3066 45.9902 12.2078 45.868 12.2078H41.3389C41.2167 12.2078 41.1182 12.3066 41.1182 12.4292V13.4024C41.1182 13.4829 41.1619 13.5579 41.2331 13.5963L50.109 18.426C50.1801 18.4645 50.2239 18.5395 50.2239 18.62V22.1709C50.2239 22.2294 50.2002 22.2861 50.1601 22.3264L47.7614 24.7321C47.7195 24.7742 47.6647 24.7961 47.6064 24.7961H39.6024C39.544 24.7961 39.4874 24.7723 39.4473 24.7321L37.0487 22.3264C37.0067 22.2843 36.9848 22.2294 36.9848 22.1709V20.1786C36.9848 20.0561 37.0833 19.9573 37.2055 19.9573H40.6147C40.7369 19.9573 40.8354 20.0561 40.8354 20.1786V21.5233C40.8354 21.6458 40.9339 21.7446 41.0561 21.7446H45.93C46.0523 21.7446 46.1508 21.6458 46.1508 21.5233V20.55C46.1508 20.4695 46.107 20.3945 46.0358 20.3561L46.034 20.3579Z" /> <path d="M53.675 6.62986V3.61496C53.675 3.49239 53.7735 3.3936 53.8958 3.3936H57.6497C57.7719 3.3936 57.8704 3.49239 57.8704 3.61496V6.62986C57.8704 6.75243 57.7719 6.85122 57.6497 6.85122H53.8958C53.7735 6.85122 53.675 6.75243 53.675 6.62986ZM53.7042 24.5803V9.37767C53.7042 9.2551 53.8027 9.15631 53.9249 9.15631H57.5913C57.7135 9.15631 57.812 9.2551 57.812 9.37767V24.5803C57.812 24.7028 57.7135 24.8016 57.5913 24.8016H53.9249C53.8027 24.8016 53.7042 24.7028 53.7042 24.5803Z" /> <path d="M65.5972 25.6834V27.0573C65.5972 27.1799 65.6956 27.2787 65.8179 27.2787H70.7775C70.8997 27.2787 70.9982 27.1799 70.9982 27.0573V24.0424C70.9982 23.9198 70.8997 23.821 70.7775 23.821H64.0503C63.992 23.821 63.9354 23.7973 63.8953 23.757L61.5258 21.3806C61.4839 21.3385 61.462 21.2836 61.462 21.2251V11.7834C61.462 11.7248 61.4857 11.6699 61.5258 11.6279L63.8971 9.22217C63.9391 9.18009 63.9956 9.15631 64.054 9.15631H69.5882C69.6466 9.15631 69.7031 9.18009 69.7433 9.22034L71.084 10.565C71.2226 10.704 71.4597 10.6052 71.4597 10.4095V9.37767C71.4597 9.2551 71.5582 9.15631 71.6804 9.15631H74.889C75.0112 9.15631 75.1097 9.2551 75.1097 9.37767V28.1385C75.1097 28.197 75.086 28.2537 75.044 28.2958L72.6454 30.6741C72.6034 30.7143 72.5487 30.7381 72.4903 30.7381H64.2838C64.2255 30.7381 64.1689 30.7143 64.1288 30.6741L61.7593 28.2977C61.7174 28.2556 61.6955 28.2007 61.6955 28.1422V25.6889C61.6955 25.5663 61.794 25.4675 61.9162 25.4675H65.3819C65.5041 25.4675 65.6026 25.5663 65.6026 25.6889L65.5972 25.6834ZM65.7887 20.4787H70.7775C70.8997 20.4787 70.9982 20.3799 70.9982 20.2573V14.0372C70.9982 13.975 70.9709 13.9147 70.9253 13.8726L69.9986 13.0439C69.9585 13.0073 69.9056 12.9871 69.8527 12.9871H65.7905C65.6683 12.9871 65.5698 13.0859 65.5698 13.2085V20.2573C65.5698 20.3799 65.6683 20.4787 65.7905 20.4787H65.7887Z" /> <path d="M83.0608 20.7293V24.5803C83.0608 24.7028 82.9623 24.8016 82.8401 24.8016H78.8855C78.7633 24.8016 78.6648 24.7028 78.6648 24.5803V20.7293C78.6648 20.6067 78.7633 20.5079 78.8855 20.5079H82.8401C82.9623 20.5079 83.0608 20.6067 83.0608 20.7293Z" /> <path d="M86.5484 24.5803V9.37767C86.5484 9.2551 86.6469 9.15631 86.7691 9.15631H89.9777C90.0999 9.15631 90.1984 9.2551 90.1984 9.37767V10.404C90.1984 10.6016 90.4373 10.7003 90.576 10.5595L91.8856 9.224C91.9276 9.18192 91.9841 9.15814 92.0425 9.15814H97.5749C97.6333 9.15814 97.6898 9.18192 97.7299 9.22217L100.129 11.6279C100.171 11.6699 100.192 11.7248 100.192 11.7834V24.5803C100.192 24.7028 100.094 24.8016 99.9717 24.8016H96.3035C96.1813 24.8016 96.0828 24.7028 96.0828 24.5803V13.2085C96.0828 13.0859 95.9843 12.9871 95.8621 12.9871H91.7999C91.7452 12.9871 91.6941 13.0073 91.654 13.0439L90.7273 13.8726C90.6799 13.9147 90.6544 13.975 90.6544 14.0372V24.5784C90.6544 24.701 90.5559 24.7998 90.4337 24.7998H86.7655C86.6433 24.7998 86.5448 24.701 86.5448 24.5784L86.5484 24.5803Z" /> <path d="M112.974 19.3554H116.498C116.62 19.3554 116.718 19.4542 116.718 19.5768V22.1745C116.718 22.2331 116.695 22.288 116.655 22.33L114.283 24.7358C114.241 24.7778 114.185 24.8016 114.126 24.8016H106.152C106.093 24.8016 106.037 24.7778 105.995 24.7358L103.624 22.33C103.583 22.288 103.56 22.2331 103.56 22.1745V11.7815C103.56 11.723 103.583 11.6681 103.624 11.626L105.995 9.22034C106.037 9.17826 106.093 9.15448 106.152 9.15448H114.126C114.185 9.15448 114.241 9.17826 114.283 9.22034L116.655 11.626C116.695 11.6681 116.718 11.723 116.718 11.7815V17.5205C116.718 17.643 116.62 17.7418 116.498 17.7418H107.802C107.68 17.7418 107.582 17.8406 107.582 17.9632V21.2379C107.582 21.3605 107.68 21.4592 107.802 21.4592H112.532C112.654 21.4592 112.753 21.3605 112.753 21.2379V19.5768C112.753 19.4542 112.851 19.3554 112.974 19.3554ZM107.584 12.7182V15.4459C107.584 15.5685 107.682 15.6673 107.804 15.6673H112.534C112.656 15.6673 112.755 15.5685 112.755 15.4459V12.7182C112.755 12.5956 112.656 12.4969 112.534 12.4969H107.804C107.682 12.4969 107.584 12.5956 107.584 12.7182Z" /> <path d="M124.086 24.7358L121.687 22.33C121.645 22.288 121.623 22.2331 121.623 22.1745V12.6615C121.623 12.5389 121.525 12.4401 121.403 12.4401H119.803C119.681 12.4401 119.582 12.3413 119.582 12.2188V9.37584C119.582 9.25327 119.681 9.15448 119.803 9.15448H121.403C121.525 9.15448 121.623 9.05569 121.623 8.93312V6.03347C121.623 5.9109 121.722 5.81211 121.844 5.81211H125.512C125.635 5.81211 125.733 5.9109 125.733 6.03347V8.93312C125.733 9.05569 125.832 9.15448 125.954 9.15448H129.534C129.657 9.15448 129.755 9.25327 129.755 9.37584V12.2188C129.755 12.3413 129.657 12.4401 129.534 12.4401H125.954C125.832 12.4401 125.733 12.5389 125.733 12.6615V20.7476C125.733 20.8702 125.832 20.969 125.954 20.969H129.764C129.886 20.969 129.985 21.0677 129.985 21.1903V24.5803C129.985 24.7028 129.886 24.8016 129.764 24.8016H124.245C124.186 24.8016 124.13 24.7778 124.09 24.7376L124.086 24.7358Z" /> <path d="M136.575 24.6479L132.643 12.5023C132.635 12.4804 132.632 12.4566 132.632 12.4347V9.37767C132.632 9.2551 132.73 9.15631 132.852 9.15631H136.521C136.643 9.15631 136.741 9.2551 136.741 9.37767V11.8053C136.741 11.8254 136.745 11.8474 136.75 11.8657L138.985 19.6426C139.045 19.8512 139.339 19.8567 139.406 19.6499L141.931 11.8694C141.938 11.8474 141.942 11.8236 141.942 11.8017V9.37767C141.942 9.2551 142.04 9.15631 142.162 9.15631H145.831C145.953 9.15631 146.051 9.2551 146.051 9.37767V11.8017C146.051 11.8255 146.055 11.8474 146.062 11.8694L148.561 19.6243C148.629 19.831 148.921 19.8274 148.983 19.6188L151.243 11.8675C151.248 11.8474 151.252 11.8273 151.252 11.8053V9.37767C151.252 9.2551 151.35 9.15631 151.472 9.15631H155.139C155.261 9.15631 155.36 9.2551 155.36 9.37767V12.4347C155.36 12.4584 155.356 12.4804 155.349 12.5023L151.416 24.6479C151.387 24.7394 151.301 24.7998 151.206 24.7998H146.958C146.863 24.7998 146.777 24.7376 146.748 24.6461L144.218 16.8253C144.152 16.6222 143.866 16.6222 143.799 16.8253L141.216 24.6479C141.187 24.7376 141.101 24.7998 141.006 24.7998H136.787C136.692 24.7998 136.606 24.7376 136.577 24.6479H136.575Z" /> <path d="M168.991 9.22034L171.389 11.626C171.431 11.6681 171.453 11.723 171.453 11.7815V22.1727C171.453 22.2313 171.43 22.288 171.389 22.3282L168.991 24.7339C168.949 24.776 168.894 24.798 168.836 24.798H160.545C160.487 24.798 160.43 24.7742 160.389 24.7321L158.017 22.3264C157.977 22.2843 157.953 22.2294 157.953 22.1709V11.7779C157.953 11.7193 157.977 11.6645 158.017 11.6224L160.389 9.21668C160.43 9.1746 160.487 9.15082 160.545 9.15082H168.836C168.894 9.15082 168.951 9.1746 168.991 9.21485V9.22034ZM167.125 12.9012H162.28C162.158 12.9012 162.059 12.9999 162.059 13.1225V20.8336C162.059 20.9561 162.158 21.0549 162.28 21.0549H167.125C167.247 21.0549 167.346 20.9561 167.346 20.8336V13.1225C167.346 12.9999 167.247 12.9012 167.125 12.9012Z" /> <path d="M175.101 24.5803V9.37767C175.101 9.2551 175.2 9.15631 175.322 9.15631H178.531C178.653 9.15631 178.751 9.2551 178.751 9.37767V10.726C178.751 10.9235 178.989 11.0205 179.127 10.8815L180.783 9.22034C180.825 9.17826 180.88 9.15631 180.938 9.15631H184.132C184.255 9.15631 184.353 9.2551 184.353 9.37767V12.8829C184.353 13.0054 184.255 13.1042 184.132 13.1042H180.504C180.45 13.1042 180.395 13.1262 180.355 13.1628L179.282 14.1616C179.237 14.2037 179.211 14.2623 179.211 14.3245V24.5803C179.211 24.7028 179.113 24.8016 178.99 24.8016H175.324C175.202 24.8016 175.103 24.7028 175.103 24.5803H175.101Z" /> <path d="M186.872 24.5803V3.61496C186.872 3.49239 186.971 3.3936 187.093 3.3936H190.761C190.883 3.3936 190.982 3.49239 190.982 3.61496V14.8385C190.982 15.027 191.204 15.1294 191.347 15.005L195.588 11.3242C195.637 11.2821 195.664 11.2217 195.664 11.1577V9.37584C195.664 9.25327 195.763 9.15448 195.885 9.15448H199.553C199.675 9.15448 199.774 9.25327 199.774 9.37584V12.3944C199.774 12.4584 199.745 12.5206 199.695 12.5627L196.08 15.6471C195.993 15.7221 195.976 15.8539 196.045 15.9472L199.96 21.2543C199.987 21.2928 200.004 21.3385 200.004 21.3861V24.5784C200.004 24.701 199.905 24.7998 199.783 24.7998H196.117C195.994 24.7998 195.896 24.701 195.896 24.5784V22.363C195.896 22.3172 195.881 22.2733 195.856 22.2367L193.218 18.4571C193.143 18.351 192.996 18.3309 192.897 18.4151L191.064 19.9518C191.015 19.9939 190.985 20.0561 190.985 20.1219V24.5803C190.985 24.7028 190.887 24.8016 190.765 24.8016H187.097C186.974 24.8016 186.876 24.7028 186.876 24.5803H186.872Z" /> </g></svg>
+
+  <div id="rule-top"></div>
+  <div class="chrome">
+    <span class="live"><i></i> Live on Midnight stagenet</span>
+  </div>
+
+  <!-- 1. Title: the first keypress flips light to dark, the second advances -->
+  <section class="slide" id="s1">
+    <h1>Night Mode.</h1>
+    <div class="switch-row">
+      <div class="switch" id="switch"><div class="knob"><svg class="eye" viewBox="0 0 110 70" aria-hidden="true"><path class="lid" d="M6 35 C26 6 84 6 104 35 C84 64 26 64 6 35 Z"/><circle class="pupil" cx="55" cy="35" r="11"/><g class="lash"><path d="M26 44 L19 53"/><path d="M55 48 L55 60"/><path d="M84 44 L91 53"/></g></svg></div></div>
+    </div>
+    <p class="sub"><span>Make any Ethereum app private.</span><span class="punch">No permission needed.</span></p>
+  </section>
+
+  <!-- 2. Ecosystems: four boxes, one build. Space plays the move before it advances. -->
+  <section class="slide" data-steps="1" data-step="0">
+    <p class="kicker">Ecosystems</p>
+    <h2>Ecosystems are defined by what they lack.</h2>
+    <div class="boxes">
+      <div class="chain midnight">
+        <h3>Midnight</h3>
+        <div class="box has"><span class="name">Privacy</span><span class="cap">Midnight</span></div>
+        <div class="box gap">Lacks markets</div>
+      </div>
+      <div class="sigbar">sig.network</div>
+      <div class="chain ethereum">
+        <h3>Ethereum</h3>
+        <div class="box gap">Lacks privacy</div>
+        <div class="box has"><span class="name">Markets</span><span class="cap">Ethereum</span></div>
+        <p class="cite">Privacy, &ldquo;the biggest thing Ethereum doesn't have yet.&rdquo; Arthur Hayes, December 2025</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. The primitive, zoomed in: the Sig.Network strip grows into a frame and the app's pieces play inside it. -->
+  <section class="slide" data-steps="7" data-step="0">
+    <p class="kicker dual"><span class="k0">What is Sig.Network</span><span class="k1">The user experience</span></p>
+    <div class="ptitles">
+      <h2 class="t0 t1">Your private app can act on any chain.</h2>
+    </div>
+    <div class="band midnight"><span class="blabel">Privacy pool</span><span class="blabel yours">Your app &middot; Midnight</span><span class="bstack"><i>Privacy</i><i class="cap">Midnight</i></span></div>
+    <div class="band ethereum"><span class="bstack"><i>Markets</i><i class="cap">Ethereum</i></span></div>
+    <div class="band sig"><span class="blabel">sig.network</span><span class="bstack">sig.network</span></div>
+    <div class="flow">
+      <div class="gives st s0">
+        <p class="how">A signing network that gives your contract an account on every chain.</p>
+        <p class="why"><span>Liquidity</span><span>Protocols</span><span>Privacy</span></p>
+      </div>
+      <div class="card st s2">
+        <div class="ptitle"><span>Deposit ETH</span><span class="pill pend">Waiting for funds</span></div>
+        <div class="deprow"><span class="qr"><svg class="qrsvg" shape-rendering="crispEdges" viewBox="0 0 29 29" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<g id="QRcode">
+		<rect x="0" y="0" width="29" height="29" fill="#000000" fill-opacity="0.000000"/>
+		<g id="Pattern" transform="translate(0,0)">
+			<rect x="0" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="0" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="1" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="2" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="3" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="4" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="5" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="6" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="7" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="8" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="9" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="10" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="11" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="12" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="13" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="14" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="15" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="16" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="17" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="18" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="19" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="7" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="20" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="21" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="22" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="23" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="20" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="21" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="24" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="25" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="27" y="26" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="9" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="16" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="18" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="22" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="23" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="24" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="28" y="27" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="0" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="1" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="2" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="3" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="4" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="5" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="6" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="8" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="10" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="11" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="12" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="13" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="14" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="15" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="17" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="19" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="25" y="28" width="1" height="1" fill="#d5c4bb"/>
+			<rect x="26" y="28" width="1" height="1" fill="#d5c4bb"/>
+		</g>
+	</g>
+</svg></span><span class="addrwrap"><span class="chain"><svg class="ethlogo"><use href="#eth-logo"/></svg>Ethereum</span><span class="addr">0x71c24a90e3f7b1d806c52e9a77fb3c10e5d79e4b</span></span></div>
+        <div class="btn">Copy address</div>
+      </div>
+      <div class="card st s3">
+        <div class="ptitle"><span>Deposit received</span><span class="pill done">Complete</span></div>
+        <div class="row"><span class="big">1.00 ETH</span><span class="dim">Oct 8, 13:41</span></div>
+        <div class="field"><span class="k">Your balance on Midnight</span><span class="v">1.00 ETH</span></div>
+      </div>
+      <div class="card st s4">
+        <div class="ptitle"><span>Swap</span><span class="pill done"><svg class="ethlogo"><use href="#eth-logo"/></svg>Uniswap on Ethereum</span></div>
+        <div class="field"><span class="v typed" style="--n:1ch">1</span><span class="t">ETH</span></div>
+        <div class="arrow">&darr;</div>
+        <div class="field"><span class="v out"><i class="ph">0</i><i class="outcome">3,200.00</i></span><span class="t">USDC</span></div>
+        <div class="btn primary">Swap</div>
+      </div>
+      <div class="card st s5">
+        <div class="ptitle"><span>Lend</span><span class="pill done"><svg class="ethlogo"><use href="#eth-logo"/></svg>Aave on Ethereum</span></div>
+        <div class="field"><span class="v typed" style="--n:5ch">3,200</span><span class="t">USDC</span></div>
+        <div class="field"><span class="k">Supply APY</span><span class="v out"><i class="ph">&mdash;</i><i class="outcome">4.2%</i></span></div>
+        <div class="btn primary">Supply</div>
+      </div>
+      <div class="card st s6 s7">
+        <div class="ptitle"><span>Send USDC</span></div>
+        <div class="field"><span class="v">3,200.00</span><span class="t">USDC</span></div>
+        <div class="field"><span class="addrwrap"><span class="chain"><svg class="ethlogo"><use href="#eth-logo"/></svg>Ethereum</span><span class="addr">0x9b0751ce8d2af6b34e01c7d9a5e82f36a1c044d1</span></span></div>
+        <div class="btn primary">Send</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Moving the line: a leveraged yield vault's stack, three states, no heading. Space moves the line. -->
+  <section class="slide" data-steps="3" data-step="0">
+    <p class="kicker">Leveraged yield vault</p>
+    <div class="ladder">
+      <div class="layer pool"><span class="name">Privacy pool</span><span class="role">your users, netted</span><span class="cap"></span></div>
+      <div class="layer l1"><span class="name">Vault logic</span><span class="role">the strategy: deposit, loop, unwind</span><span class="cap"></span></div>
+      <div class="layer l2"><span class="name">Routing</span><span class="role">aggregator, flash loans</span><span class="cap"></span></div>
+      <div class="layer l3"><span class="name">Lending pool</span><span class="role">the leverage</span><span class="cap"></span></div>
+      <div class="layer l4"><span class="name">DEX liquidity</span><span class="role">swaps, liquidations</span><span class="cap"></span></div>
+      <div class="layer l5"><span class="name">Tokens</span><span class="role">stETH, USDe, the dollar</span><span class="cap"></span></div>
+      <div class="sigbar line">sig.network</div>
+    </div>
+    <div class="ghosts">
+      <div class="ghost" style="--d:.4s;--k:1"><div class="blk dark"><i class="sk" style="width:62%"></i></div><div class="blk"><i class="sk" style="width:48%"></i></div><div class="blk"><i class="sk" style="width:70%"></i></div><div class="blk"><i class="sk" style="width:44%"></i></div><div class="blk"><i class="sk" style="width:58%"></i></div><div class="blk"><i class="sk" style="width:52%"></i></div><div class="sigbar gline"></div></div>
+      <div class="ghost" style="--d:.8s;--k:3"><div class="blk dark"><i class="sk" style="width:62%"></i></div><div class="blk dark"><i class="sk" style="width:48%"></i></div><div class="blk dark"><i class="sk" style="width:70%"></i></div><div class="blk"><i class="sk" style="width:44%"></i></div><div class="blk"><i class="sk" style="width:58%"></i></div><div class="blk"><i class="sk" style="width:52%"></i></div><div class="sigbar gline"></div></div>
+      <div class="ghost" style="--d:1.2s;--k:4"><div class="blk dark"><i class="sk" style="width:62%"></i></div><div class="blk dark"><i class="sk" style="width:48%"></i></div><div class="blk dark"><i class="sk" style="width:70%"></i></div><div class="blk dark"><i class="sk" style="width:44%"></i></div><div class="blk"><i class="sk" style="width:58%"></i></div><div class="blk"><i class="sk" style="width:52%"></i></div><div class="sigbar gline"></div></div>
+    </div>
+    <div class="stages">
+      <p class="st0"><b>Day one.</b> A private pool in front of a vault that already exists. Every layer under it is Ethereum's, so it works today.</p>
+      <p class="st1"><b>Then.</b> The strategy runs on Midnight. Leverage, swaps and liquidations stay where the depth is.</p>
+      <p class="st2"><b>Eventually.</b> Only the assets are public. Everything that knows who you are is shielded.</p>
+      <p class="st3"><b>Nobody has to move at the same time.</b> Every app draws its own line. They still trade with each other.</p>
+    </div>
+  </section>
+
+  <!-- 5. Every chain: one state, gathered out of the vault slide's last state. Tron announced, more chains to come. -->
+  <section class="slide" data-steps="2" data-step="0">
+    <p class="kicker">Cross-chain privacy</p>
+    <div class="ptitles">
+      <h2 class="t0 xhead">One pool, every chain.</h2>
+    </div>
+    <div class="chains">
+      <div class="pool"><span>Midnight</span><span class="yours">Your app &middot; Midnight</span></div>
+      <div class="sigbar cline">sig.network</div>
+      <div class="chain eth"><span>Ethereum</span></div>
+      <div class="chain tron"><span>Tron</span><span class="cap">December</span></div>
+      <div class="chain slot" style="left:664px"><svg class="zec" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="none" stroke="currentColor" stroke-width="5"/><path d="M33 30h34L33 70h34M50 20v10M50 70v10" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round"/></svg></div>
+      <div class="chain slot" style="left:996px"></div>
+      <div class="chain slot" style="left:1328px"></div>
+      <p class="cap2">Information leaks only where money crosses the line. Less crosses it with every chain.</p>
+    </div>
+    <div class="xflow">
+      <div class="card xc st s1">
+        <div class="ptitle"><span>Deposit USDC</span><span class="pill pend">Waiting for funds</span></div>
+        <div class="field dep"><span class="chain"><svg class="ethlogo"><use href="#eth-logo"/></svg>Ethereum</span><span class="addr">0x71c24a90e3f7b1d806c52e9a77fb3c10e5d79e4b</span><span class="mini">Copy</span></div>
+        <div class="field dep"><span class="chain"><i class="trx">T</i>Tron</span><span class="addr">TJm4qZ2kfB9eU5h6Lw3RxPcNtYa7dG8sVK</span><span class="mini">Copy</span></div>
+        <div class="field dep ghostrow"><span class="chain"><i class="trx etc">&hellip;</i><i class="sk" style="width:64px"></i></span><span class="addr"><i class="sk" style="width:62%"></i></span><span class="mini ghostbtn"></span></div>
+        <div class="field dep ghostrow"><span class="chain"><i class="trx etc">&hellip;</i><i class="sk" style="width:48px"></i></span><span class="addr"><i class="sk" style="width:48%"></i></span><span class="mini ghostbtn"></span></div>
+      </div>
+      <div class="card xc st s2">
+        <div class="ptitle"><span>Swap</span><span class="pill done">Midnight</span></div>
+        <div class="field"><span class="v">3,200.00</span><span class="t"><svg class="ethlogo"><use href="#eth-logo"/></svg>USDC &middot; Ethereum</span></div>
+        <div class="arrow">&darr;</div>
+        <div class="field"><span class="v">3,198.40</span><span class="t"><i class="trx">T</i>USDT &middot; Tron</span></div>
+        <div class="btn primary">Swap</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Compliance: four columns, positive framing. -->
+  <section class="slide">
+    <p class="kicker">Compliance</p>
+    <h2>Compliance, built in.</h2>
+    <div class="cols four">
+      <div class="col"><h3>Deposit rules</h3><p>Contracts define what you accept, hold or return.</p></div>
+      <div class="col"><h3>Screening</h3><p>Your pool is an ordinary Ethereum account. The tools regulated venues already use work.</p></div>
+      <div class="col"><h3>Segregation</h3><p>Each app has its own accounts. Nothing sits in a shared pot with actors you don't know.</p></div>
+      <div class="col"><h3>Disclosure</h3><p>Define in your contracts what users have to share to participate in your application.</p></div>
+    </div>
+  </section>
+
+  <!-- 7. The ask -->
+  <section class="slide ask">
+    <p class="kicker">The ask</p>
+    <p class="status">Live on Midnight stagenet.<br>Launching on mainnet with ledger v9.</p>
+    <p class="mail">pitches@sig.network</p>
+    <p class="repo">github.com/sig-net/midnight-examples</p>
+    <div class="askqr"><svg shape-rendering="crispEdges" viewBox="0 0 33 33" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+	<g id="QRcode">
+		<rect x="0" y="0" width="33" height="33" fill="#000000" fill-opacity="0.000000"/>
+		<g id="Pattern" transform="translate(0,0)">
+			<rect x="0" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="0" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="1" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="2" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="3" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="4" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="5" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="6" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="7" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="8" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="9" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="10" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="11" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="12" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="13" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="14" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="15" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="16" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="17" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="18" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="19" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="20" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="21" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="7" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="22" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="23" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="24" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="25" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="26" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="27" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="18" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="28" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="10" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="15" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="25" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="32" y="29" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="12" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="26" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="30" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="20" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="21" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="28" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="29" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="30" y="31" width="1" height="1" fill="#111111"/>
+			<rect x="0" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="1" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="2" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="3" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="4" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="5" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="6" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="8" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="9" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="11" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="13" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="14" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="16" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="17" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="19" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="22" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="23" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="24" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="27" y="32" width="1" height="1" fill="#111111"/>
+			<rect x="31" y="32" width="1" height="1" fill="#111111"/>
+		</g>
+	</g>
+</svg>
+</div>
+  </section>
+
+</div>
+
+<script>
+(() => {
+  const html = document.documentElement;
+  const slides = [...document.querySelectorAll('.slide')];
+  let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
+
+  let step = 0;
+  const steps = (s) => parseInt(s.dataset.steps || '0', 10);
+  const show = () => {
+    slides.forEach((s, k) => s.classList.toggle('active', k === i));
+    slides[i].dataset.step = step;
+    location.hash = i + 1;
+  };
+  const setMode = (dark) => { html.classList.toggle('dark', dark); html.classList.toggle('light', !dark); };
+  const next = () => {
+    if (i === 0 && html.classList.contains('light')) { setMode(true); return; }
+    if (step < steps(slides[i])) { step++; slides[i].dataset.step = step; return; }
+    if (i < slides.length - 1) { i++; step = 0; show(); }
+  };
+  const prev = () => {
+    if (step > 0) { step--; slides[i].dataset.step = step; return; }
+    if (i === 0) { setMode(false); return; }
+    i--; step = steps(slides[i]); show();
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (['ArrowRight', ' ', 'Enter', 'PageDown', 'ArrowDown'].includes(e.key)) { e.preventDefault(); next(); }
+    else if (['ArrowLeft', 'PageUp', 'ArrowUp', 'Backspace'].includes(e.key)) { e.preventDefault(); prev(); }
+    else if (e.key === 'f' || e.key === 'F') { document.documentElement.requestFullscreen && document.documentElement.requestFullscreen(); }
+    else if (e.key === 'p' || e.key === 'P') { setMode(true); slides.forEach(s => { s.dataset.step = steps(s); }); window.print(); }
+    else if (/^[1-9]$/.test(e.key)) { i = Math.min(slides.length - 1, parseInt(e.key, 10) - 1); step = 0; if (i > 0) setMode(true); show(); }
+  });
+  document.getElementById('switch').addEventListener('click', (e) => { e.stopPropagation(); setMode(html.classList.contains('light')); });
+  document.addEventListener('click', next);
+
+  const fit = () => {
+    const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+    document.getElementById('stage').style.setProperty('--scale', s);
+  };
+  window.addEventListener('resize', fit);
+  fit();
+  if (i > 0 || location.search.includes('dark')) setMode(true);
+  show();
+})();
+</script>
+</body>
+</html>
