@@ -998,7 +998,7 @@ html.dark .eye .lid { d: path('M10 28 C28 52 82 52 100 28 C82 52 28 52 10 28 Z')
   <section class="slide" data-steps="3" data-step="0">
     <p class="kicker">Leveraged yield vault</p>
     <div class="ladder">
-      <div class="layer pool"><span class="name">Privacy pool</span><span class="role">your users, netted</span><span class="cap"></span></div>
+      <div class="layer pool"><span class="name">Privacy pool</span><span class="role">normal users, but private</span><span class="cap"></span></div>
       <div class="layer l1"><span class="name">Vault logic</span><span class="role">the strategy: deposit, loop, unwind</span><span class="cap"></span></div>
       <div class="layer l2"><span class="name">Routing</span><span class="role">aggregator, flash loans</span><span class="cap"></span></div>
       <div class="layer l3"><span class="name">Lending pool</span><span class="role">the leverage</span><span class="cap"></span></div>
@@ -1012,9 +1012,9 @@ html.dark .eye .lid { d: path('M10 28 C28 52 82 52 100 28 C82 52 28 52 10 28 Z')
       <div class="ghost" style="--d:1.2s;--k:4"><div class="blk dark"><i class="sk" style="width:62%"></i></div><div class="blk dark"><i class="sk" style="width:48%"></i></div><div class="blk dark"><i class="sk" style="width:70%"></i></div><div class="blk dark"><i class="sk" style="width:44%"></i></div><div class="blk"><i class="sk" style="width:58%"></i></div><div class="blk"><i class="sk" style="width:52%"></i></div><div class="sigbar gline"></div></div>
     </div>
     <div class="stages">
-      <p class="st0"><b>Day one.</b> The same trades, but with no data leaked.</p>
+      <p class="st0"><b>Day one.</b> The same trades, but with no leaked data.</p>
       <p class="st1"><b>Then.</b> The strategy runs on Midnight. Leverage, swaps and liquidations stay where the depth is.</p>
-      <p class="st2"><b>Eventually.</b> Assets are issued on their own chain. They live much of their life on Midnight.</p>
+      <p class="st2"><b>Eventually.</b> Native assets are issued on their own chain. They live their life on Midnight.</p>
       <p class="st3"><b>Nobody has to move at the same time.</b> Every app draws its own line. They still trade with each other.</p>
     </div>
   </section>
@@ -1060,7 +1060,7 @@ html.dark .eye .lid { d: path('M10 28 C28 52 82 52 100 28 C82 52 28 52 10 28 Z')
     <div class="cols four">
       <div class="col"><h3>Deposit rules</h3><p>Contracts define what you accept, hold or return.</p></div>
       <div class="col"><h3>Screening</h3><p>Your pool is an ordinary Ethereum account. The tools regulated venues already use work.</p></div>
-      <div class="col"><h3>Segregation</h3><p>Each app has its own accounts. Nothing sits in a shared pot with actors you don't know.</p></div>
+      <div class="col"><h3>Segregation</h3><p>Each app has its own accounts. Nothing sits in a shared pot with actors you don't trust.</p></div>
       <div class="col"><h3>Disclosure</h3><p>Define in your contracts what users have to share to participate in your application.</p></div>
     </div>
   </section>
