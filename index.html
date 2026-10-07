@@ -5,28 +5,28 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sig.Network - Every app has a night mode</title>
-    <meta name="title" content="Sig.Network - Every app has a night mode" />
+    <title>Sig.Network · Private apps on Midnight with real accounts on Ethereum</title>
+    <meta name="title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
     <meta
       name="description"
-      content="Build on Midnight. Trade, lend and settle on Ethereum. Your users get Uniswap and Aave at the real price, deposits from any wallet or exchange, and nobody's name on any of it."
+      content="Sig.Network gives Midnight contracts real accounts on Ethereum. Build private apps that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
     />
-    <meta name="keywords" content="sig.network, midnight, privacy, cross-chain, chain signatures, MPC, DeFi, deposits" />
+    <meta name="keywords" content="sig.network, midnight, privacy, cross-chain, chain signatures, MPC, DeFi, deposits, compact" />
     <meta name="author" content="Sig.Network" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sig.network/" />
-    <meta property="og:title" content="Sig.Network - Every app has a night mode" />
+    <meta property="og:title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
     <meta
       property="og:description"
-      content="Build on Midnight. Trade, lend and settle on Ethereum. Deposits from any wallet or exchange, and nobody's name on any of it."
+      content="Build private apps on Midnight that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
     />
     <meta property="og:image" content="https://sig.network/twitter-image.png" />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://sig.network/" />
-    <meta property="twitter:title" content="Sig.Network - Every app has a night mode" />
+    <meta property="twitter:title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
     <meta
       property="twitter:description"
-      content="Build on Midnight. Trade, lend and settle on Ethereum. Deposits from any wallet or exchange, and nobody's name on any of it."
+      content="Build private apps on Midnight that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
     />
     <meta property="twitter:image" content="https://sig.network/twitter-image.png" />
     <meta name="robots" content="index, follow" />
@@ -38,243 +38,368 @@
       @font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-display: swap; src: url('/decks/night-mode/fonts/ibm-plex-mono-600.woff2') format('woff2'); }
 
       :root {
-        --bg: #111; --panel: #201e1e; --panel-2: #2e2c2c; --rule: #3d3939; --faint: #786767;
+        --bg: #111; --bg-2: #161414; --panel: #201e1e; --panel-2: #2e2c2c; --rule: #3d3939; --faint: #786767;
         --ink: #e9ddd5; --ink-2: #d5c4bb; --muted: #a28b8a;
         --accent: #eaeec9; --accent-ink: #4c4646; --live: #27ed02;
         --mid: #2e2c2c; --mid-rule: #786767; --eth: #e4f8f7; --eth-ink: #4c4646; --tron: #f2ddc4;
         --sans: Archivo, 'Segoe UI', system-ui, sans-serif;
         --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+        --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
       }
       * { box-sizing: border-box; }
-      html { color-scheme: dark; }
-      body { margin: 0; background: var(--bg); color: var(--ink-2); font: 17px/1.55 system-ui, -apple-system, 'Segoe UI', sans-serif; -webkit-font-smoothing: antialiased; }
+      html { color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 72px; }
+      body { margin: 0; background: var(--bg); color: var(--ink-2); font: 17px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
       a { color: inherit; text-decoration: none; }
-      a:hover { color: var(--ink); }
+      :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
       h1, h2, h3 { font-family: var(--sans); font-weight: 800; letter-spacing: -0.025em; color: var(--ink); margin: 0; }
-      h1 { font-size: clamp(44px, 6.4vw, 84px); line-height: 0.98; max-width: 11ch; }
-      h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.05; max-width: 22ch; }
-      h3 { font-size: 19px; line-height: 1.2; }
+      h1 { font-size: clamp(42px, 5.6vw, 72px); line-height: 1; max-width: 13ch; }
+      h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.08; max-width: 24ch; }
+      h3 { font-size: 19px; line-height: 1.25; }
       p { margin: 0; }
       ul { margin: 0; padding: 0; list-style: none; }
-      section { padding: 80px 0; }
+      section { padding: 88px 0; }
       section + section { border-top: 1px solid var(--rule); }
-      .wrap { width: min(1080px, calc(100% - 48px)); margin: 0 auto; }
-      .eyebrow, .tag, .mono { font-family: var(--mono); }
-      .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-      .tag { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
-      .lead { font-size: 18px; max-width: 54ch; margin-top: 18px; }
+      .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+      .eyebrow { font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+      .tag { font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
+      .lead { font-size: 18px; max-width: 56ch; margin-top: 18px; color: var(--ink-2); }
       .muted { color: var(--muted); }
-      .btn { display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border-radius: 8px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); font: 600 14px/1 var(--mono); }
+      .btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 8px; border: 1px solid var(--rule); background: var(--panel); color: var(--ink); font: 600 14px/1 var(--mono); transition: background 0.15s, border-color 0.15s; }
       .btn:hover { border-color: var(--faint); background: var(--panel-2); }
       .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-      .btn.primary:hover { background: #f0f3d6; color: var(--accent-ink); }
+      .btn.primary:hover { background: #f1f4d8; }
+      .btn.sm { height: 36px; padding: 0 14px; font-size: 13px; }
       .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+      .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+      .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+      .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 22px; }
+      .panel p { color: var(--muted); font-size: 15px; margin-top: 8px; }
+      .ico { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--panel-2); border: 1px solid var(--faint); margin-bottom: 14px; color: var(--ink); }
+      .ico svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+
+      /* header */
+      .top { position: sticky; top: 0; z-index: 20; background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
+      .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+      .logo { display: inline-flex; align-items: center; color: var(--ink); height: 22px; }
+      .logo svg { height: 22px; width: auto; }
+      .top nav ul { display: flex; align-items: center; gap: 26px; font: 500 14px/1 var(--mono); color: var(--muted); }
+      .top nav a:hover { color: var(--ink); }
+      .top details { display: none; }
+      .top summary { list-style: none; cursor: pointer; font: 600 13px/1 var(--mono); color: var(--ink); padding: 8px 0; }
+      .top summary::-webkit-details-marker { display: none; }
+      .top details ul { position: absolute; left: 0; right: 0; top: 64px; background: var(--bg); border-bottom: 1px solid var(--rule); padding: 8px 24px 20px; display: grid; gap: 14px; font: 500 15px/1 var(--mono); }
 
       /* hero */
-      .hero { padding: 104px 0 88px; background: radial-gradient(800px 480px at 75% -20%, rgba(234, 238, 201, 0.1), transparent 60%), var(--bg); }
-      .hero .wrap { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; }
-      .live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 24px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
-      .live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--live); }
+      .hero { padding: 96px 0 80px; background: radial-gradient(900px 520px at 80% -30%, rgba(234, 238, 201, 0.09), transparent 60%), var(--bg); }
+      .hero .wrap { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; }
+      .live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+      .live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 10px rgba(39, 237, 2, 0.6); }
+      .hero .lead { font-size: 19px; }
+      .shot { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--faint); background: var(--panel); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+      .shot img { display: block; width: 100%; height: auto; }
+      .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
 
-      /* the stack: two blocks and the line between them */
-      .stack { display: grid; gap: 10px; }
-      .block { height: 80px; border-radius: 12px; border: 2px solid transparent; display: flex; align-items: center; justify-content: space-between; padding: 0 22px; font: 800 24px/1 var(--sans); letter-spacing: -0.02em; }
-      .block.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .block.eth { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); }
-      .block.tron { background: var(--tron); border-color: var(--tron); color: var(--eth-ink); }
-      .block.slot { border: 2px dashed var(--rule); }
-      .sig { height: 36px; border: 2px solid var(--muted); border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+      /* proof strip */
+      .proof { padding: 28px 0; border-top: 1px solid var(--rule); }
+      .proof .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
+      .proof ul { display: flex; flex-wrap: wrap; gap: 14px 28px; font: 600 14px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted); }
+      .proof .status { font: 500 13px/1.4 var(--mono); color: var(--muted); }
+      .proof .status b { color: var(--ink-2); font-weight: 600; }
 
       /* how it works */
-      .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 40px; }
-      .steps li { border-radius: 14px; border: 1px solid var(--rule); background: var(--panel); padding: 22px; display: grid; gap: 10px; align-content: start; min-height: 180px; }
+      .steps li { border-radius: 14px; border: 1px solid var(--rule); background: var(--panel); padding: 22px; display: grid; gap: 10px; align-content: start; min-height: 190px; }
       .steps li p { font-size: 15px; color: var(--muted); }
       .steps .mid { background: var(--mid); border-color: var(--mid-rule); }
       .steps .sigs { border-color: var(--muted); }
       .steps .eth { background: var(--eth); border-color: var(--eth); }
       .steps .eth h3, .steps .eth p, .steps .eth .tag { color: var(--eth-ink); }
-      .gives { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px 24px; margin-top: 32px; }
-      .gives li { display: flex; align-items: baseline; gap: 12px; }
-      .gives b { font: 800 22px/1 var(--sans); letter-spacing: -0.02em; color: var(--ink); }
-      .gives span { font-size: 15px; color: var(--muted); }
+      .how .wrap { display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start; }
+      .stack { display: grid; gap: 10px; margin-top: 8px; }
+      .block { height: 76px; border-radius: 12px; border: 2px solid transparent; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font: 800 22px/1 var(--sans); letter-spacing: -0.02em; }
+      .block.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
+      .block.eth { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); }
+      .block.tron { background: var(--tron); border-color: var(--tron); color: var(--eth-ink); }
+      .block.slot { border: 2px dashed var(--rule); }
+      .sig { height: 36px; border: 2px solid var(--muted); border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
+      .how .steps { grid-column: 1 / -1; margin-top: 8px; }
 
-      /* the experience */
-      .frame { margin-top: 40px; border: 2px solid var(--mid-rule); border-radius: 16px; background: var(--mid); padding: 18px; }
-      .frame header { display: flex; justify-content: space-between; margin-bottom: 14px; color: var(--muted); }
-      .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
-      .card { background: var(--panel); border: 1px solid var(--faint); border-radius: 12px; padding: 16px; display: grid; gap: 10px; align-content: start; min-height: 210px; font: 13px/1.4 var(--mono); color: var(--ink-2); }
-      .card h3 { font-size: 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-      .pill { font: 600 10px/1 var(--mono); letter-spacing: 0.06em; padding: 5px 8px; border-radius: 10px; white-space: nowrap; }
-      .pill.pend { color: #e0a030; background: rgba(224, 160, 48, 0.12); }
-      .pill.done { color: var(--live); background: rgba(39, 237, 2, 0.1); }
-      .field { background: var(--panel-2); border: 1px solid var(--faint); border-radius: 8px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-      .field b { font-weight: 600; font-size: 17px; color: var(--ink); }
-      .tk { font: 700 10px/1 var(--sans); background: var(--panel); border: 1px solid var(--faint); border-radius: 10px; padding: 5px 7px; }
-      .addr { font-size: 11px; word-break: break-all; color: var(--muted); }
-      .act { align-self: end; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--mono); background: var(--panel-2); border: 1px solid var(--faint); color: var(--ink); }
-      .act.p { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-      .under { display: grid; gap: 10px; margin-top: 10px; }
-      .under .block { height: 60px; font-size: 20px; }
-      .saw { margin-top: 18px; font: 14px/1.5 var(--mono); color: var(--muted); }
-      .saw b { color: var(--ink-2); font-weight: 600; }
-
-      /* move the line */
-      .split { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-      .ladder { display: grid; gap: 8px; }
-      .layer { height: 58px; border-radius: 10px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; gap: 14px; padding: 0 18px; font: 800 18px/1 var(--sans); letter-spacing: -0.02em; }
-      .layer small { flex: 1; font: 12px/1.2 var(--mono); opacity: 0.7; }
+      /* use cases */
+      .cases .panel { min-height: 230px; display: flex; flex-direction: column; }
+      .cases .panel .who { margin-top: auto; padding-top: 14px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
+      .adopt { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--bg-2); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+      .adopt p { color: var(--muted); font-size: 15px; }
+      .adopt h3 { margin-bottom: 8px; }
+      .ladder { display: grid; gap: 6px; }
+      .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
       .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .stages { display: grid; gap: 18px; margin-top: 30px; }
-      .stages dt { display: inline; font: 600 13px/1 var(--mono); background: var(--accent); color: var(--accent-ink); padding: 3px 7px; border-radius: 4px; margin-right: 8px; }
-      .stages dd { display: inline; margin: 0; font-size: 16px; }
-      .stages div { display: block; }
+      .layer .tag { font-size: 10px; }
+      .ladder .sig { height: 26px; font-size: 10px; }
 
-      /* roadmap */
-      .chains { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px; }
-      .chains .block { height: 68px; font-size: 20px; padding: 0 18px; }
-      .roadmap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
-      .roadmap li { border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--muted); }
-      .roadmap b { display: block; font: 800 18px/1.15 var(--sans); color: var(--ink); margin: 8px 0 6px; letter-spacing: -0.02em; }
-      .roadmap .tag.live-tag { color: var(--live); }
+      /* developers */
+      .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
+      .dev .codes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 40px; }
+      .dev code { font-family: var(--mono); font-size: 0.92em; background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; }
+      .dev pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+      pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
+      pre .k { color: #cdd6a3; } pre .f { color: #e4f8f7; } pre .c { color: var(--faint); } pre .s { color: #f2ddc4; }
+      .codehead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+      .install { margin-top: 14px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 16px; font: 13px/1.6 var(--mono); color: var(--ink-2); }
+      .install b { color: var(--muted); font-weight: 400; }
+      .links { display: grid; gap: 10px; margin-top: 8px; }
+      .links a { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 10px; background: var(--panel); font: 500 14px/1.3 var(--body); }
+      .links a:hover { border-color: var(--faint); }
+      .links a span { color: var(--muted); font-size: 13px; }
+      .links a .mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
       /* compliance */
-      .four { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
       .four li { border-top: 1px solid var(--rule); padding-top: 16px; }
       .four p { color: var(--muted); font-size: 15px; margin-top: 8px; }
 
+      /* roadmap */
+      .chains { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px; }
+      .chains .block { height: 64px; font-size: 19px; padding: 0 16px; }
+      .roadmap { margin-top: 40px; }
+      .roadmap li { border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--muted); }
+      .roadmap b { display: block; font: 800 17px/1.2 var(--sans); color: var(--ink); margin: 8px 0 6px; letter-spacing: -0.02em; }
+      .roadmap .live-tag { color: var(--live); }
+
+      /* faq */
+      .faq { max-width: 760px; }
+      .faq details { border-top: 1px solid var(--rule); }
+      .faq details:last-child { border-bottom: 1px solid var(--rule); }
+      .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; font: 700 18px/1.3 var(--sans); letter-spacing: -0.01em; color: var(--ink); }
+      .faq summary::-webkit-details-marker { display: none; }
+      .faq summary::after { content: '+'; font: 400 24px/1 var(--mono); color: var(--muted); flex: none; }
+      .faq details[open] summary::after { content: '–'; }
+      .faq details p { padding: 0 0 22px; color: var(--muted); max-width: 64ch; }
+
       /* call to action and footer */
-      .cta { padding: 96px 0; }
-      .cta .row { display: flex; gap: 40px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; margin-top: 28px; }
-      .cta .mail { display: block; font: 600 clamp(22px, 3vw, 34px)/1 var(--mono); color: var(--ink); }
-      .cta .repo { display: block; margin-top: 12px; font: 15px/1 var(--mono); color: var(--muted); }
+      .cta { padding: 96px 0; background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+      .cta .row { display: flex; gap: 40px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; margin-top: 24px; }
+      .cta .mail { display: block; font: 600 clamp(20px, 2.6vw, 30px)/1 var(--mono); color: var(--ink); }
       footer { border-top: 1px solid var(--rule); padding: 44px 0 56px; color: var(--muted); font-size: 14px; }
       footer .wrap { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
-      footer .brand { font: 800 20px/1 var(--sans); letter-spacing: -0.02em; color: var(--ink-2); }
-      footer .brand + p { margin-top: 12px; font-size: 13px; max-width: 36ch; }
+      footer .about { max-width: 36ch; margin-top: 14px; font-size: 13px; }
+      footer .legal { margin-top: 22px; font: 12px/1.6 var(--mono); color: var(--faint); }
       footer h4 { margin: 0 0 12px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       footer li + li { margin-top: 8px; }
+      footer a:hover { color: var(--ink); }
 
-      @media (max-width: 900px) {
-        .hero .wrap, .split, .steps, .cards, .chains, .roadmap, .four, .gives, footer .wrap { grid-template-columns: 1fr; }
+      @media (max-width: 960px) {
+        .hero .wrap, .how .wrap, .dev .devhead, .dev .codes, .adopt, .grid3, .grid4, .chains, footer .wrap { grid-template-columns: 1fr; }
+        .top nav { display: none; }
+        .top details { display: block; }
+        .top .cta-top { display: none; }
         section { padding: 60px 0; }
-        .hero { padding: 72px 0 60px; }
+        .hero { padding: 64px 0 56px; }
       }
     </style>
   </head>
   <body>
-    <main>
+    <header class="top">
+      <div class="wrap">
+        <a class="logo" href="#top" aria-label="Sig.Network home">
+          <svg viewBox="0 0 200 34" fill="currentColor" aria-hidden="true"><g id="wm"><path d="M28.2183 21.7208C28.2183 21.633 28.2329 21.1775 27.8827 20.8263L15.6377 8.54345C15.5757 8.48125 15.5411 8.39709 15.5411 8.30928V5.52123C15.5411 5.43341 15.5757 5.34926 15.6377 5.28706L17.5895 3.32957C17.6515 3.26737 17.7354 3.23261 17.823 3.23261H20.5846C20.6722 3.23261 20.7561 3.26737 20.8181 3.32957L22.7698 5.28706C22.8319 5.34926 22.8665 5.43341 22.8665 5.52123V8.29099C22.8665 8.3788 22.8319 8.46295 22.7698 8.52515L21.0169 10.2832C20.6813 10.6199 20.6813 11.1669 21.0169 11.5053L23.4539 13.9494C23.8479 14.3446 24.4553 14.4287 24.9423 14.1561L25.4403 13.8762C25.6993 13.7317 25.785 13.4006 25.63 13.1463L24.6596 11.5565C24.5793 11.4266 24.5994 11.2565 24.707 11.1486L25.6573 10.1954C25.9328 9.91918 26.0878 9.54415 26.0878 9.15448V4.65408C26.0878 4.26258 25.9328 3.88754 25.6573 3.6113L22.4853 0.431746C22.2099 0.155502 21.8359 0 21.4456 0H16.9584C16.568 0 16.1941 0.155502 15.9186 0.431746L12.7466 3.61313C12.4712 3.88937 12.3161 4.26441 12.3161 4.65591V9.15631C12.3161 9.54598 12.4712 9.92101 12.7448 10.1973L24.9095 22.416C24.9715 22.4782 25.0062 22.5624 25.0062 22.6502V24.1558C25.0062 24.4504 24.6505 24.5985 24.4425 24.39L0.563637 0.439064C0.355693 0.230508 0 0.378693 0 0.673231V3.83266C0 4.22416 0.155046 4.59919 0.43048 4.87544L23.6946 28.208C23.8242 28.3379 23.8242 28.5483 23.6946 28.6763L22.945 29.4282C22.8155 29.5581 22.6057 29.5581 22.478 29.4282L0.563637 7.45311C0.355693 7.24455 0 7.39274 0 7.68727V10.8467C0 11.2382 0.155046 11.6132 0.43048 11.8895L18.6894 30.2021C18.8974 30.4107 18.7496 30.7674 18.4559 30.7674H17.2174C16.9511 30.7674 16.6939 30.6613 16.5042 30.471L0.563637 14.4745C0.355693 14.2659 0 14.4141 0 14.7086V17.8607C0 18.2522 0.155046 18.6273 0.43048 18.9035L15.0522 33.5683C15.3276 33.8445 15.7016 34 16.0919 34H22.3339C22.7242 34 23.0982 33.8445 23.3736 33.5683L27.7113 29.2179C28.0615 28.8666 28.2311 28.4111 28.2311 27.9958L28.2183 21.7208Z"/><path d="M46.034 20.3579L37.1855 15.5282C37.1143 15.4898 37.0705 15.4148 37.0705 15.3343V11.7815C37.0705 11.723 37.0943 11.6681 37.1344 11.626L39.5057 9.22034C39.5476 9.17826 39.6042 9.15448 39.6625 9.15448H47.351C47.4094 9.15448 47.4659 9.17826 47.506 9.21851L49.9047 11.6242C49.9466 11.6663 49.9685 11.7212 49.9685 11.7797V13.9458C49.9685 14.0683 49.87 14.1671 49.7478 14.1671H46.3095C46.1872 14.1671 46.0887 14.0683 46.0887 13.9458V12.4292C46.0887 12.3066 45.9902 12.2078 45.868 12.2078H41.3389C41.2167 12.2078 41.1182 12.3066 41.1182 12.4292V13.4024C41.1182 13.4829 41.1619 13.5579 41.2331 13.5963L50.109 18.426C50.1801 18.4645 50.2239 18.5395 50.2239 18.62V22.1709C50.2239 22.2294 50.2002 22.2861 50.1601 22.3264L47.7614 24.7321C47.7195 24.7742 47.6647 24.7961 47.6064 24.7961H39.6024C39.544 24.7961 39.4874 24.7723 39.4473 24.7321L37.0487 22.3264C37.0067 22.2843 36.9848 22.2294 36.9848 22.1709V20.1786C36.9848 20.0561 37.0833 19.9573 37.2055 19.9573H40.6147C40.7369 19.9573 40.8354 20.0561 40.8354 20.1786V21.5233C40.8354 21.6458 40.9339 21.7446 41.0561 21.7446H45.93C46.0523 21.7446 46.1508 21.6458 46.1508 21.5233V20.55C46.1508 20.4695 46.107 20.3945 46.0358 20.3561L46.034 20.3579Z"/><path d="M53.675 6.62986V3.61496C53.675 3.49239 53.7735 3.3936 53.8958 3.3936H57.6497C57.7719 3.3936 57.8704 3.49239 57.8704 3.61496V6.62986C57.8704 6.75243 57.7719 6.85122 57.6497 6.85122H53.8958C53.7735 6.85122 53.675 6.75243 53.675 6.62986ZM53.7042 24.5803V9.37767C53.7042 9.2551 53.8027 9.15631 53.9249 9.15631H57.5913C57.7135 9.15631 57.812 9.2551 57.812 9.37767V24.5803C57.812 24.7028 57.7135 24.8016 57.5913 24.8016H53.9249C53.8027 24.8016 53.7042 24.7028 53.7042 24.5803Z"/><path d="M65.5972 25.6834V27.0573C65.5972 27.1799 65.6956 27.2787 65.8179 27.2787H70.7775C70.8997 27.2787 70.9982 27.1799 70.9982 27.0573V24.0424C70.9982 23.9198 70.8997 23.821 70.7775 23.821H64.0503C63.992 23.821 63.9354 23.7973 63.8953 23.757L61.5258 21.3806C61.4839 21.3385 61.462 21.2836 61.462 21.2251V11.7834C61.462 11.7248 61.4857 11.6699 61.5258 11.6279L63.8971 9.22217C63.9391 9.18009 63.9956 9.15631 64.054 9.15631H69.5882C69.6466 9.15631 69.7031 9.18009 69.7433 9.22034L71.084 10.565C71.2226 10.704 71.4597 10.6052 71.4597 10.4095V9.37767C71.4597 9.2551 71.5582 9.15631 71.6804 9.15631H74.889C75.0112 9.15631 75.1097 9.2551 75.1097 9.37767V28.1385C75.1097 28.197 75.086 28.2537 75.044 28.2958L72.6454 30.6741C72.6034 30.7143 72.5487 30.7381 72.4903 30.7381H64.2838C64.2255 30.7381 64.1689 30.7143 64.1288 30.6741L61.7593 28.2977C61.7174 28.2556 61.6955 28.2007 61.6955 28.1422V25.6889C61.6955 25.5663 61.794 25.4675 61.9162 25.4675H65.3819C65.5041 25.4675 65.6026 25.5663 65.6026 25.6889L65.5972 25.6834ZM65.7887 20.4787H70.7775C70.8997 20.4787 70.9982 20.3799 70.9982 20.2573V14.0372C70.9982 13.975 70.9709 13.9147 70.9253 13.8726L69.9986 13.0439C69.9585 13.0073 69.9056 12.9871 69.8527 12.9871H65.7905C65.6683 12.9871 65.5698 13.0859 65.5698 13.2085V20.2573C65.5698 20.3799 65.6683 20.4787 65.7905 20.4787H65.7887Z"/><path d="M83.0608 20.7293V24.5803C83.0608 24.7028 82.9623 24.8016 82.8401 24.8016H78.8855C78.7633 24.8016 78.6648 24.7028 78.6648 24.5803V20.7293C78.6648 20.6067 78.7633 20.5079 78.8855 20.5079H82.8401C82.9623 20.5079 83.0608 20.6067 83.0608 20.7293Z"/><path d="M86.5484 24.5803V9.37767C86.5484 9.2551 86.6469 9.15631 86.7691 9.15631H89.9777C90.0999 9.15631 90.1984 9.2551 90.1984 9.37767V10.404C90.1984 10.6016 90.4373 10.7003 90.576 10.5595L91.8856 9.224C91.9276 9.18192 91.9841 9.15814 92.0425 9.15814H97.5749C97.6333 9.15814 97.6898 9.18192 97.7299 9.22217L100.129 11.6279C100.171 11.6699 100.192 11.7248 100.192 11.7834V24.5803C100.192 24.7028 100.094 24.8016 99.9717 24.8016H96.3035C96.1813 24.8016 96.0828 24.7028 96.0828 24.5803V13.2085C96.0828 13.0859 95.9843 12.9871 95.8621 12.9871H91.7999C91.7452 12.9871 91.6941 13.0073 91.654 13.0439L90.7273 13.8726C90.6799 13.9147 90.6544 13.975 90.6544 14.0372V24.5784C90.6544 24.701 90.5559 24.7998 90.4337 24.7998H86.7655C86.6433 24.7998 86.5448 24.701 86.5448 24.5784L86.5484 24.5803Z"/><path d="M112.974 19.3554H116.498C116.62 19.3554 116.718 19.4542 116.718 19.5768V22.1745C116.718 22.2331 116.695 22.288 116.655 22.33L114.283 24.7358C114.241 24.7778 114.185 24.8016 114.126 24.8016H106.152C106.093 24.8016 106.037 24.7778 105.995 24.7358L103.624 22.33C103.583 22.288 103.56 22.2331 103.56 22.1745V11.7815C103.56 11.723 103.583 11.6681 103.624 11.626L105.995 9.22034C106.037 9.17826 106.093 9.15448 106.152 9.15448H114.126C114.185 9.15448 114.241 9.17826 114.283 9.22034L116.655 11.626C116.695 11.6681 116.718 11.723 116.718 11.7815V17.5205C116.718 17.643 116.62 17.7418 116.498 17.7418H107.802C107.68 17.7418 107.582 17.8406 107.582 17.9632V21.2379C107.582 21.3605 107.68 21.4592 107.802 21.4592H112.532C112.654 21.4592 112.753 21.3605 112.753 21.2379V19.5768C112.753 19.4542 112.851 19.3554 112.974 19.3554ZM107.584 12.7182V15.4459C107.584 15.5685 107.682 15.6673 107.804 15.6673H112.534C112.656 15.6673 112.755 15.5685 112.755 15.4459V12.7182C112.755 12.5956 112.656 12.4969 112.534 12.4969H107.804C107.682 12.4969 107.584 12.5956 107.584 12.7182Z"/><path d="M124.086 24.7358L121.687 22.33C121.645 22.288 121.623 22.2331 121.623 22.1745V12.6615C121.623 12.5389 121.525 12.4401 121.403 12.4401H119.803C119.681 12.4401 119.582 12.3413 119.582 12.2188V9.37584C119.582 9.25327 119.681 9.15448 119.803 9.15448H121.403C121.525 9.15448 121.623 9.05569 121.623 8.93312V6.03347C121.623 5.9109 121.722 5.81211 121.844 5.81211H125.512C125.635 5.81211 125.733 5.9109 125.733 6.03347V8.93312C125.733 9.05569 125.832 9.15448 125.954 9.15448H129.534C129.657 9.15448 129.755 9.25327 129.755 9.37584V12.2188C129.755 12.3413 129.657 12.4401 129.534 12.4401H125.954C125.832 12.4401 125.733 12.5389 125.733 12.6615V20.7476C125.733 20.8702 125.832 20.969 125.954 20.969H129.764C129.886 20.969 129.985 21.0677 129.985 21.1903V24.5803C129.985 24.7028 129.886 24.8016 129.764 24.8016H124.245C124.186 24.8016 124.13 24.7778 124.09 24.7376L124.086 24.7358Z"/><path d="M136.575 24.6479L132.643 12.5023C132.635 12.4804 132.632 12.4566 132.632 12.4347V9.37767C132.632 9.2551 132.73 9.15631 132.852 9.15631H136.521C136.643 9.15631 136.741 9.2551 136.741 9.37767V11.8053C136.741 11.8254 136.745 11.8474 136.75 11.8657L138.985 19.6426C139.045 19.8512 139.339 19.8567 139.406 19.6499L141.931 11.8694C141.938 11.8474 141.942 11.8236 141.942 11.8017V9.37767C141.942 9.2551 142.04 9.15631 142.162 9.15631H145.831C145.953 9.15631 146.051 9.2551 146.051 9.37767V11.8017C146.051 11.8255 146.055 11.8474 146.062 11.8694L148.561 19.6243C148.629 19.831 148.921 19.8274 148.983 19.6188L151.243 11.8675C151.248 11.8474 151.252 11.8273 151.252 11.8053V9.37767C151.252 9.2551 151.35 9.15631 151.472 9.15631H155.139C155.261 9.15631 155.36 9.2551 155.36 9.37767V12.4347C155.36 12.4584 155.356 12.4804 155.349 12.5023L151.416 24.6479C151.387 24.7394 151.301 24.7998 151.206 24.7998H146.958C146.863 24.7998 146.777 24.7376 146.748 24.6461L144.218 16.8253C144.152 16.6222 143.866 16.6222 143.799 16.8253L141.216 24.6479C141.187 24.7376 141.101 24.7998 141.006 24.7998H136.787C136.692 24.7998 136.606 24.7376 136.577 24.6479H136.575Z"/><path d="M168.991 9.22034L171.389 11.626C171.431 11.6681 171.453 11.723 171.453 11.7815V22.1727C171.453 22.2313 171.43 22.288 171.389 22.3282L168.991 24.7339C168.949 24.776 168.894 24.798 168.836 24.798H160.545C160.487 24.798 160.43 24.7742 160.389 24.7321L158.017 22.3264C157.977 22.2843 157.953 22.2294 157.953 22.1709V11.7779C157.953 11.7193 157.977 11.6645 158.017 11.6224L160.389 9.21668C160.43 9.1746 160.487 9.15082 160.545 9.15082H168.836C168.894 9.15082 168.951 9.1746 168.991 9.21485V9.22034ZM167.125 12.9012H162.28C162.158 12.9012 162.059 12.9999 162.059 13.1225V20.8336C162.059 20.9561 162.158 21.0549 162.28 21.0549H167.125C167.247 21.0549 167.346 20.9561 167.346 20.8336V13.1225C167.346 12.9999 167.247 12.9012 167.125 12.9012Z"/><path d="M175.101 24.5803V9.37767C175.101 9.2551 175.2 9.15631 175.322 9.15631H178.531C178.653 9.15631 178.751 9.2551 178.751 9.37767V10.726C178.751 10.9235 178.989 11.0205 179.127 10.8815L180.783 9.22034C180.825 9.17826 180.88 9.15631 180.938 9.15631H184.132C184.255 9.15631 184.353 9.2551 184.353 9.37767V12.8829C184.353 13.0054 184.255 13.1042 184.132 13.1042H180.504C180.45 13.1042 180.395 13.1262 180.355 13.1628L179.282 14.1616C179.237 14.2037 179.211 14.2623 179.211 14.3245V24.5803C179.211 24.7028 179.113 24.8016 178.99 24.8016H175.324C175.202 24.8016 175.103 24.7028 175.103 24.5803H175.101Z"/><path d="M186.872 24.5803V3.61496C186.872 3.49239 186.971 3.3936 187.093 3.3936H190.761C190.883 3.3936 190.982 3.49239 190.982 3.61496V14.8385C190.982 15.027 191.204 15.1294 191.347 15.005L195.588 11.3242C195.637 11.2821 195.664 11.2217 195.664 11.1577V9.37584C195.664 9.25327 195.763 9.15448 195.885 9.15448H199.553C199.675 9.15448 199.774 9.25327 199.774 9.37584V12.3944C199.774 12.4584 199.745 12.5206 199.695 12.5627L196.08 15.6471C195.993 15.7221 195.976 15.8539 196.045 15.9472L199.96 21.2543C199.987 21.2928 200.004 21.3385 200.004 21.3861V24.5784C200.004 24.701 199.905 24.7998 199.783 24.7998H196.117C195.994 24.7998 195.896 24.701 195.896 24.5784V22.363C195.896 22.3172 195.881 22.2733 195.856 22.2367L193.218 18.4571C193.143 18.351 192.996 18.3309 192.897 18.4151L191.064 19.9518C191.015 19.9939 190.985 20.0561 190.985 20.1219V24.5803C190.985 24.7028 190.887 24.8016 190.765 24.8016H187.097C186.974 24.8016 186.876 24.7028 186.876 24.5803H186.872Z"/></g></svg>
+        </a>
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#cases">Use cases</a></li>
+            <li><a href="#developers">Developers</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Docs</a></li>
+            <li><a href="https://mirror.xyz/signetwork.eth" target="_blank" rel="noopener noreferrer">Blog</a></li>
+          </ul>
+        </nav>
+        <a class="btn sm primary cta-top" href="mailto:pitches@sig.network">Talk to the team</a>
+        <details>
+          <summary>Menu</summary>
+          <ul>
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#cases">Use cases</a></li>
+            <li><a href="#developers">Developers</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#faq">FAQ</a></li>
+            <li><a href="https://docs.sig.network/">Docs</a></li>
+            <li><a href="https://mirror.xyz/signetwork.eth">Blog</a></li>
+            <li><a href="mailto:pitches@sig.network">Talk to the team</a></li>
+          </ul>
+        </details>
+      </div>
+    </header>
+
+    <main id="top">
       <section class="hero">
         <div class="wrap">
           <div>
             <p class="live">Live on Midnight stagenet</p>
             <h1>Every app has a night mode.</h1>
             <p class="lead">
-              Build on Midnight. Trade, lend and settle on Ethereum. Your users get Uniswap and Aave at the real
-              price, deposits from any wallet or exchange, and nobody&rsquo;s name on any of it.
+              Sig.Network gives Midnight contracts real accounts on Ethereum. Build private apps on Midnight that
+              trade on Uniswap, lend on Aave and take deposits from any wallet or exchange, with nobody&rsquo;s name
+              on any of it.
             </p>
             <p class="actions">
-              <a class="btn primary" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Start building</a>
-              <a class="btn" href="mailto:pitches@sig.network">Talk to us</a>
+              <a class="btn primary" href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Read the docs</a>
+              <a class="btn" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">View examples</a>
+              <a class="btn" href="mailto:pitches@sig.network">Talk to the team</a>
+            </p>
+          </div>
+          <figure class="shot">
+            <img src="/img/demo-app.png" alt="The Sig.Network demo app: balances in ETH, SOL and BTC, a swap panel and an activity list of deposits, swaps and sends" width="1154" height="860" loading="eager" />
+            <figcaption>Demo app &middot; deposit, swap, send</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="proof">
+        <div class="wrap">
+          <ul aria-label="Works with">
+            <li>Midnight</li><li>Ethereum</li><li>Uniswap</li><li>Aave</li><li>Tron</li><li>Solana</li>
+          </ul>
+          <p class="status"><b>Signing network live on Ethereum and Solana mainnet since March 2025.</b> Midnight integration on stagenet now, mainnet with ledger v9.</p>
+        </div>
+      </section>
+
+      <section class="how" id="how">
+        <div class="wrap">
+          <div>
+            <p class="eyebrow">How it works</p>
+            <h2>Your Midnight contract gets its own account on Ethereum.</h2>
+            <p class="lead">
+              Sig.Network is a signing network. It holds the key to an Ethereum account on behalf of your contract,
+              and signs only what your contract asks it to. To Ethereum it is an ordinary account doing ordinary
+              things. To your users it is your app, with their balances and their identities shielded on Midnight.
             </p>
           </div>
           <div class="stack" aria-label="Midnight over Ethereum, joined by sig.network">
-            <div class="block mid"><span>Privacy</span><span class="tag">Midnight</span></div>
-            <div class="sig">sig.network</div>
-            <div class="block eth"><span>Markets</span><span class="tag">Ethereum</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="what">
-        <div class="wrap">
-          <p class="eyebrow">How it works</p>
-          <h2>Your Midnight contract gets its own account on Ethereum.</h2>
-          <p class="lead">
-            Sig.Network is a signing network. It gives your contract an account on any chain, and that account only
-            does what your contract tells it to. Ethereum sees an ordinary account doing ordinary things.
-          </p>
-          <ul class="steps">
-            <li class="mid"><span class="tag">01 &middot; Midnight</span><h3>Your contract decides.</h3><p>Logic, balances and identities stay shielded in your Compact contract.</p></li>
-            <li class="sigs"><span class="tag">02 &middot; sig.network</span><h3>The network signs.</h3><p>A threshold of independent signers produces one ordinary Ethereum signature. Nothing is bridged or wrapped.</p></li>
-            <li class="eth"><span class="tag">03 &middot; Ethereum</span><h3>The chain settles.</h3><p>One account, one normal transaction, at Uniswap&rsquo;s or Aave&rsquo;s real price.</p></li>
-          </ul>
-          <ul class="gives">
-            <li><b>Liquidity</b><span>Ethereum&rsquo;s markets, from Midnight.</span></li>
-            <li><b>Protocols</b><span>Every contract on Ethereum, as it is.</span></li>
-            <li><b>Privacy</b><span>Who did what never leaves Midnight.</span></li>
-          </ul>
-        </div>
-      </section>
-
-      <section id="experience">
-        <div class="wrap">
-          <p class="eyebrow">The user experience</p>
-          <h2>Deposit. Swap. Lend. Send. The app your users already know.</h2>
-          <p class="lead muted">What a Midnight app looks like with a Sig.Network pool behind it. Nothing new to learn, and nothing to see from outside.</p>
-          <div class="frame">
-            <header><span class="tag">Privacy pool</span><span class="tag">Your app &middot; Midnight</span></header>
-            <ul class="cards">
-              <li class="card"><h3>Deposit ETH <span class="pill pend">Waiting for funds</span></h3><div class="field"><span>Ethereum</span></div><p class="addr">0x71c24a90e3f7b1d806c52e9a77fb3c10e5d79e4b</p><div class="act">Copy address</div></li>
-              <li class="card"><h3>Deposit received <span class="pill done">Complete</span></h3><div class="field"><b>1.00 ETH</b><span class="tk">ETH</span></div><div class="field"><span>Balance on Midnight</span><b>1.00</b></div></li>
-              <li class="card"><h3>Swap <span class="pill done">Uniswap</span></h3><div class="field"><b>1</b><span class="tk">ETH</span></div><div class="field"><b>3,200.00</b><span class="tk">USDC</span></div><div class="act p">Swap</div></li>
-              <li class="card"><h3>Lend <span class="pill done">Aave</span></h3><div class="field"><b>3,200</b><span class="tk">USDC</span></div><div class="field"><span>Supply APY</span><b>4.2%</b></div><div class="act p">Supply</div></li>
-            </ul>
-          </div>
-          <div class="under">
-            <div class="sig">sig.network</div>
-            <div class="block eth"><span>Markets</span><span class="tag">Ethereum</span></div>
-          </div>
-          <p class="saw"><b>What Ethereum saw:</b> one pool account, one ordinary swap, one ordinary supply. Not who, not how much of whose, not why.</p>
-        </div>
-      </section>
-
-      <section id="line">
-        <div class="wrap split">
-          <div>
-            <p class="eyebrow">Move the line</p>
-            <h2>Go private one layer at a time.</h2>
-            <p class="lead">Put a private pool in front of an app people already use, then move the line down as you go. Everything above it runs on Midnight. Everything below it keeps Ethereum&rsquo;s depth.</p>
-            <dl class="stages">
-              <div><dt>Day one</dt><dd>The same trades, with no leaked data.</dd></div>
-              <div><dt>Then</dt><dd>The strategy runs on Midnight. Leverage, swaps and liquidations stay where the depth is.</dd></div>
-              <div><dt>Eventually</dt><dd>Native assets are issued on their chain. They live their life on Midnight.</dd></div>
-              <div><dt>Out of step</dt><dd>Nobody has to move at the same time. Every app draws its own line, and they still trade with each other.</dd></div>
-            </dl>
-          </div>
-          <div class="ladder" aria-label="A leveraged yield vault, the line under vault logic">
-            <div class="layer mid"><span>Privacy pool</span><small>normal users, but private</small><span class="tag">Midnight</span></div>
-            <div class="layer mid"><span>Vault logic</span><small>deposit, loop, unwind</small><span class="tag">Midnight</span></div>
-            <div class="sig">sig.network</div>
-            <div class="layer"><span>Routing</span><small>aggregator, flash loans</small><span class="tag">Ethereum</span></div>
-            <div class="layer"><span>Lending pool</span><small>the leverage</small><span class="tag">Ethereum</span></div>
-            <div class="layer"><span>DEX liquidity</span><small>swaps, liquidations</small><span class="tag">Ethereum</span></div>
-            <div class="layer"><span>Tokens</span><small>stETH, USDe, the dollar</small><span class="tag">Ethereum</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="roadmap">
-        <div class="wrap">
-          <p class="eyebrow">Roadmap</p>
-          <h2>One pool, every chain.</h2>
-          <p class="lead">The pool lives on Midnight and holds an account on each chain. Moving between chains never leaves it. Information leaks only where money crosses the line, and less crosses it with every chain.</p>
-          <div class="stack" style="margin-top:40px">
             <div class="block mid"><span>Your app</span><span class="tag">Midnight</span></div>
             <div class="sig">sig.network</div>
+            <div class="block eth"><span>Your account</span><span class="tag">Ethereum</span></div>
           </div>
-          <ul class="chains">
-            <li class="block eth"><span>Ethereum</span><span class="tag">Live</span></li>
-            <li class="block tron"><span>Tron</span><span class="tag">December</span></li>
-            <li class="block slot"></li>
-            <li class="block slot"></li>
-            <li class="block slot"></li>
+          <ul class="steps grid3">
+            <li class="mid"><span class="tag">01 &middot; Midnight</span><h3>Your contract decides.</h3><p>A Compact circuit checks the request, burns the user&rsquo;s shielded claim and queues one Ethereum transaction.</p></li>
+            <li class="sigs"><span class="tag">02 &middot; sig.network</span><h3>The network signs.</h3><p>A threshold of independent signers produces a standard Ethereum signature. No single signer can act alone, and nothing is bridged or wrapped.</p></li>
+            <li class="eth"><span class="tag">03 &middot; Ethereum</span><h3>The chain settles.</h3><p>Uniswap, Aave or a plain transfer executes from your account at the real price. The result is attested back to Midnight and the user is credited.</p></li>
           </ul>
-          <ul class="roadmap">
-            <li><span class="tag live-tag">Stagenet &middot; now</span><b>Midnight &rarr; Ethereum</b>Deposits, swaps on Uniswap, lending on Aave, withdrawals to any address. Open examples and a full-stack demo.</li>
-            <li><span class="tag">Mainnet &middot; with ledger v9</span><b>Midnight mainnet</b>The same contracts, the same accounts, real funds.</li>
-            <li><span class="tag">December 2026</span><b>+ Tron</b>Where the dollars move. One pool, two chains, no crossing.</li>
-            <li><span class="tag">After</span><b>More chains</b>Each one grows the same pool. Zcash is next on the list.</li>
+        </div>
+      </section>
+
+      <section class="cases" id="cases">
+        <div class="wrap">
+          <p class="eyebrow">Use cases</p>
+          <h2>Three things to build this quarter.</h2>
+          <ul class="grid3" style="margin-top:40px">
+            <li class="panel">
+              <div class="ico"><svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+              <h3>A dark pool on any DEX</h3>
+              <p>Orders net inside your pool on Midnight. Only the net hits Uniswap, from one account, at Uniswap&rsquo;s price. You set the privacy fee.</p>
+              <span class="who">For trading venues and aggregators</span>
+            </li>
+            <li class="panel">
+              <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M8 15h4"/></svg></div>
+              <h3>Private positions on a public book</h3>
+              <p>Users take positions on Polymarket through your pool. The market sees the pool, the pool knows the client, and the venue can ask.</p>
+              <span class="who">For prediction and perps front ends</span>
+            </li>
+            <li class="panel">
+              <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+              <h3>Shielded in, shielded out</h3>
+              <p>Deposits arrive from any wallet or exchange to a one-time address, earn on Ethereum, and leave to a fresh address. No reusable address anywhere.</p>
+              <span class="who">For wallets, payments and ZEC</span>
+            </li>
           </ul>
+          <div class="adopt">
+            <div>
+              <h3>Adopt it one layer at a time.</h3>
+              <p>Start with a private pool in front of an app people already use. Then move your logic onto Midnight piece by piece: the strategy, then routing, then lending. Every layer below the line keeps Ethereum&rsquo;s liquidity, and every app draws its own line.</p>
+            </div>
+            <div class="ladder" aria-label="A yield vault with its privacy pool and vault logic on Midnight and the rest on Ethereum">
+              <div class="layer mid"><span>Privacy pool</span><span class="tag">Midnight</span></div>
+              <div class="layer mid"><span>Vault logic</span><span class="tag">Midnight</span></div>
+              <div class="sig">sig.network</div>
+              <div class="layer"><span>Routing</span><span class="tag">Ethereum</span></div>
+              <div class="layer"><span>Lending pool</span><span class="tag">Ethereum</span></div>
+              <div class="layer"><span>DEX liquidity</span><span class="tag">Ethereum</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="dev" id="developers">
+        <div class="wrap">
+          <div class="devhead">
+            <div>
+              <p class="eyebrow">Developers</p>
+              <h2>Write it in Compact, or in Rust.</h2>
+              <p class="lead">
+                Import the Signet module and queue Ethereum transactions from your circuits. Keep your own ledger and
+                your own rules. The examples repo has a complete ERC-20 vault with deposit, withdraw, swap and supply,
+                deploy tooling and integration tests. Prefer Rust? MinoCrab is an experimental eDSL that compiles the
+                same contracts with cargo, rust-analyzer and <code>#[test]</code>.
+              </p>
+            </div>
+            <div class="links">
+              <a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer"><span style="color:var(--ink)">Documentation</span><span class="mono">docs.sig.network</span></a>
+              <a href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer"><span style="color:var(--ink)">Example contracts, Compact</span><span class="mono">sig-net/midnight-examples</span></a>
+              <a href="https://github.com/sig-net/minocrab" target="_blank" rel="noopener noreferrer"><span style="color:var(--ink)">MinoCrab, Rust eDSL for Midnight</span><span class="mono">sig-net/minocrab</span></a>
+              <a href="https://github.com/sig-net/full-stack-demo" target="_blank" rel="noopener noreferrer"><span style="color:var(--ink)">Full-stack demo app</span><span class="mono">sig-net/full-stack-demo</span></a>
+            </div>
+          </div>
+          <div class="codes">
+            <div>
+              <div class="codehead"><span>Compact &middot; erc20-vault.compact</span><span>excerpt</span></div>
+<pre><code><span class="k">import</span> CompactStandardLibrary;
+<span class="k">import</span> <span class="s">"@sig-net/midnight/src/Signet"</span>;
+
+<span class="k">sealed ledger</span> signetSigner: SignetSigner;
+<span class="k">export ledger</span> vaultEvmAddress: Bytes&lt;20&gt;;
+<span class="k">export ledger</span> allowedTokens: Set&lt;Bytes&lt;20&gt;&gt;;
+
+<span class="c">// Burn the user's shielded claim and queue one swap on Uniswap.</span>
+<span class="k">export circuit</span> <span class="f">startSwap</span>(
+  inIndex: Uint&lt;64&gt;,
+  swapRequest: SwapRequest,
+  coin: ShieldedCoinInfo
+): [] {
+  requireInitialised();
+  <span class="f">assert</span>(allowedTokens.member(disclose(swapRequest.erc20AddressOut)),
+    <span class="s">"erc20AddressOut not allowed"</span>);
+  <span class="f">assert</span>(coin.value == swapRequest.amountInMaximum,
+    <span class="s">"Coin value must equal amountInMaximum"</span>);
+  receiveShielded(disclose(coin));
+  sendImmediateShielded(disclose(coin), shieldedBurnAddress(),
+    disclose(coin).value);
+  <span class="c">// ... queue the request; sendSwap signs it, completeSwap mints</span>
+}</code></pre>
+            </div>
+            <div>
+              <div class="codehead"><span>Rust &middot; MinoCrab</span><span>excerpt</span></div>
+<pre><code><span class="k">#[derive(CircuitArg)]</span>
+<span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
+
+<span class="k">#[circuit]</span>
+<span class="k">pub fn</span> <span class="f">deposit</span>(
+    c: &amp;<span class="k">mut</span> Circuit3,
+    evm_nonce: Uint&lt;64&gt;,
+    gas_limit: Uint&lt;64&gt;,
+    max_fee_per_gas: Uint&lt;128&gt;,
+    max_priority_fee_per_gas: Uint&lt;128&gt;,
+    key_version: Uint&lt;8&gt;,
+    deposit_request: DepositRequest,
+) -&gt; Discloses&lt;(DepositorCommitment, DepositedErc20, DepositedAmount, Requested)&gt; {
+    c.assert(deposit_request.amount.gt(0u64));
+    <span class="k">let</span> sk = common::witness_sk(c);
+    <span class="k">let</span> caller = common::commitment_transient(c, &amp;sk)
+        .disclose_as::&lt;DepositorCommitment&gt;(c);
+    <span class="c">// transfer(vaultEvmAddress, amount) on the token; the request id,</span>
+    <span class="c">// freshness check and signer call come from the slot's type.</span>
+    VAULT.deposits.request_with(c, <span class="c">/* contract, args, envelope, key, nonce */</span> ...);
+    Discloses::of(())
+}</code></pre>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -282,27 +407,78 @@
         <div class="wrap">
           <p class="eyebrow">Compliance</p>
           <h2>Compliance, built in.</h2>
-          <ul class="four">
-            <li><h3>Deposit rules</h3><p>Your contract defines what it accepts, holds or returns.</p></li>
+          <ul class="four grid4" style="margin-top:40px">
+            <li><h3>Deposit rules</h3><p>Your contract defines what it accepts, holds or returns. Screen on arrival and credit only what passes.</p></li>
             <li><h3>Screening</h3><p>Your pool is an ordinary Ethereum account. The tools regulated venues already use work on it unchanged.</p></li>
             <li><h3>Segregation</h3><p>Each app has its own accounts. Nothing sits in a shared pot with actors you don&rsquo;t trust.</p></li>
-            <li><h3>Disclosure</h3><p>Define in your contract what users share to take part, and who may ask.</p></li>
+            <li><h3>Disclosure</h3><p>Define in your contract what users share to take part, and who may ask. Your Midnight ledger is a complete record.</p></li>
           </ul>
         </div>
       </section>
 
-      <section class="cta" id="ask">
+      <section id="roadmap">
+        <div class="wrap">
+          <p class="eyebrow">Roadmap</p>
+          <h2>One pool, every chain.</h2>
+          <p class="lead">The pool lives on Midnight and holds an account on each chain it reaches. Moving between chains never leaves the pool, so every chain added makes every crossing rarer.</p>
+          <div class="stack" style="margin-top:40px">
+            <div class="block mid"><span>Your app</span><span class="tag">Midnight</span></div>
+            <div class="sig">sig.network</div>
+          </div>
+          <ul class="chains">
+            <li class="block eth"><span>Ethereum</span><span class="tag">Live</span></li>
+            <li class="block tron"><span>Tron</span><span class="tag">December</span></li>
+            <li class="block slot" aria-label="Future chain"></li>
+            <li class="block slot" aria-label="Future chain"></li>
+            <li class="block slot" aria-label="Future chain"></li>
+          </ul>
+          <ul class="roadmap grid4">
+            <li><span class="tag live-tag">Stagenet &middot; now</span><b>Midnight &rarr; Ethereum</b>Deposits, Uniswap swaps, Aave supply, withdrawals to any address. Open examples and a full-stack demo.</li>
+            <li><span class="tag">Mainnet &middot; with ledger v9</span><b>Midnight mainnet</b>The same contracts and the same accounts, with real funds.</li>
+            <li><span class="tag">December 2026</span><b>Tron</b>Where the dollars move. One pool, two chains, no crossing between them.</li>
+            <li><span class="tag">After</span><b>More chains</b>Each one grows the same pool. Zcash is next on the list.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="wrap">
+          <p class="eyebrow">FAQ</p>
+          <h2>Questions people ask first.</h2>
+          <div class="faq" style="margin-top:36px">
+            <details>
+              <summary>Is this a bridge?</summary>
+              <p>No. Nothing is locked, minted or wrapped. Your contract holds a real Ethereum account, and assets stay on Ethereum the whole time. What moves is a signature.</p>
+            </details>
+            <details>
+              <summary>Who holds the keys?</summary>
+              <p>A threshold network of independent signers. No single signer has the key, and the network signs only requests that come from your contract on Midnight. Your contract is the policy.</p>
+            </details>
+            <details>
+              <summary>What does Ethereum see?</summary>
+              <p>One ordinary account doing ordinary things: a transfer in, a swap, a supply, a transfer out. Not who, not how much of whose, not why. Amounts and timing on the public leg are visible, as they are for any Ethereum account.</p>
+            </details>
+            <details>
+              <summary>How does compliance work?</summary>
+              <p>Your pool is a normal Ethereum account, so the screening tools venues already use apply unchanged. Your contract sets the deposit rules, and you decide who may ask what, written in code rather than negotiated afterwards.</p>
+            </details>
+            <details>
+              <summary>What does it cost?</summary>
+              <p>Signing is priced per request and the gas is paid from your account on Ethereum. Builders typically charge a privacy fee on top; the dark pool pattern earns around 50 basis points. Talk to us for current pricing.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta" id="contact">
         <div class="wrap">
           <p class="eyebrow">Build on Midnight</p>
-          <h2>Pick the venue. We give you the pool.</h2>
+          <h2>Bring your venue. The pool is ready.</h2>
           <div class="row">
-            <div>
-              <a class="mail" href="mailto:pitches@sig.network">pitches@sig.network</a>
-              <a class="repo" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">github.com/sig-net/midnight-examples</a>
-            </div>
+            <a class="mail" href="mailto:pitches@sig.network">pitches@sig.network</a>
             <p class="actions" style="margin:0">
-              <a class="btn primary" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Start building</a>
-              <a class="btn" href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Read the docs</a>
+              <a class="btn primary" href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Read the docs</a>
+              <a class="btn" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">View examples</a>
             </p>
           </div>
         </div>
@@ -312,12 +488,13 @@
     <footer>
       <div class="wrap">
         <div>
-          <div class="brand">sig.network</div>
-          <p>Private apps on Midnight with real accounts on every chain.</p>
+          <a class="logo" href="#top" aria-label="Sig.Network"><svg viewBox="0 0 200 34" fill="currentColor" aria-hidden="true"><use href="#wm"/></svg></a>
+          <p class="about">A signing network that gives contracts real accounts on other chains. Live on Ethereum and Solana mainnet, and on Midnight stagenet.</p>
+          <p class="legal">&copy; 2026 Sig.Network &middot; pitches@sig.network</p>
         </div>
-        <nav aria-label="Learn"><h4>Learn</h4><ul><li><a href="#what">How it works</a></li><li><a href="#roadmap">Roadmap</a></li><li><a href="https://mirror.xyz/signetwork.eth" target="_blank" rel="noopener noreferrer">Blog</a></li></ul></nav>
-        <nav aria-label="Build"><h4>Build</h4><ul><li><a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Docs</a></li><li><a href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Examples</a></li><li><a href="https://github.com/sig-net/full-stack-demo" target="_blank" rel="noopener noreferrer">Demo</a></li></ul></nav>
-        <nav aria-label="Connect"><h4>Connect</h4><ul><li><a href="mailto:pitches@sig.network">Contact</a></li><li><a href="https://djinni.co/jobs/company-sig-network/" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="https://x.com/Sig_Network" target="_blank" rel="noopener noreferrer">Twitter</a></li></ul></nav>
+        <nav aria-label="Learn"><h4>Learn</h4><ul><li><a href="#how">How it works</a></li><li><a href="#cases">Use cases</a></li><li><a href="#faq">FAQ</a></li><li><a href="https://mirror.xyz/signetwork.eth" target="_blank" rel="noopener noreferrer">Blog</a></li></ul></nav>
+        <nav aria-label="Build"><h4>Build</h4><ul><li><a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Docs</a></li><li><a href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Examples</a></li><li><a href="https://github.com/sig-net/full-stack-demo" target="_blank" rel="noopener noreferrer">Demo app</a></li><li><a href="#roadmap">Roadmap</a></li></ul></nav>
+        <nav aria-label="Connect"><h4>Connect</h4><ul><li><a href="mailto:pitches@sig.network">Contact</a></li><li><a href="https://djinni.co/jobs/company-sig-network/" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="https://x.com/Sig_Network" target="_blank" rel="noopener noreferrer">Twitter</a></li><li><a href="https://github.com/sig-net" target="_blank" rel="noopener noreferrer">GitHub</a></li></ul></nav>
       </div>
     </footer>
   </body>
