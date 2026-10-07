@@ -1,34 +1,30 @@
 import FooterSection from './components/FooterSection'
+import HeroSection from './components/HeroSection'
 import LiveBanner from './components/LiveBanner'
+import NarrativeSections from './components/NarrativeSections'
 import Navigation from './components/Navigation'
+import PrinciplesSection from './components/PrinciplesSection'
+import ReleasesSection from './components/ReleasesSection'
+import StackSection from './components/StackSection'
 import {
-  Ask,
-  Compliance,
-  Ecosystems,
-  EveryChain,
-  Experience,
-  MovingTheLine,
-  NightHero,
-  WhatIs,
-} from './components/NightModeSections'
-import { footerColumns, navItems } from './content'
-import './nightmode.css'
+  footerColumns,
+  narrativeSlices,
+  navItems,
+  principles,
+  releases,
+  stackSteps,
+} from './content'
 
 const App = () => (
-  <div className="nm min-h-screen">
+  <div className="page-gradient min-h-screen font-mono text-white">
     <LiveBanner />
     <Navigation navItems={navItems} />
-    <NightHero />
-    <Ecosystems />
-    <WhatIs />
-    <Experience />
-    <MovingTheLine />
-    <EveryChain />
-    <Compliance />
-    <Ask />
-    <div className="page-gradient">
-      <FooterSection columns={footerColumns} />
-    </div>
+    <HeroSection />
+    <NarrativeSections slices={narrativeSlices} />
+    <StackSection steps={stackSteps} />
+    <PrinciplesSection principles={principles} />
+    <ReleasesSection releases={releases} />
+    <FooterSection columns={footerColumns} />
   </div>
 )
 
