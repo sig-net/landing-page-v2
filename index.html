@@ -3,10 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sig.Network · Private apps on Midnight with real accounts on Ethereum</title>
-    <meta name="title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
+    <title>Sig.Network · Every app has a night mode</title>
+    <meta name="title" content="Sig.Network · Every app has a night mode" />
     <meta
       name="description"
       content="Sig.Network gives Midnight contracts real accounts on Ethereum. Build private apps that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
@@ -15,15 +16,18 @@
     <meta name="author" content="Sig.Network" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sig.network/" />
-    <meta property="og:title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
+    <meta property="og:title" content="Sig.Network · Every app has a night mode" />
     <meta
       property="og:description"
       content="Build private apps on Midnight that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
     />
     <meta property="og:image" content="https://sig.network/twitter-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Every app has a night mode. Private apps on Midnight with real accounts on Ethereum." />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://sig.network/" />
-    <meta property="twitter:title" content="Sig.Network · Private apps on Midnight with real accounts on Ethereum" />
+    <meta property="twitter:title" content="Sig.Network · Every app has a night mode" />
     <meta
       property="twitter:description"
       content="Build private apps on Midnight that trade on Uniswap, lend on Aave and take deposits from any wallet, with nobody's name on any of it."
@@ -87,6 +91,8 @@
       .top details { display: none; }
       .top summary { list-style: none; cursor: pointer; font: 600 13px/1 var(--mono); color: var(--ink); padding: 8px 0; }
       .top summary::-webkit-details-marker { display: none; }
+      .top summary .close, .top details[open] summary .open { display: none; }
+      .top details[open] summary .close { display: inline; }
       .top details ul { position: absolute; left: 0; right: 0; top: 64px; background: var(--bg); border-bottom: 1px solid var(--rule); padding: 8px 24px 20px; display: grid; gap: 14px; font: 500 15px/1 var(--mono); }
 
       /* hero */
@@ -99,8 +105,8 @@
       .shot img { display: block; width: 100%; height: auto; }
       .shot a { display: block; }
       .shot:has(a:hover) { border-color: var(--ink); }
-      .shot figcaption { pointer-events: none; }
-      .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+      .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); pointer-events: none; transition: background 0.15s, color 0.15s; }
+      .shot:has(a:hover) figcaption { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 
 
       /* how it works */
@@ -110,7 +116,6 @@
       .steps .sigs { border-color: var(--muted); }
       .steps .eth { background: var(--eth); border-color: var(--eth); }
       .steps .eth h3, .steps .eth p, .steps .eth .tag { color: var(--eth-ink); }
-      .sig { height: 36px; border: 2px solid var(--muted); border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
       .how .steps { margin-top: 40px; }
 
       /* use cases */
@@ -119,39 +124,33 @@
       .adopt { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--bg-2); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; }
-      .ladder .layer + .layer, .ladder .sig { margin-top: 6px; }
+      .ladder { display: grid; gap: 14px; position: relative; }
       .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
       .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
       .layer .tag { font-size: 10px; display: grid; text-align: right; }
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
-      .ladder .sig { height: 26px; font-size: 10px; overflow: hidden; }
-      .ladder .sig.off { height: 0; margin-top: 0; border-width: 0; opacity: 0; }
-      /* The line moves down the ladder as the card scrolls through the viewport. */
+      .line { position: absolute; left: 0; right: 0; top: 0; height: 14px; display: flex; align-items: center; justify-content: center; transform: translateY(94px); pointer-events: none; }
+      .line::before { content: ''; position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: var(--ink); }
+      .line span { position: relative; padding: 0 8px; background: var(--bg-2); font: 600 9px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
+      /* The line slides down the ladder as the card scrolls through the viewport; layers flip as it passes. */
       @supports (animation-timeline: view()) {
         .adopt { view-timeline: --adopt block; }
         .ladder > *, .ladder .tag i { animation-timeline: --adopt; animation-fill-mode: both; animation-timing-function: linear; }
-        .ladder .l2, .ladder .l2 .tag i, .ladder .s1 { animation-range: cover 25% cover 30%; }
-        .ladder .l3, .ladder .l3 .tag i { animation-range: cover 40% cover 45%; }
-        .ladder .l4, .ladder .l4 .tag i, .ladder .s4 { animation-range: cover 55% cover 60%; }
-        .ladder .s2 { animation-range: cover 25% cover 45%; }
-        .ladder .s3 { animation-range: cover 40% cover 60%; }
+        .ladder .line { animation-name: line-down; animation-range: cover 25% cover 61%; }
+        .ladder .l2, .ladder .l2 .tag i { animation-range: cover 29% cover 33%; }
+        .ladder .l3, .ladder .l3 .tag i { animation-range: cover 41% cover 45%; }
+        .ladder .l4, .ladder .l4 .tag i { animation-range: cover 53% cover 57%; }
         .ladder .l2, .ladder .l3, .ladder .l4 { animation-name: to-mid; }
         .ladder .l2 .e, .ladder .l3 .e, .ladder .l4 .e { animation-name: fade-out; }
         .ladder .l2 .m, .ladder .l3 .m, .ladder .l4 .m { animation-name: fade-in; }
-        .ladder .s1 { animation-name: sig-out; }
-        .ladder .s2, .ladder .s3 { animation-name: sig-pass; }
-        .ladder .s4 { animation-name: sig-in; }
       }
       @media (prefers-reduced-motion: reduce) { .ladder *, .ladder .tag i { animation: none !important; } }
+      @keyframes line-down { from { transform: translateY(40px); } to { transform: translateY(202px); } }
       @keyframes to-mid { from { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); } to { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); } }
       @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
       @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
-      @keyframes sig-in { from { height: 0; margin-top: 0; border-width: 0; opacity: 0; } to { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } }
-      @keyframes sig-out { from { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } to { height: 0; margin-top: 0; border-width: 0; opacity: 0; } }
-      @keyframes sig-pass { 0%, 100% { height: 0; margin-top: 0; border-width: 0; opacity: 0; } 25%, 75% { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
@@ -169,6 +168,8 @@
       pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
       pre .k { color: #cdd6a3; } pre .f { color: #e4f8f7; } pre .c { color: var(--faint); } pre .s { color: #f2ddc4; }
       .codehead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+      .codehead a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
+      .codehead a:hover { text-decoration-color: var(--ink); }
       .install { margin-top: 14px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 16px; font: 13px/1.6 var(--mono); color: var(--ink-2); }
       .install b { color: var(--muted); font-weight: 400; }
       .links { display: grid; gap: 10px; margin-top: 8px; }
@@ -235,7 +236,7 @@
         </nav>
         <a class="btn sm primary cta-top" href="mailto:pitches@sig.network">Talk to the team</a>
         <details>
-          <summary>Menu</summary>
+          <summary><span class="open">Menu</span><span class="close">Close</span></summary>
           <ul>
             <li><a href="#how">How it works</a></li>
             <li><a href="#cases">Use cases</a></li>
@@ -269,7 +270,7 @@
           </div>
           <figure class="shot">
             <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app: balances in ETH, SOL and BTC, a swap panel and an activity list of deposits, swaps and sends" width="1154" height="860" loading="eager" /></a>
-            <figcaption>Demo app &middot; deposit, swap, send</figcaption>
+            <figcaption>Try the demo &middot; deposit, swap, send <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></figcaption>
           </figure>
         </div>
       </section>
@@ -324,14 +325,11 @@
             </div>
             <div class="ladder" aria-label="A yield vault with its privacy pool and vault logic on Midnight and the rest on Ethereum">
               <div class="layer mid l1"><span>Privacy pool</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
-              <div class="sig s1 off">sig.network</div>
               <div class="layer mid l2"><span>Vault logic</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
-              <div class="sig s2">sig.network</div>
               <div class="layer l3"><span>Routing</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
-              <div class="sig s3 off">sig.network</div>
               <div class="layer l4"><span>Lending pool</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
-              <div class="sig s4 off">sig.network</div>
               <div class="layer l5"><span>DEX liquidity</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
+              <div class="line" aria-hidden="true"><span>sig.network</span></div>
             </div>
           </div>
         </div>
@@ -362,11 +360,13 @@
             <input type="radio" name="lang" id="lang-rust">
             <div class="codetabs" role="tablist" aria-label="Language">
               <label for="lang-compact">Compact</label>
-              <label for="lang-rust">Rust &middot; MinoCrab</label>
+              <label for="lang-rust">Rust</label>
             </div>
             <div class="code compact">
-              <div class="codehead"><span>erc20-vault.compact &middot; the deposit circuit</span><span>abridged</span></div>
-<pre><code><span class="k">export circuit</span> startDeposit(
+              <div class="codehead"><span>erc20-vault.compact &middot; the deposit circuit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+<pre><code><span class="k">struct</span> DepositRequest { erc20Address: Bytes&lt;20&gt;; amount: Uint&lt;128&gt;; }
+
+<span class="k">export circuit</span> startDeposit(
   evmNonce: Uint&lt;64&gt;, gasLimit: Uint&lt;64&gt;,
   maxFeePerGas: Uint&lt;128&gt;, maxPriorityFeePerGas: Uint&lt;128&gt;,
   keyVersion: Uint&lt;8&gt;, depositRequest: DepositRequest
@@ -406,8 +406,11 @@
 }</code></pre>
             </div>
             <div class="code rust">
-              <div class="codehead"><span>erc20_vault_pending.rs &middot; the same circuit</span><span>abridged</span></div>
-<pre><code>#[<span class="k">circuit</span>]
+              <div class="codehead"><span>erc20_vault_pending.rs &middot; the same circuit in MinoCrab, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/erc20_vault_pending.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+<pre><code><span class="k">#[derive(CircuitArg)]</span>
+<span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
+
+<span class="k">#[circuit]</span>
 <span class="k">pub fn</span> deposit(
     c: &amp;mut Circuit3,
     evm_nonce: Uint&lt;64&gt;, gas_limit: Uint&lt;64&gt;,
@@ -516,5 +519,8 @@
         <nav aria-label="Connect"><h4>Connect</h4><ul><li><a href="mailto:pitches@sig.network">Contact</a></li><li><a href="https://djinni.co/jobs/company-sig-network/" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="https://x.com/Sig_Network" target="_blank" rel="noopener noreferrer">Twitter</a></li><li><a href="https://github.com/sig-net" target="_blank" rel="noopener noreferrer">GitHub</a></li></ul></nav>
       </div>
     </footer>
+    <script>
+      for (const a of document.querySelectorAll('.top details a')) a.addEventListener('click', () => a.closest('details').removeAttribute('open'));
+    </script>
   </body>
 </html>
