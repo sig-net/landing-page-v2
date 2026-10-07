@@ -339,77 +339,64 @@
               <label for="lang-compact">Compact</label>
             </div>
             <div class="code compact">
-              <div class="codehead"><span>erc20-vault.compact &middot; the deposit circuit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+              <div class="codehead"><span>erc20-vault.compact &middot; startDeposit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
 <pre><code><span class="k">struct</span> DepositRequest { erc20Address: Bytes&lt;20&gt;; amount: Uint&lt;128&gt;; }
 
 <span class="k">export circuit</span> startDeposit(
-  evmNonce: Uint&lt;64&gt;, gasLimit: Uint&lt;64&gt;,
-  maxFeePerGas: Uint&lt;128&gt;, maxPriorityFeePerGas: Uint&lt;128&gt;,
-  keyVersion: Uint&lt;8&gt;, depositRequest: DepositRequest
+  inIndex: Uint&lt;64&gt;, evmNonce: Uint&lt;64&gt;, gas: GasParams, depositRequest: DepositRequest
 ): [] {
+  requireInitialised();
+  <span class="k">assert</span>(allowedTokens.member(<span class="k">disclose</span>(depositRequest.erc20Address)), "ERC20 not allowed");
   <span class="k">assert</span>(depositRequest.amount &gt; 0 <span class="k">as</span> Uint&lt;128&gt;, "Amount must be positive");
-  <span class="k">const</span> caller = <span class="k">disclose</span>(userCommitment(callerSecretKey()));
 
-  <span class="c">// transfer(vaultEvmAddress, amount) on the token, as a type-2 Ethereum transaction.</span>
-  <span class="k">const</span> calldata = EvmCalldata&lt;2&gt; {
-    selector: Bytes [0xa9, 0x05, 0x9c, 0xbb], noWords: 2 <span class="k">as</span> Uint&lt;16&gt;,
-    words: [evmAddressAbiWord(vaultEvmAddress), numericAbiWord(depositRequest.amount)]
-  };
-  <span class="k">const</span> txParams = EvmType2TxParams&lt;2, 0, 0&gt; {
-    chainId: evmChainId, nonce: evmNonce, gasLimit: gasLimit,
-    maxFeePerGas: maxFeePerGas, maxPriorityFeePerGas: maxPriorityFeePerGas,
-    to: depositRequest.erc20Address, value: 0 <span class="k">as</span> Uint&lt;128&gt;,
-    calldata: some&lt;EvmCalldata&lt;2&gt;&gt;(calldata), accessListEntryCount: 0, accessList: []
-  };
-
-  <span class="c">// Record the request, then ask the signing network for the signature.</span>
-  <span class="k">const</span> request = constructSignBidirectionalEvent&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34, 34&gt;(
-    kernel.self(), signetRequestNonce <span class="k">as</span> Uint&lt;64&gt;, keyVersion, caller,
-    MPCSignatureAlgorithm.ecdsa, MPCDestination.unused, pad(64, ""), TxParamType.evmType2,
-    txParams, ethereumCaip2Id(), vaultResponseSchema(), vaultResponseSchema()
-  );
-  <span class="k">const</span> requestId = <span class="k">disclose</span>(calculateRequestId&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34, 34&gt;(request));
-  <span class="k">assert</span>(!depositEventMap.member(requestId), "Request already exists");
-  signetRequestNonce.increment(1);
-  depositEventMap.insert(requestId, <span class="k">disclose</span>(request));
-  depositSettleViews.insert(requestId, DepositSettleView {
-    commitment: caller, erc20: <span class="k">disclose</span>(depositRequest.erc20Address),
-    amount: <span class="k">disclose</span>(depositRequest.amount <span class="k">as</span> Uint&lt;64&gt;)
+  <span class="c">// The depositor's own account pays: the signing path is their commitment, not the vault's.</span>
+  <span class="k">const</span> args = <span class="k">disclose</span>(DepositArgs {
+    request: depositRequest, path: userCommitment(callerSecretKey()), gas: gas
   });
-  signetSigner.signBidirectional(requestId, constructSignBidirectionalEventNotificationV1(
-    kernel.self(), 2 <span class="k">as</span> Uint&lt;8&gt;, [1, 3, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;
-  ));
+  depositArgsMap.insert(<span class="k">disclose</span>(inIndex), args);
+
+  <span class="c">// Queue it. Only flushQueue touches shared state, so deposits never contend with each other.</span>
+  <span class="c">// sendDeposit then builds transfer(vaultEvmAddress, amount) and hands it to the signing network.</span>
+  inputRequestBuffer.insert(<span class="k">disclose</span>(inIndex), <span class="k">disclose</span>(RequestBufferEntry {
+    action: Action.deposit, useNextVaultAccountNonce: <span class="k">false</span>, evmNonce: evmNonce, inIndex: inIndex,
+    commitment: ownershipCommitment(inIndex, callerSecretKey()), argsHash: depositArgsHash(args)
+  }));
 }</code></pre>
             </div>
             <div class="code rust">
-              <div class="codehead"><span>erc20_vault_pending.rs &middot; the same circuit in MinoCrab, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/erc20_vault_pending.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+              <div class="codehead"><span>erc20_vault.rs &middot; the same circuit in MinoCrab, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/erc20_vault.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
 <pre><code><span class="k">#[derive(CircuitArg)]</span>
 <span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
 
 <span class="k">#[circuit]</span>
-<span class="k">pub fn</span> deposit(
+<span class="k">pub fn</span> start_deposit(
     c: &amp;mut Circuit3,
-    evm_nonce: Uint&lt;64&gt;, gas_limit: Uint&lt;64&gt;,
-    max_fee_per_gas: Uint&lt;128&gt;, max_priority_fee_per_gas: Uint&lt;128&gt;,
-    key_version: Uint&lt;8&gt;, deposit_request: DepositRequest,
-) -&gt; Discloses&lt;(DepositorCommitment, DepositedErc20, DepositedAmount, Requested)&gt; {
-    c.<span class="k">assert</span>(deposit_request.amount.gt(0u64));
-    <span class="k">let</span> sk = common::witness_sk(c);
-    <span class="k">let</span> caller = common::commitment_transient(c, &amp;sk).disclose_as::&lt;DepositorCommitment&gt;(c);
+    in_index: Uint&lt;64&gt;, evm_nonce: Uint&lt;64&gt;, gas: GasParamsArg, deposit_request: DepositRequest,
+) -&gt; Discloses&lt;(DepositedErc20, InIndex, DepositedAmount, DepositorCommitment,
+                GasParams, EvmNonce, OwnershipCommitment)&gt; {
+    require_initialised(c);
     <span class="k">let</span> erc20 = deposit_request.erc20_address.disclose_as::&lt;DepositedErc20&gt;(c);
-    <span class="k">let</span> amount = deposit_request.amount.field().disclose_as::&lt;DepositedAmount&gt;(c);
+    <span class="k">let</span> allowed = VAULT.allowed_tokens.member(c, &amp;erc20);
+    c.assert(is_true(allowed).message("ERC20 not allowed"));
+    c.assert(deposit_request.amount.gt(0u64).message("Amount must be positive"));
 
-    <span class="c">// transfer(vaultEvmAddress, amount) on the token. The selector, ABI words, request id,</span>
-    <span class="c">// freshness check, record insert and signer call all come from the slot's type.</span>
-    VAULT.deposits.request_with(
-        c,
-        |c| Contract::&lt;Erc20&gt;::from_address(c, deposit_request.erc20_address),
-        (|c: &amp;mut Circuit3| cell_address(c, &amp;VAULT.vault_evm_address), |_c: &amp;mut Circuit3| deposit_request.amount),
-        Envelope::caller(max_priority_fee_per_gas, max_fee_per_gas, gas_limit),
-        key_version, evm_nonce,
-        |_c| (common::SigningPath::from(caller.private()), ()),
-        |_c, _id, ()| DepositEnv { depositor: caller, erc20, amount: Uint::from_field_unchecked(amount) },
-    );
+    <span class="c">// Every disclosure is typed, and the return type lists exactly what leaves the proof.</span>
+    <span class="k">let</span> in_index = in_index.disclose_as::&lt;InIndex&gt;(c);
+    <span class="k">let</span> sk = common::witness_sk(c);
+    <span class="k">let</span> path = user_commitment(c, &amp;sk).disclose_as::&lt;DepositorCommitment&gt;(c);
+    <span class="k">let</span> amount = deposit_request.amount.disclose_as::&lt;DepositedAmount&gt;(c);
+    <span class="k">let</span> args = DepositArgs {
+        request: StoredDepositRequest { erc20_address: erc20, amount },
+        path,
+        gas: StoredGas { gas_limit: gas.gas_limit.disclose_as::&lt;GasParams&gt;(c), <span class="c">/* and the two fee fields */</span> },
+    };
+    VAULT.deposit_args_map.insert(c, &amp;in_index, &amp;args);
+
+    <span class="c">// Queue it. Only flush_queue touches shared state, so deposits never contend with each other.</span>
+    <span class="c">// send_deposit then builds transfer(vault_evm_address, amount) and hands it to the signing network.</span>
+    <span class="k">let</span> evm_nonce = evm_nonce.disclose_as::&lt;EvmNonce&gt;(c);
+    <span class="k">let</span> digest = args_hash(c, DEPOSIT_ARGS_PAD, &amp;args);
+    queue_request(c, action::DEPOSIT, <span class="k">false</span>, evm_nonce.field(), in_index, digest);
     Discloses::of(())
 }</code></pre>
             </div>
