@@ -131,26 +131,15 @@
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
-      .line { position: absolute; left: 0; right: 0; top: 0; height: 14px; display: flex; align-items: center; justify-content: center; transform: translateY(94px); pointer-events: none; }
+      .line { position: absolute; left: 0; right: 0; top: 0; height: 14px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
       .line::before { content: ''; position: absolute; left: 0; right: 0; top: 6px; height: 2px; background: var(--ink); }
       .line span { position: relative; padding: 0 8px; background: var(--bg-2); font: 600 9px/1 var(--mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
-      /* The line slides down the ladder as the card scrolls through the viewport; layers flip as it passes. */
-      @supports (animation-timeline: view()) {
-        .adopt { view-timeline: --adopt block; }
-        .ladder > *, .ladder .tag i { animation-timeline: --adopt; animation-fill-mode: both; animation-timing-function: linear; }
-        .ladder .line { animation-name: line-down; animation-range: cover 25% cover 61%; }
-        .ladder .l2, .ladder .l2 .tag i { animation-range: cover 29% cover 33%; }
-        .ladder .l3, .ladder .l3 .tag i { animation-range: cover 41% cover 45%; }
-        .ladder .l4, .ladder .l4 .tag i { animation-range: cover 53% cover 57%; }
-        .ladder .l2, .ladder .l3, .ladder .l4 { animation-name: to-mid; }
-        .ladder .l2 .e, .ladder .l3 .e, .ladder .l4 .e { animation-name: fade-out; }
-        .ladder .l2 .m, .ladder .l3 .m, .ladder .l4 .m { animation-name: fade-in; }
-      }
-      @media (prefers-reduced-motion: reduce) { .ladder *, .ladder .tag i { animation: none !important; } }
-      @keyframes line-down { from { transform: translateY(40px); } to { transform: translateY(202px); } }
-      @keyframes to-mid { from { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); } to { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); } }
-      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
-      @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+      /* The line slides down the ladder as the card scrolls through the viewport; layers flip as it passes.
+         Progress (--t, 0 to 1) is set by the script at the end of the page; without it the static state shows. */
+      .ladder { --t: 0.3333; }
+      .line { transform: translateY(calc(40px + var(--t) * 162px)); }
+      .layer, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
+      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag i { transition: none; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
@@ -340,7 +329,7 @@
           <div class="devhead">
             <div>
               <p class="eyebrow">Developers</p>
-              <h2>Write it in Compact, or in Rust.</h2>
+              <h2>Write it in Rust, or in Compact.</h2>
               <p class="lead">
                 Import the Signet module and queue Ethereum transactions from your circuits. Keep your own ledger and
                 your own rules. The examples repo has a complete ERC-20 vault with deposit, withdraw, swap and supply,
@@ -356,11 +345,11 @@
             </div>
           </div>
           <div class="codes">
-            <input type="radio" name="lang" id="lang-compact" checked>
-            <input type="radio" name="lang" id="lang-rust">
+            <input type="radio" name="lang" id="lang-rust" checked>
+            <input type="radio" name="lang" id="lang-compact">
             <div class="codetabs" role="tablist" aria-label="Language">
-              <label for="lang-compact">Compact</label>
               <label for="lang-rust">Rust</label>
+              <label for="lang-compact">Compact</label>
             </div>
             <div class="code compact">
               <div class="codehead"><span>erc20-vault.compact &middot; the deposit circuit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
@@ -521,6 +510,26 @@
     </footer>
     <script>
       for (const a of document.querySelectorAll('.top details a')) a.addEventListener('click', () => a.closest('details').removeAttribute('open'));
+
+      // Moving the line: progress through the viewport drives the ladder.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const card = document.querySelector('.adopt');
+        const ladder = card.querySelector('.ladder');
+        const layers = ['.l2', '.l3', '.l4'].map((c) => ladder.querySelector(c));
+        let queued = false;
+        const tick = () => {
+          queued = false;
+          const r = card.getBoundingClientRect();
+          const cover = (innerHeight - r.top) / (innerHeight + r.height);
+          const t = Math.min(1, Math.max(0, (cover - 0.25) / 0.36));
+          ladder.style.setProperty('--t', t.toFixed(4));
+          layers.forEach((l, i) => l.classList.toggle('mid', t >= (i + 0.5) / 3));
+        };
+        const onScroll = () => { if (!queued) { queued = true; requestAnimationFrame(tick); } };
+        addEventListener('scroll', onScroll, { passive: true });
+        addEventListener('resize', onScroll);
+        tick();
+      }
     </script>
   </body>
 </html>
