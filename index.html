@@ -97,14 +97,11 @@
       .hero .lead { font-size: 19px; }
       .shot { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--faint); background: var(--panel); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
       .shot img { display: block; width: 100%; height: auto; }
+      .shot a { display: block; }
+      .shot:has(a:hover) { border-color: var(--ink); }
+      .shot figcaption { pointer-events: none; }
       .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
 
-      /* proof strip */
-      .proof { padding: 28px 0; border-top: 1px solid var(--rule); }
-      .proof .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; }
-      .proof ul { display: flex; flex-wrap: wrap; gap: 14px 28px; font: 600 14px/1 var(--mono); letter-spacing: 0.06em; color: var(--muted); }
-      .proof .status { font: 500 13px/1.4 var(--mono); color: var(--muted); }
-      .proof .status b { color: var(--ink-2); font-weight: 600; }
 
       /* how it works */
       .steps li { border-radius: 14px; border: 1px solid var(--rule); background: var(--panel); padding: 22px; display: grid; gap: 10px; align-content: start; min-height: 190px; }
@@ -113,15 +110,8 @@
       .steps .sigs { border-color: var(--muted); }
       .steps .eth { background: var(--eth); border-color: var(--eth); }
       .steps .eth h3, .steps .eth p, .steps .eth .tag { color: var(--eth-ink); }
-      .how .wrap { display: grid; grid-template-columns: 1fr 360px; gap: 56px; align-items: start; }
-      .stack { display: grid; gap: 10px; margin-top: 8px; }
-      .block { height: 76px; border-radius: 12px; border: 2px solid transparent; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font: 800 22px/1 var(--sans); letter-spacing: -0.02em; }
-      .block.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .block.eth { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); }
-      .block.tron { background: var(--tron); border-color: var(--tron); color: var(--eth-ink); }
-      .block.slot { border: 2px dashed var(--rule); }
       .sig { height: 36px; border: 2px solid var(--muted); border-radius: 8px; display: flex; align-items: center; justify-content: center; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink); }
-      .how .steps { grid-column: 1 / -1; margin-top: 8px; }
+      .how .steps { margin-top: 40px; }
 
       /* use cases */
       .cases .panel { min-height: 230px; display: flex; flex-direction: column; }
@@ -129,15 +119,51 @@
       .adopt { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--bg-2); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; gap: 6px; }
+      .ladder { display: grid; }
+      .ladder .layer + .layer, .ladder .sig { margin-top: 6px; }
       .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
       .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .layer .tag { font-size: 10px; }
-      .ladder .sig { height: 26px; font-size: 10px; }
+      .layer .tag { font-size: 10px; display: grid; text-align: right; }
+      .layer .tag i { grid-area: 1 / 1; font-style: normal; }
+      .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
+      .layer.mid .tag .m { opacity: 1; }
+      .ladder .sig { height: 26px; font-size: 10px; overflow: hidden; }
+      .ladder .sig.off { height: 0; margin-top: 0; border-width: 0; opacity: 0; }
+      /* The line moves down the ladder as the card scrolls through the viewport. */
+      @supports (animation-timeline: view()) {
+        .adopt { view-timeline: --adopt block; }
+        .ladder > *, .ladder .tag i { animation-timeline: --adopt; animation-fill-mode: both; animation-timing-function: linear; }
+        .ladder .l2, .ladder .l2 .tag i, .ladder .s1 { animation-range: cover 25% cover 30%; }
+        .ladder .l3, .ladder .l3 .tag i { animation-range: cover 40% cover 45%; }
+        .ladder .l4, .ladder .l4 .tag i, .ladder .s4 { animation-range: cover 55% cover 60%; }
+        .ladder .s2 { animation-range: cover 25% cover 45%; }
+        .ladder .s3 { animation-range: cover 40% cover 60%; }
+        .ladder .l2, .ladder .l3, .ladder .l4 { animation-name: to-mid; }
+        .ladder .l2 .e, .ladder .l3 .e, .ladder .l4 .e { animation-name: fade-out; }
+        .ladder .l2 .m, .ladder .l3 .m, .ladder .l4 .m { animation-name: fade-in; }
+        .ladder .s1 { animation-name: sig-out; }
+        .ladder .s2, .ladder .s3 { animation-name: sig-pass; }
+        .ladder .s4 { animation-name: sig-in; }
+      }
+      @media (prefers-reduced-motion: reduce) { .ladder *, .ladder .tag i { animation: none !important; } }
+      @keyframes to-mid { from { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); } to { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); } }
+      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+      @keyframes sig-in { from { height: 0; margin-top: 0; border-width: 0; opacity: 0; } to { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } }
+      @keyframes sig-out { from { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } to { height: 0; margin-top: 0; border-width: 0; opacity: 0; } }
+      @keyframes sig-pass { 0%, 100% { height: 0; margin-top: 0; border-width: 0; opacity: 0; } 25%, 75% { height: 26px; margin-top: 6px; border-width: 2px; opacity: 1; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
-      .dev .codes { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 40px; }
+      .dev .codes { margin-top: 40px; }
+      .codes > input { position: absolute; opacity: 0; pointer-events: none; }
+      .codetabs { display: inline-flex; gap: 2px; padding: 3px; border: 1px solid var(--rule); border-radius: 10px; background: var(--panel); margin-bottom: 16px; }
+      .codetabs label { cursor: pointer; padding: 9px 16px; border-radius: 7px; font: 600 13px/1 var(--mono); color: var(--muted); }
+      .codetabs label:hover { color: var(--ink); }
+      #lang-compact:checked ~ .codetabs label[for="lang-compact"], #lang-rust:checked ~ .codetabs label[for="lang-rust"] { background: var(--ink); color: var(--bg); }
+      #lang-compact:focus-visible ~ .codetabs label[for="lang-compact"], #lang-rust:focus-visible ~ .codetabs label[for="lang-rust"] { outline: 2px solid var(--ink); outline-offset: 2px; }
+      .codes .code { display: none; }
+      #lang-compact:checked ~ .code.compact, #lang-rust:checked ~ .code.rust { display: block; }
       .dev code { font-family: var(--mono); font-size: 0.92em; background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; }
       .dev pre code { background: none; border: 0; padding: 0; font-size: inherit; }
       pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
@@ -156,8 +182,6 @@
       .four p { color: var(--muted); font-size: 15px; margin-top: 8px; }
 
       /* roadmap */
-      .chains { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 10px; }
-      .chains .block { height: 64px; font-size: 19px; padding: 0 16px; }
       .roadmap { margin-top: 40px; }
       .roadmap li { border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--muted); }
       .roadmap b { display: block; font: 800 17px/1.2 var(--sans); color: var(--ink); margin: 8px 0 6px; letter-spacing: -0.02em; }
@@ -175,18 +199,15 @@
 
       /* call to action and footer */
       .cta { padding: 96px 0; background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
-      .cta .row { display: flex; gap: 40px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; margin-top: 24px; }
-      .cta .mail { display: block; font: 600 clamp(20px, 2.6vw, 30px)/1 var(--mono); color: var(--ink); }
       footer { border-top: 1px solid var(--rule); padding: 44px 0 56px; color: var(--muted); font-size: 14px; }
       footer .wrap { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
-      footer .about { max-width: 36ch; margin-top: 14px; font-size: 13px; }
       footer .legal { margin-top: 22px; font: 12px/1.6 var(--mono); color: var(--faint); }
       footer h4 { margin: 0 0 12px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       footer li + li { margin-top: 8px; }
       footer a:hover { color: var(--ink); }
 
       @media (max-width: 960px) {
-        .hero .wrap, .how .wrap, .dev .devhead, .dev .codes, .adopt, .grid3, .grid4, .chains, footer .wrap { grid-template-columns: 1fr; }
+        .hero .wrap, .dev .devhead, .adopt, .grid3, .grid4, footer .wrap { grid-template-columns: 1fr; }
         .top nav { display: none; }
         .top details { display: block; }
         .top .cta-top { display: none; }
@@ -247,18 +268,9 @@
             </p>
           </div>
           <figure class="shot">
-            <img src="/img/demo-app.png" alt="The Sig.Network demo app: balances in ETH, SOL and BTC, a swap panel and an activity list of deposits, swaps and sends" width="1154" height="860" loading="eager" />
+            <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app: balances in ETH, SOL and BTC, a swap panel and an activity list of deposits, swaps and sends" width="1154" height="860" loading="eager" /></a>
             <figcaption>Demo app &middot; deposit, swap, send</figcaption>
           </figure>
-        </div>
-      </section>
-
-      <section class="proof">
-        <div class="wrap">
-          <ul aria-label="Works with">
-            <li>Midnight</li><li>Ethereum</li><li>Uniswap</li><li>Aave</li><li>Tron</li><li>Solana</li>
-          </ul>
-          <p class="status"><b>Signing network live on Ethereum and Solana mainnet since March 2025.</b> Midnight integration on stagenet now, mainnet with ledger v9.</p>
         </div>
       </section>
 
@@ -272,11 +284,6 @@
               and signs only what your contract asks it to. To Ethereum it is an ordinary account doing ordinary
               things. To your users it is your app, with their balances and their identities shielded on Midnight.
             </p>
-          </div>
-          <div class="stack" aria-label="Midnight over Ethereum, joined by sig.network">
-            <div class="block mid"><span>Your app</span><span class="tag">Midnight</span></div>
-            <div class="sig">sig.network</div>
-            <div class="block eth"><span>Your account</span><span class="tag">Ethereum</span></div>
           </div>
           <ul class="steps grid3">
             <li class="mid"><span class="tag">01 &middot; Midnight</span><h3>Your contract decides.</h3><p>A Compact circuit checks the request, burns the user&rsquo;s shielded claim and queues one Ethereum transaction.</p></li>
@@ -316,12 +323,15 @@
               <p>Start with a private pool in front of an app people already use. Then move your logic onto Midnight piece by piece: the strategy, then routing, then lending. Every layer below the line keeps Ethereum&rsquo;s liquidity, and every app draws its own line.</p>
             </div>
             <div class="ladder" aria-label="A yield vault with its privacy pool and vault logic on Midnight and the rest on Ethereum">
-              <div class="layer mid"><span>Privacy pool</span><span class="tag">Midnight</span></div>
-              <div class="layer mid"><span>Vault logic</span><span class="tag">Midnight</span></div>
-              <div class="sig">sig.network</div>
-              <div class="layer"><span>Routing</span><span class="tag">Ethereum</span></div>
-              <div class="layer"><span>Lending pool</span><span class="tag">Ethereum</span></div>
-              <div class="layer"><span>DEX liquidity</span><span class="tag">Ethereum</span></div>
+              <div class="layer mid l1"><span>Privacy pool</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
+              <div class="sig s1 off">sig.network</div>
+              <div class="layer mid l2"><span>Vault logic</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
+              <div class="sig s2">sig.network</div>
+              <div class="layer l3"><span>Routing</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
+              <div class="sig s3 off">sig.network</div>
+              <div class="layer l4"><span>Lending pool</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
+              <div class="sig s4 off">sig.network</div>
+              <div class="layer l5"><span>DEX liquidity</span><span class="tag"><i class="e">Ethereum</i><i class="m">Midnight</i></span></div>
             </div>
           </div>
         </div>
@@ -348,54 +358,79 @@
             </div>
           </div>
           <div class="codes">
-            <div>
-              <div class="codehead"><span>Compact &middot; erc20-vault.compact</span><span>excerpt</span></div>
-<pre><code><span class="k">import</span> CompactStandardLibrary;
-<span class="k">import</span> <span class="s">"@sig-net/midnight/src/Signet"</span>;
-
-<span class="k">sealed ledger</span> signetSigner: SignetSigner;
-<span class="k">export ledger</span> vaultEvmAddress: Bytes&lt;20&gt;;
-<span class="k">export ledger</span> allowedTokens: Set&lt;Bytes&lt;20&gt;&gt;;
-
-<span class="c">// Burn the user's shielded claim and queue one swap on Uniswap.</span>
-<span class="k">export circuit</span> <span class="f">startSwap</span>(
-  inIndex: Uint&lt;64&gt;,
-  swapRequest: SwapRequest,
-  coin: ShieldedCoinInfo
+            <input type="radio" name="lang" id="lang-compact" checked>
+            <input type="radio" name="lang" id="lang-rust">
+            <div class="codetabs" role="tablist" aria-label="Language">
+              <label for="lang-compact">Compact</label>
+              <label for="lang-rust">Rust &middot; MinoCrab</label>
+            </div>
+            <div class="code compact">
+              <div class="codehead"><span>erc20-vault.compact &middot; the deposit circuit</span><span>abridged</span></div>
+<pre><code><span class="k">export circuit</span> startDeposit(
+  evmNonce: Uint&lt;64&gt;, gasLimit: Uint&lt;64&gt;,
+  maxFeePerGas: Uint&lt;128&gt;, maxPriorityFeePerGas: Uint&lt;128&gt;,
+  keyVersion: Uint&lt;8&gt;, depositRequest: DepositRequest
 ): [] {
-  requireInitialised();
-  <span class="f">assert</span>(allowedTokens.member(disclose(swapRequest.erc20AddressOut)),
-    <span class="s">"erc20AddressOut not allowed"</span>);
-  <span class="f">assert</span>(coin.value == swapRequest.amountInMaximum,
-    <span class="s">"Coin value must equal amountInMaximum"</span>);
-  receiveShielded(disclose(coin));
-  sendImmediateShielded(disclose(coin), shieldedBurnAddress(),
-    disclose(coin).value);
-  <span class="c">// ... queue the request; sendSwap signs it, completeSwap mints</span>
+  <span class="k">assert</span>(depositRequest.amount &gt; 0 <span class="k">as</span> Uint&lt;128&gt;, "Amount must be positive");
+  <span class="k">const</span> caller = <span class="k">disclose</span>(userCommitment(callerSecretKey()));
+
+  <span class="c">// transfer(vaultEvmAddress, amount) on the token, as a type-2 Ethereum transaction.</span>
+  <span class="k">const</span> calldata = EvmCalldata&lt;2&gt; {
+    selector: Bytes [0xa9, 0x05, 0x9c, 0xbb], noWords: 2 <span class="k">as</span> Uint&lt;16&gt;,
+    words: [evmAddressAbiWord(vaultEvmAddress), numericAbiWord(depositRequest.amount)]
+  };
+  <span class="k">const</span> txParams = EvmType2TxParams&lt;2, 0, 0&gt; {
+    chainId: evmChainId, nonce: evmNonce, gasLimit: gasLimit,
+    maxFeePerGas: maxFeePerGas, maxPriorityFeePerGas: maxPriorityFeePerGas,
+    to: depositRequest.erc20Address, value: 0 <span class="k">as</span> Uint&lt;128&gt;,
+    calldata: some&lt;EvmCalldata&lt;2&gt;&gt;(calldata), accessListEntryCount: 0, accessList: []
+  };
+
+  <span class="c">// Record the request, then ask the signing network for the signature.</span>
+  <span class="k">const</span> request = constructSignBidirectionalEvent&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34, 34&gt;(
+    kernel.self(), signetRequestNonce <span class="k">as</span> Uint&lt;64&gt;, keyVersion, caller,
+    MPCSignatureAlgorithm.ecdsa, MPCDestination.unused, pad(64, ""), TxParamType.evmType2,
+    txParams, ethereumCaip2Id(), vaultResponseSchema(), vaultResponseSchema()
+  );
+  <span class="k">const</span> requestId = <span class="k">disclose</span>(calculateRequestId&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34, 34&gt;(request));
+  <span class="k">assert</span>(!depositEventMap.member(requestId), "Request already exists");
+  signetRequestNonce.increment(1);
+  depositEventMap.insert(requestId, <span class="k">disclose</span>(request));
+  depositSettleViews.insert(requestId, DepositSettleView {
+    commitment: caller, erc20: <span class="k">disclose</span>(depositRequest.erc20Address),
+    amount: <span class="k">disclose</span>(depositRequest.amount <span class="k">as</span> Uint&lt;64&gt;)
+  });
+  signetSigner.signBidirectional(requestId, constructSignBidirectionalEventNotificationV1(
+    kernel.self(), 2 <span class="k">as</span> Uint&lt;8&gt;, [1, 3, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;
+  ));
 }</code></pre>
             </div>
-            <div>
-              <div class="codehead"><span>Rust &middot; MinoCrab</span><span>excerpt</span></div>
-<pre><code><span class="k">#[derive(CircuitArg)]</span>
-<span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
-
-<span class="k">#[circuit]</span>
-<span class="k">pub fn</span> <span class="f">deposit</span>(
-    c: &amp;<span class="k">mut</span> Circuit3,
-    evm_nonce: Uint&lt;64&gt;,
-    gas_limit: Uint&lt;64&gt;,
-    max_fee_per_gas: Uint&lt;128&gt;,
-    max_priority_fee_per_gas: Uint&lt;128&gt;,
-    key_version: Uint&lt;8&gt;,
-    deposit_request: DepositRequest,
+            <div class="code rust">
+              <div class="codehead"><span>erc20_vault_pending.rs &middot; the same circuit</span><span>abridged</span></div>
+<pre><code>#[<span class="k">circuit</span>]
+<span class="k">pub fn</span> deposit(
+    c: &amp;mut Circuit3,
+    evm_nonce: Uint&lt;64&gt;, gas_limit: Uint&lt;64&gt;,
+    max_fee_per_gas: Uint&lt;128&gt;, max_priority_fee_per_gas: Uint&lt;128&gt;,
+    key_version: Uint&lt;8&gt;, deposit_request: DepositRequest,
 ) -&gt; Discloses&lt;(DepositorCommitment, DepositedErc20, DepositedAmount, Requested)&gt; {
-    c.assert(deposit_request.amount.gt(0u64));
+    c.<span class="k">assert</span>(deposit_request.amount.gt(0u64));
     <span class="k">let</span> sk = common::witness_sk(c);
-    <span class="k">let</span> caller = common::commitment_transient(c, &amp;sk)
-        .disclose_as::&lt;DepositorCommitment&gt;(c);
-    <span class="c">// transfer(vaultEvmAddress, amount) on the token; the request id,</span>
-    <span class="c">// freshness check and signer call come from the slot's type.</span>
-    VAULT.deposits.request_with(c, <span class="c">/* contract, args, envelope, key, nonce */</span> ...);
+    <span class="k">let</span> caller = common::commitment_transient(c, &amp;sk).disclose_as::&lt;DepositorCommitment&gt;(c);
+    <span class="k">let</span> erc20 = deposit_request.erc20_address.disclose_as::&lt;DepositedErc20&gt;(c);
+    <span class="k">let</span> amount = deposit_request.amount.field().disclose_as::&lt;DepositedAmount&gt;(c);
+
+    <span class="c">// transfer(vaultEvmAddress, amount) on the token. The selector, ABI words, request id,</span>
+    <span class="c">// freshness check, record insert and signer call all come from the slot's type.</span>
+    VAULT.deposits.request_with(
+        c,
+        |c| Contract::&lt;Erc20&gt;::from_address(c, deposit_request.erc20_address),
+        (|c: &amp;mut Circuit3| cell_address(c, &amp;VAULT.vault_evm_address), |_c: &amp;mut Circuit3| deposit_request.amount),
+        Envelope::caller(max_priority_fee_per_gas, max_fee_per_gas, gas_limit),
+        key_version, evm_nonce,
+        |_c| (common::SigningPath::from(caller.private()), ()),
+        |_c, _id, ()| DepositEnv { depositor: caller, erc20, amount: Uint::from_field_unchecked(amount) },
+    );
     Discloses::of(())
 }</code></pre>
             </div>
@@ -421,22 +456,10 @@
           <p class="eyebrow">Roadmap</p>
           <h2>One pool, every chain.</h2>
           <p class="lead">The pool lives on Midnight and holds an account on each chain it reaches. Moving between chains never leaves the pool, so every chain added makes every crossing rarer.</p>
-          <div class="stack" style="margin-top:40px">
-            <div class="block mid"><span>Your app</span><span class="tag">Midnight</span></div>
-            <div class="sig">sig.network</div>
-          </div>
-          <ul class="chains">
-            <li class="block eth"><span>Ethereum</span><span class="tag">Live</span></li>
-            <li class="block tron"><span>Tron</span><span class="tag">December</span></li>
-            <li class="block slot" aria-label="Future chain"></li>
-            <li class="block slot" aria-label="Future chain"></li>
-            <li class="block slot" aria-label="Future chain"></li>
-          </ul>
-          <ul class="roadmap grid4">
+          <ul class="roadmap grid3">
             <li><span class="tag live-tag">Stagenet &middot; now</span><b>Midnight &rarr; Ethereum</b>Deposits, Uniswap swaps, Aave supply, withdrawals to any address. Open examples and a full-stack demo.</li>
             <li><span class="tag">Mainnet &middot; with ledger v9</span><b>Midnight mainnet</b>The same contracts and the same accounts, with real funds.</li>
             <li><span class="tag">December 2026</span><b>Tron</b>Where the dollars move. One pool, two chains, no crossing between them.</li>
-            <li><span class="tag">After</span><b>More chains</b>Each one grows the same pool. Zcash is next on the list.</li>
           </ul>
         </div>
       </section>
@@ -473,14 +496,11 @@
       <section class="cta" id="contact">
         <div class="wrap">
           <p class="eyebrow">Build on Midnight</p>
-          <h2>Bring your venue. The pool is ready.</h2>
-          <div class="row">
-            <a class="mail" href="mailto:pitches@sig.network">pitches@sig.network</a>
-            <p class="actions" style="margin:0">
+          <h2>Bringing privacy across chains.</h2>
+          <p class="actions">
               <a class="btn primary" href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Read the docs</a>
               <a class="btn" href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">View examples</a>
-            </p>
-          </div>
+          </p>
         </div>
       </section>
     </main>
@@ -489,11 +509,10 @@
       <div class="wrap">
         <div>
           <a class="logo" href="#top" aria-label="Sig.Network"><svg viewBox="0 0 200 34" fill="currentColor" aria-hidden="true"><use href="#wm"/></svg></a>
-          <p class="about">A signing network that gives contracts real accounts on other chains. Live on Ethereum and Solana mainnet, and on Midnight stagenet.</p>
-          <p class="legal">&copy; 2026 Sig.Network &middot; pitches@sig.network</p>
+          <p class="legal">&copy; 2026 Sig.Network</p>
         </div>
         <nav aria-label="Learn"><h4>Learn</h4><ul><li><a href="#how">How it works</a></li><li><a href="#cases">Use cases</a></li><li><a href="#faq">FAQ</a></li><li><a href="https://mirror.xyz/signetwork.eth" target="_blank" rel="noopener noreferrer">Blog</a></li></ul></nav>
-        <nav aria-label="Build"><h4>Build</h4><ul><li><a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Docs</a></li><li><a href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Examples</a></li><li><a href="https://github.com/sig-net/full-stack-demo" target="_blank" rel="noopener noreferrer">Demo app</a></li><li><a href="#roadmap">Roadmap</a></li></ul></nav>
+        <nav aria-label="Build"><h4>Build</h4><ul><li><a href="https://docs.sig.network/" target="_blank" rel="noopener noreferrer">Docs</a></li><li><a href="https://github.com/sig-net/midnight-examples" target="_blank" rel="noopener noreferrer">Examples</a></li><li><a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer">Demo app</a></li><li><a href="#roadmap">Roadmap</a></li></ul></nav>
         <nav aria-label="Connect"><h4>Connect</h4><ul><li><a href="mailto:pitches@sig.network">Contact</a></li><li><a href="https://djinni.co/jobs/company-sig-network/" target="_blank" rel="noopener noreferrer">Careers</a></li><li><a href="https://x.com/Sig_Network" target="_blank" rel="noopener noreferrer">Twitter</a></li><li><a href="https://github.com/sig-net" target="_blank" rel="noopener noreferrer">GitHub</a></li></ul></nav>
       </div>
     </footer>
