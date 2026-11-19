@@ -48,7 +48,7 @@
         --mid: #2e2c2c; --mid-rule: #786767; --eth: #e4f8f7; --eth-ink: #4c4646; --tron: #f2ddc4;
         --sans: Archivo, 'Segoe UI', system-ui, sans-serif;
         --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
-        --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --body: Archivo, system-ui, -apple-system, 'Segoe UI', sans-serif;
       }
       * { box-sizing: border-box; }
       html { color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 72px; }
@@ -78,6 +78,8 @@
         section:not(.hero) > .wrap > .eyebrow { grid-column: 1; grid-row: 1 / span 9; align-self: start; position: sticky; top: 100px; margin: 8px 0 0; }
         section:not(.hero) > .wrap::after { content: ''; position: absolute; top: 0; bottom: 0; left: 172px; width: 1px; background: var(--hair); pointer-events: none; }
       }
+      .hero, footer { position: relative; }
+      .hero::before, footer::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: min(1256px, 100%); transform: translateX(-50%); border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); pointer-events: none; }
       /* Ruled items: a hairline above each, drawn in from the left when it scrolls into view. */
       .steps li, .cases .panel, .four li, .roadmap li { position: relative; }
       .steps li::before, .cases .panel::before, .four li::before, .roadmap li::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); transform-origin: left; }
@@ -124,12 +126,13 @@
       .live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 10px rgba(39, 237, 2, 0.6); }
       .hero .lead { font-size: 19px; }
-      .shot { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--faint); background: var(--panel); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+      .shot { margin: 0; }
+      .shot > a { display: block; border: 1px solid var(--rule); transition: border-color 0.15s; }
       .shot img { display: block; width: 100%; height: auto; }
-      .shot a { display: block; }
-      .shot:has(a:hover) { border-color: var(--ink); }
-      .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); pointer-events: none; transition: background 0.15s, color 0.15s; }
-      .shot:has(a:hover) figcaption { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+      .shot figcaption { margin-top: 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.15s; }
+      .shot figcaption a { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+      .shot:has(a:hover) > a { border-color: var(--ink); }
+      .shot:has(a:hover) figcaption { color: var(--ink); }
 
 
       /* how it works */
@@ -150,16 +153,17 @@
       .adopt { margin-top: 56px; padding: 28px 0 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; gap: 8px; }
-      .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
-      .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .layer .tag { font-size: 10px; display: grid; text-align: right; }
+      .ladder { display: grid; }
+      .layer { height: 46px; border-top: 1px solid var(--eth); color: var(--ink); display: flex; align-items: center; justify-content: space-between; font: 650 15px/1 var(--sans); letter-spacing: -0.015em; }
+      .layer.mid { border-top-color: var(--mid-rule); }
+      .layer .tag { align-self: start; display: grid; padding: 7px 9px 6px; border: 1px solid var(--eth); border-top: 0; border-radius: 0 0 4px 4px; background: var(--eth); color: var(--eth-ink); font-size: 10px; text-align: right; opacity: 1; }
+      .layer.mid .tag { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
       /* Layers move onto Midnight one by one as the card scrolls through the viewport (script at the end of the page). */
-      .layer, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
-      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag i { transition: none; } }
+      .layer, .layer .tag, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
+      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag, .layer .tag i { transition: none; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
@@ -174,7 +178,7 @@
       #lang-compact:checked ~ .code.compact, #lang-rust:checked ~ .code.rust { display: block; }
       .dev code { font-family: var(--mono); font-size: 0.92em; background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; }
       .dev pre code { background: none; border: 0; padding: 0; font-size: inherit; }
-      pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
+      pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 4px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
       pre .k { color: #cdd6a3; } pre .f { color: #e4f8f7; } pre .c { color: var(--faint); } pre .s { color: #f2ddc4; }
       .codehead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
       .codehead a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
@@ -275,8 +279,8 @@
             </p>
           </div>
           <figure class="shot">
-            <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app in dark mode: total balance, a deposit button, balances and activity, and a panel to swap on Uniswap or lend" width="1154" height="860" loading="eager" /></a>
-            <figcaption>Try the demo &middot; deposit, swap, send <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></figcaption>
+            <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app in dark mode: a seed wallet holding USDC, EURC, WETH and LINK, an activity list with a send, a swap and a deposit, and a panel to swap on Uniswap or lend" width="1154" height="860" loading="eager" /></a>
+            <figcaption><a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" tabindex="-1"><span>Try the demo &middot; deposit, swap, send</span> <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></figcaption>
           </figure>
         </div>
       </section>
@@ -366,65 +370,72 @@
               <label for="lang-compact">Compact</label>
             </div>
             <div class="code compact">
-              <div class="codehead"><span>erc20-vault.compact &middot; startDeposit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
-<pre><code><span class="k">struct</span> DepositRequest { erc20Address: Bytes&lt;20&gt;; amount: Uint&lt;128&gt;; }
+              <div class="codehead"><span>treasury.compact &middot; the same send</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">A full vault on GitHub</a></div>
+<pre><code><span class="k">import</span> "@sig-net/midnight/src/Signet";
 
-<span class="k">export circuit</span> startDeposit(
-  inIndex: Uint&lt;64&gt;, evmNonce: Uint&lt;64&gt;, gas: GasParams, depositRequest: DepositRequest
-): [] {
-  requireInitialised();
-  <span class="k">assert</span>(allowedTokens.member(<span class="k">disclose</span>(depositRequest.erc20Address)), "ERC20 not allowed");
-  <span class="k">assert</span>(depositRequest.amount &gt; 0 <span class="k">as</span> Uint&lt;128&gt;, "Amount must be positive");
+<span class="c">// Declared above: signetSigner, evmChainId, mpcKeyVersion and the three gas settings.</span>
+<span class="k">export ledger</span> transfers: SignBidirectionalEventMapV1&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34&gt;;
 
-  <span class="c">// The depositor's own account pays: the signing path is their commitment, not the vault's.</span>
-  <span class="k">const</span> args = <span class="k">disclose</span>(DepositArgs {
-    request: depositRequest, path: userCommitment(callerSecretKey()), gas: gas
-  });
-  depositArgsMap.insert(<span class="k">disclose</span>(inIndex), args);
+<span class="c">// File token.transfer(to, amount) on Ethereum from the treasury's account.</span>
+<span class="k">export circuit</span> send(evmNonce: Uint&lt;64&gt;, token: Bytes&lt;20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;): [] {
+  <span class="k">const</span> calldata = EvmCalldata&lt;2&gt; {
+    selector: Bytes [0xa9, 0x05, 0x9c, 0xbb], <span class="c">// transfer(address,uint256)</span>
+    noWords: 2 <span class="k">as</span> Uint&lt;16&gt;,
+    words: [evmAddressAbiWord(<span class="k">disclose</span>(to)), numericAbiWord(<span class="k">disclose</span>(amount) <span class="k">as</span> Uint&lt;128&gt;)]
+  };
+  <span class="k">const</span> txParams = EvmType2TxParams&lt;2, 0, 0&gt; {
+    chainId: evmChainId, nonce: <span class="k">disclose</span>(evmNonce),
+    maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasLimit: gasLimit,
+    to: <span class="k">disclose</span>(token), value: 0 <span class="k">as</span> Uint&lt;128&gt;,
+    calldata: some&lt;EvmCalldata&lt;2&gt;&gt;(calldata), accessListEntryCount: 0, accessList: []
+  };
+  <span class="k">const</span> request = constructSignBidirectionalEventV1&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34&gt;(
+    mpcKeyVersion, kernel.self(), treasuryPath(),
+    MPCSignatureAlgorithm.ecdsa, TxParamType.evmType2, txParams, ethereumCaip2Id(),
+    MPCDestination.unused, pad(64, ""), successOutputSchema()
+  );
+  <span class="k">const</span> requestId = calculateEvmType2RequestIdV1&lt;2, 0, 0, 34&gt;(request);
+  <span class="k">assert</span>(!transfers.member(requestId), "Request already sent");
+  transfers.insert(requestId, request);
 
-  <span class="c">// Queue it. Only flushQueue touches shared state, so deposits never contend with each other.</span>
-  <span class="c">// sendDeposit then builds transfer(vaultEvmAddress, amount) and hands it to the signing network.</span>
-  inputRequestBuffer.insert(<span class="k">disclose</span>(inIndex), <span class="k">disclose</span>(RequestBufferEntry {
-    action: Action.deposit, useNextVaultAccountNonce: <span class="k">false</span>, evmNonce: evmNonce, inIndex: inIndex,
-    commitment: ownershipCommitment(inIndex, callerSecretKey()), argsHash: depositArgsHash(args)
-  }));
+  <span class="c">// Tell the signing network where to find the request.</span>
+  signetSigner.signBidirectional(requestId, constructSignBidirectionalEventNotificationV1(
+    kernel.self(), 1 <span class="k">as</span> Uint&lt;8&gt;, [0, 0, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;,
+  ));
 }</code></pre>
             </div>
             <div class="code rust">
-              <div class="codehead"><span>erc20_vault.rs &middot; the same circuit in MinoCrab, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/erc20_vault.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
-<pre><code><span class="k">#[derive(CircuitArg)]</span>
-<span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
+              <div class="codehead"><span>treasury.rs &middot; send and complete, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/treasury.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+<pre><code><span class="k">type</span> Transfer = Filed&lt;erc20::Transfer, schema::Success&gt;;
 
-<span class="k">#[circuit]</span>
-<span class="k">pub fn</span> start_deposit(
-    c: &amp;mut Circuit3,
-    in_index: Uint&lt;64&gt;, evm_nonce: Uint&lt;64&gt;, gas: GasParamsArg, deposit_request: DepositRequest,
-) -&gt; Discloses&lt;(DepositedErc20, InIndex, DepositedAmount, DepositorCommitment,
-                GasParams, EvmNonce, OwnershipCommitment)&gt; {
-    require_initialised(c);
-    <span class="k">let</span> erc20 = deposit_request.erc20_address.disclose_as::&lt;DepositedErc20&gt;(c);
-    <span class="k">let</span> allowed = VAULT.allowed_tokens.member(c, &amp;erc20);
-    c.assert(is_true(allowed).message("ERC20 not allowed"));
-    c.assert(deposit_request.amount.gt(0u64).message("Amount must be positive"));
+<span class="k">#[derive(Ledger)]</span>
+<span class="k">pub struct</span> Treasury {
+    <span class="k">pub</span> signet: Signet,
+    <span class="k">pub</span> transfers: Pending&lt;Transfer, Owned&lt;Amount&gt;, 2&gt;,
+}
 
-    <span class="c">// Every disclosure is typed, and the return type lists exactly what leaves the proof.</span>
-    <span class="k">let</span> in_index = in_index.disclose_as::&lt;InIndex&gt;(c);
-    <span class="k">let</span> sk = common::witness_sk(c);
-    <span class="k">let</span> path = user_commitment(c, &amp;sk).disclose_as::&lt;DepositorCommitment&gt;(c);
-    <span class="k">let</span> amount = deposit_request.amount.disclose_as::&lt;DepositedAmount&gt;(c);
-    <span class="k">let</span> args = DepositArgs {
-        request: StoredDepositRequest { erc20_address: erc20, amount },
-        path,
-        gas: StoredGas { gas_limit: gas.gas_limit.disclose_as::&lt;GasParams&gt;(c), <span class="c">/* and the two fee fields */</span> },
-    };
-    VAULT.deposit_args_map.insert(c, &amp;in_index, &amp;args);
+<span class="k">#[contract]</span>
+<span class="k">impl</span> Treasury {
+    <span class="c">// File token.transfer(to, amount) on Ethereum, remembering the amount and the caller.</span>
+    <span class="c">// The selector, ABI encoding, gas envelope and signing path come from the slot's type.</span>
+    <span class="k">#[circuit]</span>
+    <span class="k">pub fn</span> send(
+        c: &amp;mut Circuit3, evm_nonce: Uint&lt;64&gt;, token: Contract&lt;Erc20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;,
+    ) -&gt; Discloses&lt;(SentAmount, OwnerCommitment, Requested)&gt; {
+        <span class="k">let</span> sent = amount.field().disclose_as::&lt;SentAmount&gt;(c);
+        TREASURY.transfers.request_owned::&lt;OwnerCommitment&gt;(
+            c, token, (to, amount.widen::&lt;128&gt;()), evm_nonce,
+            |_, _| Amount { amount: Uint::from_field_unchecked(sent) },
+        );
+        Discloses::of(())
+    }
 
-    <span class="c">// Queue it. Only flush_queue touches shared state, so deposits never contend with each other.</span>
-    <span class="c">// send_deposit then builds transfer(vault_evm_address, amount) and hands it to the signing network.</span>
-    <span class="k">let</span> evm_nonce = evm_nonce.disclose_as::&lt;EvmNonce&gt;(c);
-    <span class="k">let</span> digest = args_hash(c, DEPOSIT_ARGS_PAD, &amp;args);
-    queue_request(c, action::DEPOSIT, <span class="k">false</span>, evm_nonce.field(), in_index, digest);
-    Discloses::of(())
+    <span class="c">// The transfer executed and returned true. Anyone may call this: the attestation is the gate.</span>
+    <span class="k">#[circuit]</span>
+    <span class="k">pub fn</span> complete(c: &amp;mut Circuit3, ticket: Succeeded&lt;Transfer&gt;) -&gt; Discloses&lt;Settled&gt; {
+        TREASURY.transfers.complete(c, ticket);
+        Discloses::of(())
+    }
 }</code></pre>
             </div>
           </div>
