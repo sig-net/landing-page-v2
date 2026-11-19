@@ -80,6 +80,7 @@
       }
       .hero, footer { position: relative; }
       .hero::before, footer::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: min(1256px, 100%); transform: translateX(-50%); border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); pointer-events: none; }
+      @media (max-width: 1256px) { section:not(.hero) > .wrap::before, .hero::before, footer::before { display: none; } }
       /* Ruled items: a hairline above each, drawn in from the left when it scrolls into view. */
       .steps li, .cases .panel, .four li, .roadmap li { position: relative; }
       .steps li::before, .cases .panel::before, .four li::before, .roadmap li::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); transform-origin: left; }
@@ -153,17 +154,16 @@
       .adopt { margin-top: 56px; padding: 28px 0 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; }
-      .layer { height: 46px; border-top: 1px solid var(--eth); color: var(--ink); display: flex; align-items: center; justify-content: space-between; font: 650 15px/1 var(--sans); letter-spacing: -0.015em; }
-      .layer.mid { border-top-color: var(--mid-rule); }
-      .layer .tag { align-self: start; display: grid; padding: 7px 9px 6px; border: 1px solid var(--eth); border-top: 0; border-radius: 0 0 4px 4px; background: var(--eth); color: var(--eth-ink); font-size: 10px; text-align: right; opacity: 1; }
-      .layer.mid .tag { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
+      .ladder { display: grid; gap: 1px; }
+      .layer { height: 46px; padding: 0 14px; background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; font: 650 15px/1 var(--sans); letter-spacing: -0.015em; }
+      .layer.mid { background: var(--mid); color: var(--ink); box-shadow: inset 0 0 0 1px var(--mid-rule); }
+      .layer .tag { display: grid; font-size: 10px; text-align: right; opacity: 0.8; }
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
       /* Layers move onto Midnight one by one as the card scrolls through the viewport (script at the end of the page). */
-      .layer, .layer .tag, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
-      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag, .layer .tag i { transition: none; } }
+      .layer, .layer .tag i { transition: background 0.35s, box-shadow 0.35s, color 0.35s, opacity 0.35s; }
+      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag i { transition: none; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
@@ -230,6 +230,8 @@
         section:not(.hero) > .wrap { padding: 60px 0; }
         .hero { padding: 64px 0 56px; }
         .adopt { gap: 28px; }
+        .codehead { flex-wrap: wrap; gap: 8px 16px; line-height: 1.4; }
+        .links a { flex-wrap: wrap; gap: 2px 16px; }
       }
     </style>
   </head>
@@ -373,11 +375,11 @@
               <div class="codehead"><span>treasury.compact &middot; the same send</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">A full vault on GitHub</a></div>
 <pre><code><span class="k">import</span> "@sig-net/midnight/src/Signet";
 
-<span class="c">// Declared above: signetSigner, evmChainId, mpcKeyVersion and the three gas settings.</span>
+<span class="c">// Declared above: signetSigner, evmChainId, mpcKeyVersion, the gas settings and two small helpers.</span>
 <span class="k">export ledger</span> transfers: SignBidirectionalEventMapV1&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34&gt;;
 
 <span class="c">// File token.transfer(to, amount) on Ethereum from the treasury's account.</span>
-<span class="k">export circuit</span> send(evmNonce: Uint&lt;64&gt;, token: Bytes&lt;20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;): [] {
+<span class="k">export circuit</span> sendErc20(evmNonce: Uint&lt;64&gt;, token: Bytes&lt;20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;): [] {
   <span class="k">const</span> calldata = EvmCalldata&lt;2&gt; {
     selector: Bytes [0xa9, 0x05, 0x9c, 0xbb], <span class="c">// transfer(address,uint256)</span>
     noWords: 2 <span class="k">as</span> Uint&lt;16&gt;,
@@ -400,7 +402,7 @@
 
   <span class="c">// Tell the signing network where to find the request.</span>
   signetSigner.signBidirectional(requestId, constructSignBidirectionalEventNotificationV1(
-    kernel.self(), 1 <span class="k">as</span> Uint&lt;8&gt;, [0, 0, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;,
+    kernel.self(), 1 <span class="k">as</span> Uint&lt;8&gt;, [6, 0, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;, <span class="c">// the ledger index of transfers</span>
   ));
 }</code></pre>
             </div>
