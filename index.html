@@ -42,13 +42,13 @@
       @font-face { font-family: 'IBM Plex Mono'; font-weight: 600; font-display: swap; src: url('/decks/night-mode/fonts/ibm-plex-mono-600.woff2') format('woff2'); }
 
       :root {
-        --bg: #111; --bg-2: #161414; --panel: #201e1e; --panel-2: #2e2c2c; --rule: #3d3939; --faint: #786767;
+        --bg: #111; --bg-2: #161414; --panel: #201e1e; --panel-2: #2e2c2c; --hair: #1f1c1c; --rule: #3d3939; --faint: #786767;
         --ink: #e9ddd5; --ink-2: #d5c4bb; --muted: #a28b8a;
         --accent: #eaeec9; --accent-ink: #4c4646; --live: #27ed02;
         --mid: #2e2c2c; --mid-rule: #786767; --eth: #e4f8f7; --eth-ink: #4c4646; --tron: #f2ddc4;
         --sans: Archivo, 'Segoe UI', system-ui, sans-serif;
         --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
-        --body: system-ui, -apple-system, 'Segoe UI', sans-serif;
+        --body: Archivo, system-ui, -apple-system, 'Segoe UI', sans-serif;
       }
       * { box-sizing: border-box; }
       html { color-scheme: dark; scroll-behavior: smooth; scroll-padding-top: 72px; }
@@ -57,13 +57,39 @@
       :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
       h1, h2, h3 { font-family: var(--sans); font-weight: 800; letter-spacing: -0.025em; color: var(--ink); margin: 0; }
       h1 { font-size: clamp(42px, 5.6vw, 72px); line-height: 1; max-width: 13ch; }
-      h2 { font-size: clamp(28px, 3.6vw, 40px); line-height: 1.08; max-width: 24ch; }
-      h3 { font-size: 19px; line-height: 1.25; }
+      h2 { font-size: clamp(28px, 3.4vw, 40px); font-weight: 500; letter-spacing: -0.03em; line-height: 1.08; max-width: 24ch; }
+      h3 { font-size: 19px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.25; }
       p { margin: 0; }
       ul { margin: 0; padding: 0; list-style: none; }
       section { padding: 88px 0; }
       section + section { border-top: 1px solid var(--rule); }
-      .wrap { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
+      .wrap { width: min(1200px, calc(100% - 56px)); margin: 0 auto; }
+
+      /* The page below the hero is set like a printed sheet: a margin column carrying the section
+         number and label, a text column beside it, and hairlines marking the columns. */
+      main { counter-reset: sec; }
+      section:not(.hero) { padding: 0; counter-increment: sec; }
+      section:not(.hero) > .wrap { position: relative; padding: 88px 0; }
+      section:not(.hero) > .wrap::before { content: ''; position: absolute; top: 0; bottom: 0; left: -28px; right: -28px; border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); pointer-events: none; }
+      section:not(.hero) .eyebrow::before { content: counter(sec, decimal-leading-zero); display: block; margin-bottom: 10px; color: var(--faint); }
+      @media (min-width: 961px) {
+        section:not(.hero) > .wrap { display: grid; grid-template-columns: 200px minmax(0, 1fr); }
+        section:not(.hero) > .wrap > * { grid-column: 2; }
+        section:not(.hero) > .wrap > .eyebrow { grid-column: 1; grid-row: 1 / span 9; align-self: start; position: sticky; top: 100px; margin: 8px 0 0; }
+        section:not(.hero) > .wrap::after { content: ''; position: absolute; top: 0; bottom: 0; left: 172px; width: 1px; background: var(--hair); pointer-events: none; }
+      }
+      .hero, footer { position: relative; }
+      .hero::before, footer::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; width: min(1256px, 100%); transform: translateX(-50%); border-left: 1px solid var(--hair); border-right: 1px solid var(--hair); pointer-events: none; }
+      @media (max-width: 1256px) { section:not(.hero) > .wrap::before, .hero::before, footer::before { display: none; } }
+      /* Ruled items: a hairline above each, drawn in from the left when it scrolls into view. */
+      .steps li, .cases .panel, .four li, .roadmap li { position: relative; }
+      .steps li::before, .cases .panel::before, .four li::before, .roadmap li::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--rule); transform-origin: left; }
+      /* Reveal on scroll. The classes are added by the script at the end of the page, so nothing is hidden without it. */
+      .rv { opacity: 0; transform: translateY(10px); transition: opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 80ms); }
+      .rv.in { opacity: 1; transform: none; }
+      li.rv::before { transform: scaleX(0); transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); transition-delay: calc(var(--i, 0) * 80ms); }
+      li.rv.in::before { transform: none; }
+
       .eyebrow { font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
       .tag { font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; }
       .lead { font-size: 18px; max-width: 56ch; margin-top: 18px; color: var(--ink-2); }
@@ -74,12 +100,12 @@
       .btn.primary:hover { background: #f1f4d8; }
       .btn.sm { height: 36px; padding: 0 14px; font-size: 13px; }
       .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
-      .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-      .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
-      .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; padding: 22px; }
+      .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+      .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; }
+      .panel { padding: 18px 0 0; }
       .panel p { color: var(--muted); font-size: 15px; margin-top: 8px; }
-      .ico { width: 36px; height: 36px; border-radius: 9px; display: grid; place-items: center; background: var(--panel-2); border: 1px solid var(--faint); margin-bottom: 14px; color: var(--ink); }
-      .ico svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .ico { margin-bottom: 14px; color: var(--muted); }
+      .ico svg { display: block; width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 
       /* header */
       .top { position: sticky; top: 0; z-index: 20; background: rgba(17, 17, 17, 0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule); }
@@ -101,39 +127,44 @@
       .live { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 22px; font: 600 12px/1 var(--mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
       .live::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--live); box-shadow: 0 0 10px rgba(39, 237, 2, 0.6); }
       .hero .lead { font-size: 19px; }
-      .shot { position: relative; border-radius: 14px; overflow: hidden; border: 1px solid var(--faint); background: var(--panel); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+      .shot { margin: 0; }
+      .shot > a { display: block; border: 1px solid var(--rule); transition: border-color 0.15s; }
       .shot img { display: block; width: 100%; height: auto; }
-      .shot a { display: block; }
-      .shot:has(a:hover) { border-color: var(--ink); }
-      .shot figcaption { position: absolute; left: 12px; bottom: 12px; display: flex; gap: 8px; align-items: center; background: rgba(17, 17, 17, 0.85); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); pointer-events: none; transition: background 0.15s, color 0.15s; }
-      .shot:has(a:hover) figcaption { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+      .shot figcaption { margin-top: 12px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); transition: color 0.15s; }
+      .shot figcaption a { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+      .shot:has(a:hover) > a { border-color: var(--ink); }
+      .shot:has(a:hover) figcaption { color: var(--ink); }
 
 
       /* how it works */
-      .steps li { border-radius: 14px; border: 1px solid var(--rule); background: var(--panel); padding: 22px; display: grid; gap: 10px; align-content: start; min-height: 190px; }
+      /* Each step hangs a chain-coloured label from its rule: Midnight dark, Ethereum light. */
+      .steps li { display: grid; gap: 12px; align-content: start; }
       .steps li p { font-size: 15px; color: var(--muted); }
-      .steps .mid { background: var(--mid); border-color: var(--mid-rule); }
-      .steps .sigs { border-color: var(--muted); }
-      .steps .eth { background: var(--eth); border-color: var(--eth); }
-      .steps .eth h3, .steps .eth p, .steps .eth .tag { color: var(--eth-ink); }
+      .steps .tag { justify-self: start; margin-bottom: 8px; padding: 7px 9px 6px; border: 1px solid var(--muted); border-top: 0; border-radius: 0 0 4px 4px; color: var(--ink-2); opacity: 1; }
+      .steps .mid .tag { background: var(--mid); border-color: var(--mid-rule); }
+      .steps .eth .tag { background: var(--eth); border-color: var(--eth); color: var(--eth-ink); }
+      .steps .mid::before { background: var(--mid-rule); }
+      .steps .sigs::before { background: var(--muted); }
+      .steps .eth::before { background: var(--eth); }
       .how .steps { margin-top: 40px; }
 
       /* use cases */
-      .cases .panel { min-height: 230px; display: flex; flex-direction: column; }
+      .cases .panel { min-height: 200px; display: flex; flex-direction: column; }
       .cases .panel .who { margin-top: auto; padding-top: 14px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); }
-      .adopt { margin-top: 36px; padding: 22px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--bg-2); display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+      .adopt { margin-top: 56px; padding: 28px 0 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
       .adopt p { color: var(--muted); font-size: 15px; }
       .adopt h3 { margin-bottom: 8px; }
-      .ladder { display: grid; gap: 8px; }
-      .layer { height: 40px; border-radius: 8px; border: 2px solid var(--eth); background: var(--eth); color: var(--eth-ink); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; font: 800 14px/1 var(--sans); letter-spacing: -0.01em; }
-      .layer.mid { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
-      .layer .tag { font-size: 10px; display: grid; text-align: right; }
+      .ladder { display: grid; }
+      .layer { height: 46px; border-top: 1px solid var(--eth); color: var(--ink); display: flex; align-items: center; justify-content: space-between; font: 650 15px/1 var(--sans); letter-spacing: -0.015em; }
+      .layer.mid { border-top-color: var(--mid-rule); }
+      .layer .tag { align-self: start; display: grid; padding: 7px 9px 6px; border: 1px solid var(--eth); border-top: 0; border-radius: 0 0 4px 4px; background: var(--eth); color: var(--eth-ink); font-size: 10px; text-align: right; opacity: 1; }
+      .layer.mid .tag { background: var(--mid); border-color: var(--mid-rule); color: var(--ink-2); }
       .layer .tag i { grid-area: 1 / 1; font-style: normal; }
       .layer .tag .m, .layer.mid .tag .e { opacity: 0; }
       .layer.mid .tag .m { opacity: 1; }
       /* Layers move onto Midnight one by one as the card scrolls through the viewport (script at the end of the page). */
-      .layer, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
-      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag i { transition: none; } }
+      .layer, .layer .tag, .layer .tag i { transition: background 0.25s, border-color 0.25s, color 0.25s, opacity 0.25s; }
+      @media (prefers-reduced-motion: reduce) { .layer, .layer .tag, .layer .tag i { transition: none; } }
 
       /* developers */
       .dev .devhead { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: start; }
@@ -148,41 +179,43 @@
       #lang-compact:checked ~ .code.compact, #lang-rust:checked ~ .code.rust { display: block; }
       .dev code { font-family: var(--mono); font-size: 0.92em; background: var(--panel); border: 1px solid var(--rule); border-radius: 5px; padding: 1px 6px; }
       .dev pre code { background: none; border: 0; padding: 0; font-size: inherit; }
-      pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
+      pre { margin: 0; background: #0c0b0b; border: 1px solid var(--rule); border-radius: 4px; padding: 20px 22px; overflow: auto; font: 13px/1.6 var(--mono); color: var(--ink-2); }
       pre .k { color: #cdd6a3; } pre .f { color: #e4f8f7; } pre .c { color: var(--faint); } pre .s { color: #f2ddc4; }
       .codehead { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font: 600 11px/1 var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
       .codehead a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--faint); }
       .codehead a:hover { text-decoration-color: var(--ink); }
       .install { margin-top: 14px; background: var(--panel); border: 1px solid var(--rule); border-radius: 10px; padding: 12px 16px; font: 13px/1.6 var(--mono); color: var(--ink-2); }
       .install b { color: var(--muted); font-weight: 400; }
-      .links { display: grid; gap: 10px; margin-top: 8px; }
-      .links a { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1px solid var(--rule); border-radius: 10px; background: var(--panel); font: 500 14px/1.3 var(--body); }
-      .links a:hover { border-color: var(--faint); }
+      .links { display: grid; margin-top: 8px; border-top: 1px solid var(--rule); }
+      .links a { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); font: 500 14px/1.3 var(--body); transition: border-color 0.15s; }
+      .links a:hover { border-bottom-color: var(--ink); }
+      .links a:hover .mono { color: var(--ink); }
       .links a span { color: var(--muted); font-size: 13px; }
       .links a .mono { font-family: var(--mono); font-size: 12px; color: var(--muted); }
 
       /* compliance */
-      .four li { border-top: 1px solid var(--rule); padding-top: 16px; }
+      .four li { padding-top: 16px; }
       .four p { color: var(--muted); font-size: 15px; margin-top: 8px; }
 
       /* roadmap */
       .roadmap { margin-top: 40px; }
-      .roadmap li { border-top: 1px solid var(--rule); padding-top: 14px; font-size: 14px; color: var(--muted); }
-      .roadmap b { display: block; font: 800 17px/1.2 var(--sans); color: var(--ink); margin: 8px 0 6px; letter-spacing: -0.02em; }
+      .roadmap li { padding-top: 14px; font-size: 14px; color: var(--muted); }
+      .roadmap b { display: block; font: 650 17px/1.2 var(--sans); color: var(--ink); margin: 8px 0 6px; letter-spacing: -0.02em; }
       .roadmap .live-tag { color: var(--live); }
 
       /* faq */
       .faq { max-width: 760px; }
       .faq details { border-top: 1px solid var(--rule); }
       .faq details:last-child { border-bottom: 1px solid var(--rule); }
-      .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; font: 700 18px/1.3 var(--sans); letter-spacing: -0.01em; color: var(--ink); }
+      .faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; font: 600 18px/1.3 var(--sans); letter-spacing: -0.015em; color: var(--ink); }
       .faq summary::-webkit-details-marker { display: none; }
       .faq summary::after { content: '+'; font: 400 24px/1 var(--mono); color: var(--muted); flex: none; }
       .faq details[open] summary::after { content: '–'; }
       .faq details p { padding: 0 0 22px; color: var(--muted); max-width: 64ch; }
 
       /* call to action and footer */
-      .cta { padding: 96px 0; background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+      .cta { background: linear-gradient(180deg, var(--bg), var(--bg-2)); }
+      .cta > .wrap { padding: 96px 0; }
       footer { border-top: 1px solid var(--rule); padding: 44px 0 56px; color: var(--muted); font-size: 14px; }
       footer .wrap { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
       footer .legal { margin-top: 22px; font: 12px/1.6 var(--mono); color: var(--faint); }
@@ -195,8 +228,11 @@
         .top nav { display: none; }
         .top details { display: block; }
         .top .cta-top { display: none; }
-        section { padding: 60px 0; }
+        section:not(.hero) > .wrap { padding: 60px 0; }
         .hero { padding: 64px 0 56px; }
+        .adopt { gap: 28px; }
+        .codehead { flex-wrap: wrap; gap: 8px 16px; line-height: 1.4; }
+        .links a { flex-wrap: wrap; gap: 2px 16px; }
       }
     </style>
   </head>
@@ -236,7 +272,7 @@
       <section class="hero">
         <div class="wrap">
           <div>
-            <p class="live">Live on Midnight stagenet</p>
+            <p class="live">Live on Midnight testnet</p>
             <h1>Every app has a night mode.</h1>
             <p class="lead">Every app can be made private. Sig.Network gives Midnight contracts real accounts on Ethereum, so your users trade on Uniswap, lend on Aave and deposit from any wallet or exchange exactly as they do today, with nobody&rsquo;s name on any of it.</p>
             <p class="actions">
@@ -246,23 +282,21 @@
             </p>
           </div>
           <figure class="shot">
-            <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app: balances in ETH, SOL and BTC, a swap panel and an activity list of deposits, swaps and sends" width="1154" height="860" loading="eager" /></a>
-            <figcaption>Try the demo &middot; deposit, swap, send <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></figcaption>
+            <a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" aria-label="Open the demo app"><img src="/img/demo-app.png" alt="The Sig.Network demo app in dark mode: a seed wallet holding USDC, EURC, WETH and LINK, an activity list with a send, a swap and a deposit, and a panel to swap on Uniswap or lend" width="1154" height="860" loading="eager" /></a>
+            <figcaption><a href="https://demo.sig.network/" target="_blank" rel="noopener noreferrer" tabindex="-1"><span>Try the demo &middot; deposit, swap, send</span> <svg viewBox="0 0 12 12" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"/></svg></a></figcaption>
           </figure>
         </div>
       </section>
 
       <section class="how" id="how">
         <div class="wrap">
-          <div>
-            <p class="eyebrow">How it works</p>
-            <h2>Your Midnight contract gets its own account on Ethereum.</h2>
-            <p class="lead">
-              Sig.Network is a signing network. It holds the key to an Ethereum account on behalf of your contract,
-              and signs only what your contract asks it to. To Ethereum it is an ordinary account doing ordinary
-              things. To your users it is your app, with their balances and their identities shielded on Midnight.
-            </p>
-          </div>
+          <p class="eyebrow">How it works</p>
+          <h2>Your Midnight contract gets its own account on Ethereum.</h2>
+          <p class="lead">
+            Sig.Network is a signing network. It holds the key to an Ethereum account on behalf of your contract,
+            and signs only what your contract asks it to. To Ethereum it is an ordinary account doing ordinary
+            things. To your users it is your app, with their balances and their identities shielded on Midnight.
+          </p>
           <ul class="steps grid3">
             <li class="mid"><span class="tag">01 &middot; Midnight</span><h3>Your contract decides.</h3><p>A Compact circuit checks the request, burns the user&rsquo;s shielded claim and queues one Ethereum transaction.</p></li>
             <li class="sigs"><span class="tag">02 &middot; sig.network</span><h3>The network signs.</h3><p>A threshold of independent signers produces a standard Ethereum signature. No single signer can act alone, and nothing is bridged or wrapped.</p></li>
@@ -313,9 +347,9 @@
 
       <section class="dev" id="developers">
         <div class="wrap">
+          <p class="eyebrow">Developers</p>
           <div class="devhead">
             <div>
-              <p class="eyebrow">Developers</p>
               <h2>Write it in Rust, or in Compact.</h2>
               <p class="lead">
                 Import the Signet module and queue Ethereum transactions from your circuits. Keep your own ledger and
@@ -339,65 +373,72 @@
               <label for="lang-compact">Compact</label>
             </div>
             <div class="code compact">
-              <div class="codehead"><span>erc20-vault.compact &middot; startDeposit, abridged</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
-<pre><code><span class="k">struct</span> DepositRequest { erc20Address: Bytes&lt;20&gt;; amount: Uint&lt;128&gt;; }
+              <div class="codehead"><span>treasury.compact &middot; the same send</span><a href="https://github.com/sig-net/midnight-examples/blob/dev/examples/erc20-vault/contract/src/erc20-vault.compact" target="_blank" rel="noopener noreferrer">A full vault on GitHub</a></div>
+<pre><code><span class="k">import</span> "@sig-net/midnight/src/Signet";
 
-<span class="k">export circuit</span> startDeposit(
-  inIndex: Uint&lt;64&gt;, evmNonce: Uint&lt;64&gt;, gas: GasParams, depositRequest: DepositRequest
-): [] {
-  requireInitialised();
-  <span class="k">assert</span>(allowedTokens.member(<span class="k">disclose</span>(depositRequest.erc20Address)), "ERC20 not allowed");
-  <span class="k">assert</span>(depositRequest.amount &gt; 0 <span class="k">as</span> Uint&lt;128&gt;, "Amount must be positive");
+<span class="c">// Declared above: signetSigner, evmChainId, mpcKeyVersion, the gas settings and two small helpers.</span>
+<span class="k">export ledger</span> transfers: SignBidirectionalEventMapV1&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34&gt;;
 
-  <span class="c">// The depositor's own account pays: the signing path is their commitment, not the vault's.</span>
-  <span class="k">const</span> args = <span class="k">disclose</span>(DepositArgs {
-    request: depositRequest, path: userCommitment(callerSecretKey()), gas: gas
-  });
-  depositArgsMap.insert(<span class="k">disclose</span>(inIndex), args);
+<span class="c">// File token.transfer(to, amount) on Ethereum from the treasury's account.</span>
+<span class="k">export circuit</span> sendErc20(evmNonce: Uint&lt;64&gt;, token: Bytes&lt;20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;): [] {
+  <span class="k">const</span> calldata = EvmCalldata&lt;2&gt; {
+    selector: Bytes [0xa9, 0x05, 0x9c, 0xbb], <span class="c">// transfer(address,uint256)</span>
+    noWords: 2 <span class="k">as</span> Uint&lt;16&gt;,
+    words: [evmAddressAbiWord(<span class="k">disclose</span>(to)), numericAbiWord(<span class="k">disclose</span>(amount) <span class="k">as</span> Uint&lt;128&gt;)]
+  };
+  <span class="k">const</span> txParams = EvmType2TxParams&lt;2, 0, 0&gt; {
+    chainId: evmChainId, nonce: <span class="k">disclose</span>(evmNonce),
+    maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasLimit: gasLimit,
+    to: <span class="k">disclose</span>(token), value: 0 <span class="k">as</span> Uint&lt;128&gt;,
+    calldata: some&lt;EvmCalldata&lt;2&gt;&gt;(calldata), accessListEntryCount: 0, accessList: []
+  };
+  <span class="k">const</span> request = constructSignBidirectionalEventV1&lt;EvmType2TxParams&lt;2, 0, 0&gt;, 34&gt;(
+    mpcKeyVersion, kernel.self(), treasuryPath(),
+    MPCSignatureAlgorithm.ecdsa, TxParamType.evmType2, txParams, ethereumCaip2Id(),
+    MPCDestination.unused, pad(64, ""), successOutputSchema()
+  );
+  <span class="k">const</span> requestId = calculateEvmType2RequestIdV1&lt;2, 0, 0, 34&gt;(request);
+  <span class="k">assert</span>(!transfers.member(requestId), "Request already sent");
+  transfers.insert(requestId, request);
 
-  <span class="c">// Queue it. Only flushQueue touches shared state, so deposits never contend with each other.</span>
-  <span class="c">// sendDeposit then builds transfer(vaultEvmAddress, amount) and hands it to the signing network.</span>
-  inputRequestBuffer.insert(<span class="k">disclose</span>(inIndex), <span class="k">disclose</span>(RequestBufferEntry {
-    action: Action.deposit, useNextVaultAccountNonce: <span class="k">false</span>, evmNonce: evmNonce, inIndex: inIndex,
-    commitment: ownershipCommitment(inIndex, callerSecretKey()), argsHash: depositArgsHash(args)
-  }));
+  <span class="c">// Tell the signing network where to find the request.</span>
+  signetSigner.signBidirectional(requestId, constructSignBidirectionalEventNotificationV1(
+    kernel.self(), 1 <span class="k">as</span> Uint&lt;8&gt;, [6, 0, 0, 0] <span class="k">as</span> Vector&lt;4, Uint&lt;8&gt;&gt;, <span class="c">// the ledger index of transfers</span>
+  ));
 }</code></pre>
             </div>
             <div class="code rust">
-              <div class="codehead"><span>erc20_vault.rs &middot; the same circuit in MinoCrab, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/erc20_vault.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
-<pre><code><span class="k">#[derive(CircuitArg)]</span>
-<span class="k">struct</span> DepositRequest { erc20_address: Bytes&lt;20&gt;, amount: Uint&lt;128&gt; }
+              <div class="codehead"><span>treasury.rs &middot; send and complete, abridged</span><a href="https://github.com/sig-net/minocrab/blob/main/crates/minocrab-contracts/src/treasury.rs" target="_blank" rel="noopener noreferrer">View on GitHub</a></div>
+<pre><code><span class="k">type</span> Transfer = Filed&lt;erc20::Transfer, schema::Success&gt;;
 
-<span class="k">#[circuit]</span>
-<span class="k">pub fn</span> start_deposit(
-    c: &amp;mut Circuit3,
-    in_index: Uint&lt;64&gt;, evm_nonce: Uint&lt;64&gt;, gas: GasParamsArg, deposit_request: DepositRequest,
-) -&gt; Discloses&lt;(DepositedErc20, InIndex, DepositedAmount, DepositorCommitment,
-                GasParams, EvmNonce, OwnershipCommitment)&gt; {
-    require_initialised(c);
-    <span class="k">let</span> erc20 = deposit_request.erc20_address.disclose_as::&lt;DepositedErc20&gt;(c);
-    <span class="k">let</span> allowed = VAULT.allowed_tokens.member(c, &amp;erc20);
-    c.assert(is_true(allowed).message("ERC20 not allowed"));
-    c.assert(deposit_request.amount.gt(0u64).message("Amount must be positive"));
+<span class="k">#[derive(Ledger)]</span>
+<span class="k">pub struct</span> Treasury {
+    <span class="k">pub</span> signet: Signet,
+    <span class="k">pub</span> transfers: Pending&lt;Transfer, Owned&lt;Amount&gt;, 2&gt;,
+}
 
-    <span class="c">// Every disclosure is typed, and the return type lists exactly what leaves the proof.</span>
-    <span class="k">let</span> in_index = in_index.disclose_as::&lt;InIndex&gt;(c);
-    <span class="k">let</span> sk = common::witness_sk(c);
-    <span class="k">let</span> path = user_commitment(c, &amp;sk).disclose_as::&lt;DepositorCommitment&gt;(c);
-    <span class="k">let</span> amount = deposit_request.amount.disclose_as::&lt;DepositedAmount&gt;(c);
-    <span class="k">let</span> args = DepositArgs {
-        request: StoredDepositRequest { erc20_address: erc20, amount },
-        path,
-        gas: StoredGas { gas_limit: gas.gas_limit.disclose_as::&lt;GasParams&gt;(c), <span class="c">/* and the two fee fields */</span> },
-    };
-    VAULT.deposit_args_map.insert(c, &amp;in_index, &amp;args);
+<span class="k">#[contract]</span>
+<span class="k">impl</span> Treasury {
+    <span class="c">// File token.transfer(to, amount) on Ethereum, remembering the amount and the caller.</span>
+    <span class="c">// The selector, ABI encoding, gas envelope and signing path come from the slot's type.</span>
+    <span class="k">#[circuit]</span>
+    <span class="k">pub fn</span> send(
+        c: &amp;mut Circuit3, evm_nonce: Uint&lt;64&gt;, token: Contract&lt;Erc20&gt;, to: Bytes&lt;20&gt;, amount: Uint&lt;64&gt;,
+    ) -&gt; Discloses&lt;(SentAmount, OwnerCommitment, Requested)&gt; {
+        <span class="k">let</span> sent = amount.field().disclose_as::&lt;SentAmount&gt;(c);
+        TREASURY.transfers.request_owned::&lt;OwnerCommitment&gt;(
+            c, token, (to, amount.widen::&lt;128&gt;()), evm_nonce,
+            |_, _| Amount { amount: Uint::from_field_unchecked(sent) },
+        );
+        Discloses::of(())
+    }
 
-    <span class="c">// Queue it. Only flush_queue touches shared state, so deposits never contend with each other.</span>
-    <span class="c">// send_deposit then builds transfer(vault_evm_address, amount) and hands it to the signing network.</span>
-    <span class="k">let</span> evm_nonce = evm_nonce.disclose_as::&lt;EvmNonce&gt;(c);
-    <span class="k">let</span> digest = args_hash(c, DEPOSIT_ARGS_PAD, &amp;args);
-    queue_request(c, action::DEPOSIT, <span class="k">false</span>, evm_nonce.field(), in_index, digest);
-    Discloses::of(())
+    <span class="c">// The transfer executed and returned true. Anyone may call this: the attestation is the gate.</span>
+    <span class="k">#[circuit]</span>
+    <span class="k">pub fn</span> complete(c: &amp;mut Circuit3, ticket: Succeeded&lt;Transfer&gt;) -&gt; Discloses&lt;Settled&gt; {
+        TREASURY.transfers.complete(c, ticket);
+        Discloses::of(())
+    }
 }</code></pre>
             </div>
           </div>
@@ -423,9 +464,9 @@
           <h2>One pool, every chain.</h2>
           <p class="lead">The pool lives on Midnight and holds an account on each chain it reaches. Moving between chains never leaves the pool, so every chain added makes every crossing rarer.</p>
           <ul class="roadmap grid3">
-            <li><span class="tag live-tag">Stagenet &middot; now</span><b>Midnight &rarr; Ethereum</b>Deposits, Uniswap swaps, Aave supply, withdrawals to any address. Open examples and a full-stack demo.</li>
-            <li><span class="tag">Mainnet &middot; with ledger v9</span><b>Midnight mainnet</b>The same contracts and the same accounts, with real funds.</li>
-            <li><span class="tag">December 2026</span><b>Tron</b>Where the dollars move. One pool, two chains, no crossing between them.</li>
+            <li><span class="tag live-tag">Testnet &middot; now</span><b>Midnight &rarr; Ethereum</b>Deposits, Uniswap swaps, Aave supply, withdrawals to any address. Open examples and a full-stack demo.</li>
+            <li><span class="tag">Mainnet &middot; 27 November 2026</span><b>Midnight mainnet</b>The same contracts and the same accounts, with real funds.</li>
+            <li><span class="tag">29 December 2026</span><b>Tron</b>Where the dollars move. One pool, two chains, no crossing between them.</li>
           </ul>
         </div>
       </section>
@@ -453,7 +494,7 @@
             </details>
             <details>
               <summary>What does it cost?</summary>
-              <p>Signing is priced per request and the gas is paid from your account on Ethereum. Builders typically charge a privacy fee on top; the dark pool pattern earns around 50 basis points. Talk to us for current pricing.</p>
+              <p>Each transaction costs about $0.01, plus the gas fee on the destination chain.</p>
             </details>
           </div>
         </div>
@@ -484,6 +525,32 @@
     </footer>
     <script>
       for (const a of document.querySelectorAll('.top details a')) a.addEventListener('click', () => a.closest('details').removeAttribute('open'));
+
+      // Reveal on scroll: each block rises into place once, rules draw in, and the margin label settles letter by letter.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+        const settle = (el) => {
+          const text = el.textContent, glyphs = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', frames = 14;
+          let f = 0;
+          const step = () => {
+            const done = Math.floor((text.length * ++f) / frames);
+            el.textContent = text.slice(0, done) + [...text.slice(done)].map((c) => (c === ' ' ? c : glyphs[(Math.random() * glyphs.length) | 0])).join('');
+            if (f < frames) setTimeout(step, 32);
+          };
+          step();
+        };
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            io.unobserve(e.target);
+            e.target.classList.add('in');
+            if (e.target.classList.contains('eyebrow')) settle(e.target);
+          }
+        }, { rootMargin: '0px 0px -8% 0px' });
+        for (const block of document.querySelectorAll('section:not(.hero) > .wrap > *')) {
+          const items = block.matches('ul') ? [...block.children] : [block];
+          items.forEach((el, i) => { el.style.setProperty('--i', items.length > 1 ? i : 0); el.classList.add('rv'); io.observe(el); });
+        }
+      }
 
       // Moving the line: progress through the viewport moves layers onto Midnight.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
